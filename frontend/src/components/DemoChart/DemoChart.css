@@ -1,0 +1,48 @@
+.demo-chart {
+  margin: 0;
+}
+
+.demo-chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.demo-chart .grid {
+  stroke: var(--calm-line);
+  stroke-width: 1;
+}
+
+.demo-chart .axis,
+.demo-chart .value {
+  fill: var(--calm-ink);
+  font-size: 20px;
+}
+
+.demo-chart .bar {
+  fill: var(--calm-accent);
+}
+
+.demo-chart .skipped {
+  fill: none;
+  stroke: var(--calm-ink);
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+}
+
+.demo-chart figcaption {
+  font-size: 0.9em;
+  margin-top: 4px;
+}
+
+.demo-chart table {
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.demo-chart th,
+.demo-chart td {
+  border: 1px solid var(--calm-line);
+  padding: 4px 12px;
+  text-align: left;
+}

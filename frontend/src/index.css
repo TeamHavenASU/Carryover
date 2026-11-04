@@ -1,0 +1,141 @@
+:root {
+  --calm-surface: #f3f7f6;
+  --calm-ink: #1f2d2b;
+  --calm-accent: #2f6f6a;
+  --calm-soft: #dcebe8;
+  --calm-line: #b7cfca;
+  --page-bg: #ffffff;
+  --text-size: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--calm-ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: var(--text-size);
+  line-height: 1.5;
+}
+
+.topnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  align-items: center;
+  padding: 12px 20px;
+  background: var(--calm-surface);
+  border-bottom: 2px solid var(--calm-line);
+}
+
+.topnav a {
+  color: var(--calm-ink);
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: underline;
+}
+
+.topnav a.active {
+  background: var(--calm-soft);
+  font-weight: 600;
+}
+
+.brand {
+  margin-right: 12px;
+}
+
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+button {
+  font: inherit;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px solid var(--calm-accent);
+  background: var(--page-bg);
+  color: var(--calm-ink);
+  cursor: pointer;
+}
+
+button.primary {
+  background: var(--calm-accent);
+  color: #ffffff;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--calm-ink);
+  outline-offset: 2px;
+}
+
+input[type="text"],
+select {
+  font: inherit;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 2px solid var(--calm-line);
+  border-radius: 8px;
+  background: var(--page-bg);
+  color: var(--calm-ink);
+}
+
+.card {
+  background: var(--calm-surface);
+  border: 2px solid var(--calm-line);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.muted {
+  color: #46605c;
+}
+
+.error {
+  border: 2px solid var(--calm-ink);
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: var(--calm-soft);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.no-motion *,
+.no-motion *::before,
+.no-motion *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

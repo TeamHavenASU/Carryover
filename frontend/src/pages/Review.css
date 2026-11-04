@@ -1,0 +1,28 @@
+.review h2,
+.review h3 {
+  margin-bottom: 6px;
+}
+
+.edit-list {
+  padding-left: 24px;
+  display: grid;
+  gap: 8px;
+}
+
+.edit-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.edit-list input[type="text"] {
+  flex: 1 1 240px;
+}
+
+.review .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
