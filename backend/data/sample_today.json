@@ -1,0 +1,261 @@
+{
+  "person_id": "jeremiah",
+  "task_id": "heat_meal",
+  "title": "Heat a meal",
+  "week": 5,
+  "session_number": 13,
+  "start_push": "First, take your meal out of the fridge or freezer. That's all for now.",
+  "show_refresher": false,
+  "show_safety_card": null,
+  "break_note": {
+    "after_minutes": 120,
+    "text": "Your food has been out over 2 hours. USDA says food left out that long may not be safe to eat. Ask staff what to do."
+  },
+  "ask_about_skips": false,
+  "check_questions": [],
+  "sticking_points": [
+    {
+      "code": "none",
+      "step_id": null,
+      "evidence": ""
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "s1",
+      "text": "Read the package",
+      "hint": "Read the package",
+      "mode": "hide",
+      "wait": false,
+      "long_pause_seconds": 90,
+      "hint_waits": [
+        22,
+        45,
+        68
+      ],
+      "substeps": [
+        {
+          "id": "s1a",
+          "text": "Find the heating directions. Keep the package nearby"
+        },
+        {
+          "id": "s1b",
+          "text": "Find the time. Use that exact time (more time can burn it)"
+        },
+        {
+          "id": "s1c",
+          "text": "See if it says to stir or to let it stand"
+        }
+      ],
+      "tips": [
+        "No package (leftovers)? Use the time on your meal card, or heat 30 seconds at a time (see the last step)"
+      ],
+      "check_question": null
+    },
+    {
+      "step_id": "s2",
+      "text": "Get it ready for the microwave",
+      "hint": "Get it ready",
+      "mode": "split",
+      "wait": false,
+      "long_pause_seconds": 45,
+      "hint_waits": [
+        11,
+        22,
+        34
+      ],
+      "substeps": [
+        {
+          "id": "s2a",
+          "text": "Take off the box or sleeve"
+        },
+        {
+          "id": "s2b",
+          "text": "Package says heat it in the tray? Use the tray. If not, put it on a microwave-safe dish"
+        },
+        {
+          "id": "s2c",
+          "text": "Peel back or poke the film if the package says so"
+        }
+      ],
+      "tips": [
+        "Use one dish that fits and can turn freely",
+        "No package? Cover it loosely and leave a gap for steam",
+        "Not sure the dish is safe? Take a photo and ask, or use a plate you know is safe"
+      ],
+      "check_question": "Did you use the tray or a microwave-safe dish?"
+    },
+    {
+      "step_id": "s3",
+      "text": "Put it in and close the door",
+      "hint": "In and close",
+      "mode": "hide",
+      "wait": false,
+      "long_pause_seconds": 45,
+      "hint_waits": [
+        11,
+        22,
+        34
+      ],
+      "substeps": [
+        {
+          "id": "s3a",
+          "text": "Open the door (pull the handle or press the door button)"
+        },
+        {
+          "id": "s3b",
+          "text": "Check nothing else is inside"
+        },
+        {
+          "id": "s3c",
+          "text": "Put it in the middle"
+        },
+        {
+          "id": "s3d",
+          "text": "Close the door until it clicks"
+        }
+      ],
+      "tips": [],
+      "check_question": null
+    },
+    {
+      "step_id": "s4",
+      "text": "Set the time and press Start",
+      "hint": "Set the time",
+      "mode": "split",
+      "wait": false,
+      "long_pause_seconds": 45,
+      "hint_waits": [
+        11,
+        22,
+        34
+      ],
+      "substeps": [
+        {
+          "id": "s4a",
+          "text": "Press Cook Time (it may say Time Cook)"
+        },
+        {
+          "id": "s4b",
+          "text": "Press the numbers for the time"
+        },
+        {
+          "id": "s4c",
+          "text": "Press Start"
+        },
+        {
+          "id": "s4d",
+          "text": "Check the time is counting down. You may hear a hum. The light may not come on"
+        }
+      ],
+      "tips": [
+        "Timer does not heat food. Use Cook Time",
+        "Wrong time? Press Cancel (it may say Clear or Off) and start again",
+        "Easy way: press +30 Sec (it may say Add 30 Sec) once for each 30 seconds",
+        "Ignore the other buttons (Popcorn, Reheat, Delay Start...)",
+        "Buttons not working? The controls may be locked. On some microwaves you hold Cancel for 3 seconds. If not, ask staff"
+      ],
+      "check_question": null
+    },
+    {
+      "step_id": "s5",
+      "text": "Stir halfway, if the package says so",
+      "hint": "Stir halfway",
+      "mode": "hide",
+      "wait": true,
+      "long_pause_seconds": 45,
+      "hint_waits": [
+        11,
+        22,
+        34
+      ],
+      "substeps": [
+        {
+          "id": "s5a",
+          "text": "Open the door. It pauses the microwave"
+        },
+        {
+          "id": "s5b",
+          "text": "Use oven mitts"
+        },
+        {
+          "id": "s5c",
+          "text": "Stir or turn the food"
+        },
+        {
+          "id": "s5d",
+          "text": "Close the door and press Start"
+        }
+      ],
+      "tips": [
+        "Leftovers? Always stir halfway"
+      ],
+      "check_question": "If the package said to stir, did you?"
+    },
+    {
+      "step_id": "s6",
+      "text": "When it beeps, take it out and let it sit",
+      "hint": "Let it sit",
+      "mode": "hide",
+      "wait": true,
+      "long_pause_seconds": 45,
+      "hint_waits": [
+        11,
+        22,
+        34
+      ],
+      "substeps": [
+        {
+          "id": "s6a",
+          "text": "It beeps when it's done. It may keep beeping until you open the door. That's OK"
+        },
+        {
+          "id": "s6b",
+          "text": "Use oven mitts. The dish is hot"
+        },
+        {
+          "id": "s6c",
+          "text": "Lift the cover away from your face. The steam is hot"
+        },
+        {
+          "id": "s6d",
+          "text": "Let it sit a few minutes, or the time on the package"
+        }
+      ],
+      "tips": [],
+      "check_question": null
+    },
+    {
+      "step_id": "s7",
+      "text": "Check it's hot all the way through",
+      "hint": "Check it's hot",
+      "mode": "hide",
+      "wait": false,
+      "long_pause_seconds": 45,
+      "hint_waits": [
+        11,
+        22,
+        34
+      ],
+      "substeps": [
+        {
+          "id": "s7a",
+          "text": "Stir it"
+        },
+        {
+          "id": "s7b",
+          "text": "Look for steam in the middle"
+        },
+        {
+          "id": "s7c",
+          "text": "Take a small first bite. Some spots can be very hot"
+        }
+      ],
+      "tips": [
+        "Not hot in the middle? Press +30 Sec and check again",
+        "Have a food thermometer? It should say 165°F"
+      ],
+      "check_question": "Was it hot all the way through?"
+    }
+  ]
+}

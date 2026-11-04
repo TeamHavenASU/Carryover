@@ -1,0 +1,47 @@
+.preview h2 {
+  margin-top: 0;
+}
+
+.preview .notes {
+  padding-left: 20px;
+}
+
+.preview .steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.preview .step {
+  background: var(--page-bg);
+  border: 2px solid var(--calm-line);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.preview .step-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.preview .step-text {
+  font-weight: 600;
+}
+
+.preview .pill {
+  font-size: 0.8em;
+  border: 2px solid var(--calm-accent);
+  border-radius: 999px;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+.preview .small {
+  font-size: 0.85em;
+  margin: 6px 0 0;
+}
