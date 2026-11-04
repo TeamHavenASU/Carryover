@@ -1,0 +1,86 @@
+{
+  "task_id": "heat_meal",
+  "title": "Heat a meal",
+  "start_push": "First, take your meal out of the fridge or freezer. That's all for now.",
+  "start_time_seconds": 60,
+  "long_pause_seconds": 45,
+  "safety_card": "microwave_never",
+  "steps": [
+    {
+      "step_id": "s1",
+      "text": "Put your food on a microwave-safe dish",
+      "hint": "Safe dish",
+      "substeps": [
+        {"id": "s1a", "text": "Look on the bottom for \"microwave safe\""},
+        {"id": "s1b", "text": "No metal, foil, or gold or silver trim"},
+        {"id": "s1c", "text": "No takeout boxes, yogurt or butter tubs, or foam"},
+        {"id": "s1d", "text": "Not sure? Take a photo and ask, or use a plate you know is safe"}
+      ],
+      "check_question": "Did you use a microwave-safe dish?"
+    },
+    {
+      "step_id": "s2",
+      "text": "Cover it loosely so steam can get out",
+      "hint": "Cover it",
+      "substeps": [
+        {"id": "s2a", "text": "Use a microwave-safe lid, paper towel or wax paper"},
+        {"id": "s2b", "text": "Leave a small gap for steam"},
+        {"id": "s2c", "text": "Don't let plastic wrap touch the food"}
+      ]
+    },
+    {
+      "step_id": "s3",
+      "text": "Put it in the middle and close the door",
+      "hint": "In and close",
+      "substeps": [
+        {"id": "s3a", "text": "Put the dish in the middle"},
+        {"id": "s3b", "text": "Close the door until it clicks"}
+      ]
+    },
+    {
+      "step_id": "s4",
+      "text": "Set the time and press Start",
+      "hint": "Set the time",
+      "substeps": [
+        {"id": "s4a", "text": "Read the time on the package. No package? Use the time on your meal card"},
+        {"id": "s4b", "text": "Press the numbers"},
+        {"id": "s4c", "text": "Press Start"}
+      ]
+    },
+    {
+      "step_id": "s5",
+      "text": "Halfway through, stir or turn the food",
+      "hint": "Stir halfway",
+      "wait": true,
+      "substeps": [
+        {"id": "s5a", "text": "When the time is half done, press Stop"},
+        {"id": "s5b", "text": "Use oven mitts. The dish may be hot"},
+        {"id": "s5c", "text": "Stir or turn the food"},
+        {"id": "s5d", "text": "Close the door and press Start"}
+      ],
+      "check_question": "Did you stir it halfway?"
+    },
+    {
+      "step_id": "s6",
+      "text": "When it beeps, let it sit for a few minutes",
+      "hint": "Let it sit",
+      "wait": true,
+      "substeps": [
+        {"id": "s6a", "text": "Leave it in, or take it out with oven mitts"},
+        {"id": "s6b", "text": "Wait a few minutes, or the time on the package"}
+      ]
+    },
+    {
+      "step_id": "s7",
+      "text": "Check it's hot all the way through",
+      "hint": "Check it's hot",
+      "substeps": [
+        {"id": "s7a", "text": "Stir it"},
+        {"id": "s7b", "text": "Look for steam in the middle"},
+        {"id": "s7c", "text": "Not hot in the middle? Heat it a little more"},
+        {"id": "s7d", "text": "Have a food thermometer? It should say 165°F"}
+      ],
+      "check_question": "Was it hot all the way through?"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "task_id": "buy_instore_phone",
+  "title": "Buy something (in store, phone)",
+  "start_push": "Just check the price. That's all for now.",
+  "start_time_seconds": 60,
+  "long_pause_seconds": 45,
+  "steps": [
+    {
+      "step_id": "s1",
+      "part": "decide",
+      "text": "Find the price and read it",
+      "hint": "Check the price",
+      "substeps": []
+    },
+    {
+      "step_id": "s2",
+      "part": "decide",
+      "text": "Check you have enough money for this",
+      "hint": "Check your money",
+      "substeps": [
+        {"id": "s2a", "text": "Open your bank app"},
+        {"id": "s2b", "text": "Find your balance"},
+        {"id": "s2c", "text": "Compare it with the price"}
+      ],
+      "check_question": "Did you check your money?"
+    },
+    {
+      "step_id": "s3",
+      "part": "decide",
+      "text": "Ask yourself if you need this right now",
+      "hint": "Do you need it?",
+      "substeps": [],
+      "long_pause_seconds": 180
+    },
+    {
+      "step_id": "s4",
+      "part": "decide",
+      "text": "Look at one other option, then stop looking",
+      "hint": "One other option",
+      "substeps": [],
+      "long_pause_seconds": 180
+    },
+    {
+      "step_id": "s5",
+      "part": "decide",
+      "text": "Decide: buy it, or leave it for now",
+      "hint": "Your choice",
+      "substeps": [],
+      "long_pause_seconds": 180
+    },
+    {
+      "step_id": "s6",
+      "part": "pay",
+      "text": "Take it to the register",
+      "hint": "To the register",
+      "substeps": []
+    },
+    {
+      "step_id": "s7",
+      "part": "pay",
+      "text": "Look at the total on the card reader",
+      "hint": "Check the amount",
+      "substeps": [
+        {"id": "s7a", "text": "Look at the total"},
+        {"id": "s7b", "text": "Check it matches what you expected"},
+        {"id": "s7c", "text": "Tell the cashier if it doesn't"}
+      ],
+      "check_question": "Did the amount look right?"
+    },
+    {
+      "step_id": "s8",
+      "part": "pay",
+      "text": "Pay with your phone",
+      "hint": "Pay with your phone",
+      "substeps": [],
+      "substeps_by_phone": {
+        "iphone_face_id": [
+          {"id": "s8a", "text": "Double-click the side button"},
+          {"id": "s8b", "text": "Look at your phone"},
+          {"id": "s8c", "text": "Hold the top of your phone near the reader"},
+          {"id": "s8d", "text": "Wait for \"Done\" and a checkmark"}
+        ],
+        "iphone_home_button": [
+          {"id": "s8a", "text": "Double-click the home button"},
+          {"id": "s8b", "text": "Rest your finger on the button"},
+          {"id": "s8c", "text": "Hold the top of your phone near the reader"},
+          {"id": "s8d", "text": "Wait for \"Done\" and a checkmark"}
+        ],
+        "android": [
+          {"id": "s8a", "text": "Unlock your phone"},
+          {"id": "s8b", "text": "Hold the back of your phone near the reader"},
+          {"id": "s8c", "text": "Wait for the blue checkmark"},
+          {"id": "s8d", "text": "If the reader asks for a PIN, follow the screen"}
+        ]
+      },
+      "check_question": "Did you see the checkmark?",
+      "long_pause_seconds": 30
+    },
+    {
+      "step_id": "s9",
+      "part": "pay",
+      "text": "Take your receipt and put it away",
+      "hint": "Receipt",
+      "substeps": [],
+      "check_question": "Did you get your receipt?"
+    }
+  ]
+}
