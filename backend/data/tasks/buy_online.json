@@ -18,9 +18,18 @@
       "text": "Check you have enough money for this",
       "hint": "Check your money",
       "substeps": [
-        {"id": "s2a", "text": "Open your bank app"},
-        {"id": "s2b", "text": "Find your balance"},
-        {"id": "s2c", "text": "Compare it with the price"}
+        {
+          "id": "s2a",
+          "text": "Open your bank app"
+        },
+        {
+          "id": "s2b",
+          "text": "Find your balance"
+        },
+        {
+          "id": "s2c",
+          "text": "Compare it with the price"
+        }
       ],
       "check_question": "Did you check your money?"
     },
@@ -38,7 +47,11 @@
       "text": "Look at one other option, then stop looking",
       "hint": "One other option",
       "substeps": [],
-      "long_pause_seconds": 180
+      "long_pause_seconds": 300,
+      "tips": [
+        "Buying your usual item, or already decided (it's on your list)? You can skip this step",
+        "Same item in different sizes? The shelf tag or listing may show price per ounce. Lower is cheaper. You can take a photo and ask"
+      ]
     },
     {
       "step_id": "s5",
@@ -46,7 +59,10 @@
       "text": "Decide: buy it, or leave it for now",
       "hint": "Your choice",
       "substeps": [],
-      "long_pause_seconds": 180
+      "long_pause_seconds": 300,
+      "tips": [
+        "Can't decide? You can choose your usual, or leave it for now and come back later"
+      ]
     },
     {
       "step_id": "s6",
@@ -58,35 +74,113 @@
     {
       "step_id": "s7",
       "part": "pay",
-      "text": "Check the total before you pay",
-      "hint": "Check the total",
+      "text": "Choose delivery or pickup",
+      "hint": "Delivery or pickup",
       "substeps": [
-        {"id": "s7a", "text": "Look for shipping"},
-        {"id": "s7b", "text": "Look for tax"},
-        {"id": "s7c", "text": "Check the total matches what you expected"}
+        {
+          "id": "s7a",
+          "text": "Choose pickup only if you already know how to get there. Not sure? Choose delivery"
+        },
+        {
+          "id": "s7b",
+          "text": "Delivery: check you'll be home when it arrives"
+        },
+        {
+          "id": "s7c",
+          "text": "Pickup: check the store is open when it's ready"
+        },
+        {
+          "id": "s7d",
+          "text": "Choose when: now, or a time later"
+        }
       ],
-      "check_question": "Did you check the total?"
+      "tips": [
+        "Priority usually costs more. Standard is fine if you're not in a hurry",
+        "Delivery: you can choose 'Leave at door' in the delivery options",
+        "Pickup: say your name or order number at the store",
+        "Not sure if you can get there? Choose delivery, or ask your support person"
+      ]
     },
     {
       "step_id": "s8",
       "part": "pay",
-      "text": "Pay for it",
-      "hint": "Pay",
+      "text": "Check the total before you pay",
+      "hint": "Check the total",
       "substeps": [
-        {"id": "s8a", "text": "Check the delivery address"},
-        {"id": "s8b", "text": "Pick your card"},
-        {"id": "s8c", "text": "Press Place Order"}
-      ]
+        {
+          "id": "s8a",
+          "text": "Look at the item price"
+        },
+        {
+          "id": "s8b",
+          "text": "Look for delivery and service fees"
+        },
+        {
+          "id": "s8c",
+          "text": "Look for tax"
+        },
+        {
+          "id": "s8d",
+          "text": "Look at the tip (delivery only). Choose an amount you're OK with"
+        },
+        {
+          "id": "s8e",
+          "text": "Check the total matches what you expected"
+        }
+      ],
+      "tips": [
+        "Have a promo code? Enter it here. Don't spend long searching for one"
+      ],
+      "check_question": "Did you check the total?"
     },
     {
       "step_id": "s9",
       "part": "pay",
+      "text": "Check the address, then pay",
+      "hint": "Check and pay",
+      "substeps": [
+        {
+          "id": "s9a",
+          "text": "Check the delivery address"
+        },
+        {
+          "id": "s9b",
+          "text": "Check the apartment or unit number"
+        },
+        {
+          "id": "s9c",
+          "text": "Check the payment (your saved card or a gift card)"
+        },
+        {
+          "id": "s9d",
+          "text": "Press Place Order"
+        }
+      ],
+      "tips": [
+        "Page stuck or showing an error? Don't press Place Order again. Check your orders or email first, so you don't pay twice",
+        "Gift card doesn't cover it all? You'll need another card for the rest",
+        "No card saved yet? That's a separate task: 'Add a card'. You can do it on your own or with your support person"
+      ],
+      "long_pause_seconds": 120
+    },
+    {
+      "step_id": "s10",
+      "part": "pay",
       "text": "Save the confirmation",
       "hint": "Save it",
       "substeps": [
-        {"id": "s9a", "text": "Find the order number"},
-        {"id": "s9b", "text": "Take a screenshot or star the email"},
-        {"id": "s9c", "text": "Check the amount matches"}
+        {
+          "id": "s10a",
+          "text": "Find the order number"
+        },
+        {
+          "id": "s10b",
+          "text": "Take a screenshot or star the email"
+        },
+        {
+          "id": "s10c",
+          "text": "Check the amount matches"
+        }
       ],
       "check_question": "Did you save the confirmation?"
     }
