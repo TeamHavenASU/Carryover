@@ -22,7 +22,7 @@ All step text comes from `backend/data/tasks/*.json`. The help level for each st
 | 8 | Nothing moves or plays by itself | No autoplay, flashing, bouncing or confetti. Read-aloud only if turned on | Hassell |
 | 9 | Pictures only when they help | Pictures that show the action; no decorative or childish images | Hassell; Ours: a different microwave's picture can confuse (Smith 1995) |
 | 10 | No time pressure | No countdowns or timeouts. Help offered after a wait, never forced. Breaks save the place | Hassell; COGA; Ours |
-| 11 | Don't make people remember | "Step 3 of 7"; "You were on: …" after a break | COGA; Research: Buckle et al. 2021 |
+| 11 | Don't make people remember | "Step 3 of 7"; "You were on: …" after a break. Start screen always has "Quick look at all steps" next to Start. If rusty, ask first: "It's been a while since you did this. Want a quick look at all the steps first?" (Yes, show me / No, let's start); log `refresher_answer` | COGA; Research: Buckle et al. 2021; Fuller & Fienup 2018 (skills can fade); Wehmeyer & Abery 2013 (the person chooses) |
 | 12 | Easy to fix mistakes | "Tapped Done by mistake? Go back" on every step | COGA |
 | 13 | Help comes to the person | After a wait the hint or small steps appear (fading rules). Asking is always one tap | Research: Grynszpan et al. 2008; MacDuff et al. 2001 |
 | 14 | Human help is easy to reach | "Ask [support person]" on every step; AI hands off when unsure | COGA; safety.md |

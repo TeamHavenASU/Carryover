@@ -2,7 +2,18 @@
 
 Where people are likely to get stuck in each task, why, and what the app does about it. Based on research, on trying the tasks ourselves, and on comparing different devices (general case analysis, Smith 1995).
 
-> Draft. Role A finishes this: add research sources for each sticking point (executive function: starting tasks, remembering steps, forgetting after gaps) and the buying task after trying it.
+## Why people get stuck (research)
+
+Each detect code in `backend/logic/detect.py` matches a difference in executive function (the skills for planning, remembering, starting and switching; Hill 2004a). Full references are in `docs/sources.md`.
+
+| detect code | Why it happens | What the app does | Source |
+| --- | --- | --- | --- |
+| `cant_start` | Trouble starting a task, even when the person wants to ("autistic inertia"). A cue or a first step helps | Start push: one small first step | Buckle et al. 2021; Carmo et al. 2015, 2017 |
+| `missing_step` | Trouble remembering a step or remembering to do something later (working memory, prospective memory) | Check questions; "stir halfway" reminder | Buckle et al. 2021; Hill 2004a |
+| `stuck_at_step` | Trouble switching when a button, screen or store looks different from usual (flexibility) | Tips that name other button words; general case steps | Hill 2004a; Yon-Hernández et al. 2023; Smith 1995 |
+| `rusty_after_gap` | A learned skill can fade after a break | More help after a long gap | Richling et al. 2019; Fuller & Fienup 2018 |
+
+Executive function differences are broad and fairly stable in autism (Demetriou et al. 2018) and predict daily living skills in autistic adults (Yon-Hernández et al. 2023). Findings are mixed and people differ a lot (Hill 2004b), which is why Carryover learns each person's sticking points instead of assuming them.
 
 ## How we found them
 
