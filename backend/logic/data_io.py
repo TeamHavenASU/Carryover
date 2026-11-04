@@ -102,9 +102,15 @@ def load_definitions() -> dict:
         return json.load(f)
 
 
-# The events that count as "used help". Read from definitions.json, not
-# hardcoded, so the team changes the list in one place only.
-USED_HELP_EVENTS: list[str] = list(load_definitions()["used_help_events"])
+def used_help_events() -> list[str]:
+    """Return the events that count as "used help", from definitions.json.
+
+    Read from the file, not hardcoded, so the team changes the list in one
+    place only. Read on each call rather than at import, so a missing or
+    broken definitions.json only fails the code that needs it, not every
+    import of this module.
+    """
+    return list(load_definitions()["used_help_events"])
 
 
 def available_tasks() -> list[str]:
