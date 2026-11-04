@@ -10,7 +10,10 @@
       "part": "decide",
       "text": "Find the price and read it",
       "hint": "Check the price",
-      "substeps": []
+      "substeps": [],
+      "tips": [
+        "Can't find it? Look at the aisle signs, or ask a store worker"
+      ]
     },
     {
       "step_id": "s2",
@@ -18,9 +21,18 @@
       "text": "Check you have enough money for this",
       "hint": "Check your money",
       "substeps": [
-        {"id": "s2a", "text": "Open your bank app"},
-        {"id": "s2b", "text": "Find your balance"},
-        {"id": "s2c", "text": "Compare it with the price"}
+        {
+          "id": "s2a",
+          "text": "Open your bank app"
+        },
+        {
+          "id": "s2b",
+          "text": "Find your balance"
+        },
+        {
+          "id": "s2c",
+          "text": "Compare it with the price"
+        }
       ],
       "check_question": "Did you check your money?"
     },
@@ -38,7 +50,11 @@
       "text": "Look at one other option, then stop looking",
       "hint": "One other option",
       "substeps": [],
-      "long_pause_seconds": 180
+      "long_pause_seconds": 300,
+      "tips": [
+        "Buying your usual item, or already decided (it's on your list)? You can skip this step",
+        "Same item in different sizes? The shelf tag or listing may show price per ounce. Lower is cheaper. You can take a photo and ask"
+      ]
     },
     {
       "step_id": "s5",
@@ -46,14 +62,21 @@
       "text": "Decide: buy it, or leave it for now",
       "hint": "Your choice",
       "substeps": [],
-      "long_pause_seconds": 180
+      "long_pause_seconds": 300,
+      "tips": [
+        "Can't decide? You can choose your usual, or leave it for now and come back later"
+      ]
     },
     {
       "step_id": "s6",
       "part": "pay",
-      "text": "Take it to the register",
+      "text": "Take it to the register and wait your turn",
       "hint": "To the register",
-      "substeps": []
+      "substeps": [],
+      "wait": true,
+      "tips": [
+        "Self-checkout? Follow the screen to scan your item, then pay"
+      ]
     },
     {
       "step_id": "s7",
@@ -61,9 +84,18 @@
       "text": "Look at the total on the card reader",
       "hint": "Check the amount",
       "substeps": [
-        {"id": "s7a", "text": "Look at the total"},
-        {"id": "s7b", "text": "Check it matches what you expected"},
-        {"id": "s7c", "text": "Tell the cashier if it doesn't"}
+        {
+          "id": "s7a",
+          "text": "Look at the total"
+        },
+        {
+          "id": "s7b",
+          "text": "Check it matches what you expected"
+        },
+        {
+          "id": "s7c",
+          "text": "Tell the cashier if it doesn't"
+        }
       ],
       "check_question": "Did the amount look right?"
     },
@@ -75,26 +107,65 @@
       "substeps": [],
       "substeps_by_phone": {
         "iphone_face_id": [
-          {"id": "s8a", "text": "Double-click the side button"},
-          {"id": "s8b", "text": "Look at your phone"},
-          {"id": "s8c", "text": "Hold the top of your phone near the reader"},
-          {"id": "s8d", "text": "Wait for \"Done\" and a checkmark"}
+          {
+            "id": "s8a",
+            "text": "Double-click the side button"
+          },
+          {
+            "id": "s8b",
+            "text": "Look at your phone"
+          },
+          {
+            "id": "s8c",
+            "text": "Hold the top of your phone near the reader"
+          },
+          {
+            "id": "s8d",
+            "text": "Wait for \"Done\" and a checkmark"
+          }
         ],
         "iphone_home_button": [
-          {"id": "s8a", "text": "Double-click the home button"},
-          {"id": "s8b", "text": "Rest your finger on the button"},
-          {"id": "s8c", "text": "Hold the top of your phone near the reader"},
-          {"id": "s8d", "text": "Wait for \"Done\" and a checkmark"}
+          {
+            "id": "s8a",
+            "text": "Double-click the home button"
+          },
+          {
+            "id": "s8b",
+            "text": "Rest your finger on the button"
+          },
+          {
+            "id": "s8c",
+            "text": "Hold the top of your phone near the reader"
+          },
+          {
+            "id": "s8d",
+            "text": "Wait for \"Done\" and a checkmark"
+          }
         ],
         "android": [
-          {"id": "s8a", "text": "Unlock your phone"},
-          {"id": "s8b", "text": "Hold the back of your phone near the reader"},
-          {"id": "s8c", "text": "Wait for the blue checkmark"},
-          {"id": "s8d", "text": "If the reader asks for a PIN, follow the screen"}
+          {
+            "id": "s8a",
+            "text": "Unlock your phone"
+          },
+          {
+            "id": "s8b",
+            "text": "Hold the back of your phone near the reader"
+          },
+          {
+            "id": "s8c",
+            "text": "Wait for the blue checkmark"
+          },
+          {
+            "id": "s8d",
+            "text": "If the reader asks for a PIN, follow the screen"
+          }
         ]
       },
       "check_question": "Did you see the checkmark?",
-      "long_pause_seconds": 30
+      "long_pause_seconds": 60,
+      "tips": [
+        "Payment didn't go through? Try once more, pay with your card, or ask the cashier"
+      ]
     },
     {
       "step_id": "s9",

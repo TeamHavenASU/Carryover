@@ -23,6 +23,10 @@ Also (FDA):
 - Plain water heated in a clean cup can boil over suddenly and burn. Don't heat water longer than the microwave's manual says.
 - Don't use the microwave if the door doesn't close firmly or looks broken. Tell staff.
 
+### Taking a break while heating a meal
+
+Opening the door pauses the microwave, so a break mid-heating is safe. If the person comes back **more than 2 hours** later, the app shows: "Your food has been out over 2 hours. USDA says food left out that long may not be safe to eat. Ask staff what to do." (USDA: never leave food out of refrigeration over 2 hours; 1 hour above 90°F.) Set in `heat_meal.json` as `break_note`.
+
 ## 2. Photo questions
 
 - The person chooses to take a photo. The camera is never on by itself.
