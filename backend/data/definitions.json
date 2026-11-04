@@ -64,8 +64,9 @@
     "skipped": "Never opened the task that day. Not struggling.",
     "finished": "Tapped or said 'Task done'.",
     "usual_break": "How long this person normally goes between doing this task.",
-    "rusty": "This break is more than 2x their usual break for this task, and at least 14 days. New person with no history: 14 days.",
-    "take_a_break": "The person pauses the task. The clock stops and the app saves their place. Never counts as struggling or skipping."
+    "rusty": "This break is more than 2x their usual break for this task, and at least 14 days (14 is the minimum, not a maximum). New person with no history: 14 days. detect.py decides this (rusty_after_gap).",
+    "take_a_break": "The person pauses the task. The clock stops and the app saves their place. Never counts as struggling or skipping.",
+    "refresher": "When someone is rusty, the app asks once: 'Want a quick look at all the steps first?' Yes = a list of all steps, then Start. No = start as normal. This session only; never a setback; help levels don't reset. Logged as refresher_answer (yes/no)."
   },
   "take_a_break": {
     "_status": "decided",
