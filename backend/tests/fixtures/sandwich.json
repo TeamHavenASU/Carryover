@@ -1,0 +1,17 @@
+{
+  "task_id": "sandwich",
+  "title": "Make a sandwich",
+  "start_push": "Just take out the bread. That's all for now.",
+  "steps": [
+    {"step_id": "s1", "text": "Get two slices of bread", "substeps": []},
+    {"step_id": "s2", "text": "Get the peanut butter and a knife", "substeps": []},
+    {"step_id": "s3", "text": "Put peanut butter on the bread", "hint": "Peanut butter on bread",
+     "substeps": [
+       {"id": "s3a", "text": "Open the jar"},
+       {"id": "s3b", "text": "Scoop with the knife"},
+       {"id": "s3c", "text": "Spread on one slice"},
+       {"id": "s3d", "text": "Close the jar"}]},
+    {"step_id": "s4", "text": "Put the slices together", "substeps": []},
+    {"step_id": "s5", "text": "Clean up", "substeps": [], "hint": "Clean up?", "check_question": "Did you get to clean up?"}
+  ]
+}

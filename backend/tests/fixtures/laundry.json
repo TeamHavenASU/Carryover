@@ -1,0 +1,13 @@
+{
+  "task_id": "laundry",
+  "title": "Do the laundry",
+  "start_push": "Just pick up the laundry basket. That's all for now.",
+  "steps": [
+    {"step_id": "s1", "text": "Sort clothes into a pile", "substeps": []},
+    {"step_id": "s2", "text": "Put clothes in the washer", "hint": "Clothes in washer", "substeps": []},
+    {"step_id": "s3", "text": "Add soap to the washer", "hint": "Add soap", "substeps": []},
+    {"step_id": "s4", "text": "Start the washer", "substeps": []},
+    {"step_id": "s5", "text": "Move clothes to the dryer", "substeps": []},
+    {"step_id": "s6", "text": "Empty the lint trap", "substeps": [], "hint": "Lint trap?", "check_question": "Did you empty the lint trap?"}
+  ]
+}

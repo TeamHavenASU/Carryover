@@ -1,0 +1,140 @@
+/* "I'm stuck" (Role D). Calm colors, big buttons, no red, no flashing, no timers.
+   Text size follows the page, so C's text size setting works here too. */
+
+.ask {
+  --ask-bg: var(--calm-surface, #f3f7f6);
+  --ask-ink: var(--calm-ink, #1f2d2b);
+  --ask-accent: var(--calm-accent, #2f6f6a);
+  --ask-accent-ink: #ffffff;
+  --ask-soft: var(--calm-soft, #dcebe8);
+  --ask-line: var(--calm-line, #b7cfca);
+  font-size: 1em;
+  color: var(--ask-ink);
+  width: 100%;
+}
+
+.ask button,
+.ask textarea {
+  font: inherit;
+}
+
+.ask button {
+  min-height: 3em;               /* big touch targets */
+  border-radius: 0.8em;
+  border: 2px solid var(--ask-accent);
+  padding: 0.5em 1.2em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.ask button:focus-visible,
+.ask textarea:focus-visible {
+  outline: 3px solid var(--ask-ink);
+  outline-offset: 2px;
+}
+
+.ask button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ask-big {
+  width: 100%;
+  font-size: 1.3em;
+  background: var(--ask-accent);
+  color: var(--ask-accent-ink);
+}
+
+.ask-main {
+  flex: 1 1 8em;
+  font-size: 1.15em;
+  background: var(--ask-accent);
+  color: var(--ask-accent-ink);
+}
+
+.ask-alt {
+  background: var(--ask-bg);
+  color: var(--ask-accent);
+}
+
+.ask-small {
+  background: var(--ask-bg);
+  color: var(--ask-ink);
+  border-color: var(--ask-line);
+}
+
+.ask-panel {
+  background: var(--ask-bg);
+  border: 2px solid var(--ask-line);
+  border-radius: 1em;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  animation: ask-fade 0.25s ease;
+}
+
+.ask-label {
+  font-size: 1.15em;
+  font-weight: 600;
+}
+
+.ask-text {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1.1em;
+  padding: 0.6em;
+  border-radius: 0.6em;
+  border: 2px solid var(--ask-line);
+  background: #ffffff;
+  color: var(--ask-ink);
+  resize: vertical;
+}
+
+.ask-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6em;
+}
+
+.ask-note {
+  margin: 0;
+  font-size: 0.95em;
+}
+
+.ask-photo {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+}
+
+.ask-photo img {
+  max-width: 8em;
+  max-height: 8em;
+  border-radius: 0.6em;
+  border: 2px solid var(--ask-line);
+}
+
+.ask-reply {
+  margin: 0;
+  padding: 0.8em;
+  font-size: 1.5em;
+  line-height: 1.4;
+  background: #ffffff;
+  border-radius: 0.8em;
+  border: 2px solid var(--ask-soft);
+}
+
+@keyframes ask-fade {
+  from { opacity: 0; transform: translateY(0.3em); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Animations off: C's setting adds the class "no-motion" on the page, and the
+   device's "reduce motion" setting is respected too. */
+@media (prefers-reduced-motion: reduce) {
+  .ask-panel { animation: none; }
+  .ask button { transition: none; }
+}
+.no-motion .ask-panel { animation: none; }
+.no-motion .ask button { transition: none; }
