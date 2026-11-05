@@ -24,14 +24,15 @@ json, pathlib). Tests use pytest, which is already in requirements.txt.
 - UI rules: W3C COGA guidance and the papers listed in docs/ui_guidelines.md.
 - Full citations for everything above are in docs/sources.md.
 
-**Pictures:** the 16 step pictures in frontend/public/img/ are simple
-diagrams made from basic shapes by tools/make_pictures.py, a script written
-with AI help. No outside images or photos. They are placeholders; real
-photos or short videos are on the roadmap.
+**Pictures:** the first placeholder pictures were simple diagrams made by
+tools/make_pictures.py, a script written with AI help (now removed). They
+have been replaced by more detailed drawings from Role C
+(tools/make_detailed_pictures.py, see the Role C section). No outside
+images or photos. Real photos or short videos are on the roadmap.
 
 **AI assistance:** I used Claude (Anthropic) to help research sources, draft
 the task step wording, skill cards and docs, and write detect.py,
-test_detect.py and make_pictures.py. I decided the rules, the step content
+test_detect.py and make_pictures.py (the first placeholder pictures, since removed). I decided the rules, the step content
 and the detection logic, reviewed every line, and can explain what each
 file does and why.
 
