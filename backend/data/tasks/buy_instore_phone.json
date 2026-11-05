@@ -179,6 +179,10 @@
             "text": "Hold the top of your phone near the reader"
           },
           {
+            "id": "s8c2", 
+            "text": "If it asks about cash back, press No"
+          },
+          {
             "id": "s8d",
             "text": "Wait for \"Done\" and a checkmark"
           }
