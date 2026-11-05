@@ -98,6 +98,38 @@ API keys go in `backend/.env` only. Never put them in code, and never commit `.e
 - [docs/ui_guidelines.md](docs/ui_guidelines.md): rules for every resident screen
 - [docs/sticking_points.md](docs/sticking_points.md) and [docs/sources.md](docs/sources.md): the research
 
+## Role A: tasks, detection and research
+
+### What the files are
+| File | What it holds |
+| --- | --- |
+| `backend/data/tasks/*.json` | The 4 tasks: Heat a meal, and Buy something (in store with card, in store with phone, online). Each step has its text, small steps, tips, CAUTION line, picture, base skills and timing |
+| `backend/data/skills/*.json` | 10 skill cards: one base skill each (like reading the cooking time), 2–4 small steps |
+| `backend/data/definitions.json` | Every rule and number the app uses: help levels, fading rules 1–9, check questions, skill cards, first-time setup, Game mode |
+| `backend/logic/detect.py` | Finds where someone gets stuck, from the event log |
+| `docs/` | Sticking points, safety rules, UI rules, sources, partner research |
+
+### How detect.py works
+It reads one person's events for one task, splits them into sessions, and looks at the last 2 sessions. A pattern has to show in both before it counts, so one bad day doesn't change anything. It returns:
+
+| Code | Means |
+| --- | --- |
+| `cant_start` | Opened the task but didn't get going |
+| `stuck_at_step` | A long pause at the same step |
+| `missing_step` | Started a step but never finished it, or said "no" to its check question the last 2 times it was asked |
+| `rusty_after_gap` | Coming back after a break more than 2× their usual (and at least 14 days) |
+| `none` | Nothing found |
+
+It also has `skill_cards_to_show()` (which skill cards to show before which steps) and `steps_with_breaks()` (a flag for staff).
+
+### Adding a new task
+Write a new JSON file in `backend/data/tasks/` with the same fields. No code changes needed: detect, fade and the screens read everything from the file.
+
+### Limitations
+- The numbers (2 sessions, 14 days, 45-second pause) are our starting points, backed by research on the idea but not the exact values. Staff can change them in definitions.json.
+- Check questions only cover steps with no help. Two "no"s give the help back, so the question stops there. A step missed after help returns is caught by the other signals.
+- The task steps were checked with First Place staff, but not yet tested with residents.
+
 ## Role B: data, fading and learning
 
 ### What the modules do
