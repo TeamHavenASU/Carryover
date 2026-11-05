@@ -19,7 +19,10 @@ import SafetyCard from "./SafetyCard";
 import SkillCardScreen from "./SkillCardScreen";
 import GameWorld from "./GameWorld";
 import HelpScreen from "./HelpScreen";
-import { worldFor } from "../lib/worlds";
+import HowGameWorks from "./HowGameWorks";
+import { resolveWorld } from "../lib/worlds";
+import GameBackdrop from "./Backdrops";
+import ChooseWorld from "./ChooseWorld";
 
 // One screen at a time. All step text and help levels come from /today (Format 3).
 export default function ResidentApp() {
@@ -236,6 +239,7 @@ export default function ResidentApp() {
   const inSetup = view === "tasks" && ready && !s.setupDone;
   const back = {
     world: () => setView("tasks"),
+    chooseworld: () => setView("tasks"),
     settings: () => setView("tasks"),
     start: closeWithoutStart,
     firstopen: closeWithoutStart,
@@ -247,17 +251,18 @@ export default function ResidentApp() {
     break: resume,
     done: () => setView("tasks"),
   }[view] || null;
-  const names = { tasks: inSetup ? "Welcome" : "My tasks", world: "My world", settings: "Settings", help: "Help", all: "All steps", break: "Take a break" };
+  const names = { tasks: inSetup ? "Welcome" : "My tasks", world: "My world", chooseworld: "Choose your world", settings: "Settings", help: "Help", all: "All steps", break: "Take a break" };
   const title = names[view] || (today ? today.title : "Carryover");
   const allStepsLink = view === "step" ? (
     <button className="navbtn" onClick={() => { log("show_all_pressed", { step_id: step.step_id }); setView("all"); }}>All steps</button>
   ) : null;
   const showBottomNav = ready && s.setupDone && ["tasks", "world", "settings"].includes(view);
   const dark = (s.theme === "dark" ? "dark" : s.mode) === "dark";
-  const world = worldFor(s.interests, knownInterests);
+  const world = resolveWorld(s);
 
   return (
-    <div className={`resident ${showBottomNav ? "has-bottom-nav" : ""}`} {...lookAttributes({ ...s, theme: previewTheme || s.theme })}>
+    <div className={`resident ${showBottomNav ? "has-bottom-nav" : ""} ${s.style === "game" ? "game" : ""}`} {...lookAttributes({ ...s, theme: previewTheme || s.theme })}>
+      {s.style === "game" && <GameBackdrop world={world} dark={dark} animations={s.animations} />}
       <TopBar title={title} onBack={back} right={allStepsLink} />
 
       {error && <div className="card status" role="alert"><p>{error}</p></div>}
@@ -290,7 +295,9 @@ export default function ResidentApp() {
       {view === "tasks" && ready && s.setupDone && (
         <TaskList taskIds={taskIds} titles={titles} onOpen={openTask} loaded={tasksLoaded}
           resume={inTask && step ? { title: today.title, number: step.number } : null}
-          onResume={resume} />
+          onResume={resume}
+          game={s.style === "game" ? <HowGameWorks world={world} every={2} /> : null}
+          chooseWorld={s.style === "game" && !s.gameWorld ? () => setView("chooseworld") : null} />
       )}
 
       {view === "start" && today && (
@@ -349,8 +356,12 @@ export default function ResidentApp() {
         />
       )}
 
+      {view === "chooseworld" && (
+        <ChooseWorld settings={s} update={update} onDone={() => setView("tasks")} />
+      )}
+
       {view === "world" && ready && (
-        <GameWorld personId={personId} settings={s} update={update} dark={dark} world={world} />
+        <GameWorld personId={personId} settings={s} update={update} world={world} />
       )}
 
       {view === "safety" && today && (
@@ -410,7 +421,7 @@ export default function ResidentApp() {
 
       {view === "done" && today && (
         <DoneScreen today={today} settings={s} update={update} personId={personId} donePromise={donePromise}
-          onFinish={() => setView("tasks")} log={log} dark={dark} world={world} />
+          onFinish={() => setView("tasks")} log={log} world={world} />
       )}
       {showBottomNav && (
         <BottomNav current={view} showWorld={s.style === "game"}

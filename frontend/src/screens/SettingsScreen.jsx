@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { PALETTES, deviceVoices } from "../lib/settings";
+import { WORLD_CHOICES } from "../lib/worlds";
 
 // Settings (Carryover decisions): Looks, Reading voice, Game or Normal, Sound, Animations,
 // Support person, Sharing with staff, Phone type, Redo first-time setup. Labels sit above
@@ -92,7 +93,24 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
       <div className="card">
         <h2>Game or Normal</h2>
         {radios("Style", "style", [["normal", "Normal"], ["game", "Game"]])}
-        {settings.style === "game" && toggle("Surprise me (hide the next island until it opens)", "surpriseMe")}
+        <p className="muted">Game: the whole app sits in a world you choose. Finish a task to pick a reward, and a new area opens every 2 tasks. Normal: no game at all.</p>
+        {settings.style === "game" && (
+          <>
+            <label htmlFor="gameWorld">Game world</label>
+            <select id="gameWorld" value={settings.gameWorld || "sky"} onChange={(e) => update({ gameWorld: e.target.value })}>
+              {WORLD_CHOICES.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}
+            </select>
+            {WORLD_CHOICES.filter((w) => w.sub && w.id === (settings.gameWorld || "sky")).map((w) => (
+              <div key={w.id}>
+                <label htmlFor={w.sub}>{w.id === "animals" ? "Which animal" : "Which fruit"}</label>
+                <select id={w.sub} value={settings[w.sub]} onChange={(e) => update({ [w.sub]: e.target.value })}>
+                  {w.options.map(([v, t]) => <option key={v} value={v}>{t}</option>)}
+                </select>
+              </div>
+            ))}
+            {toggle("Surprise me (hide the next area until it opens)", "surpriseMe")}
+          </>
+        )}
       </div>
 
       <div className="card">
@@ -144,6 +162,16 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
         <input id="person" type="text" autoComplete="off" value={settings.personId}
           onChange={(e) => update({ personId: e.target.value.trim() })} aria-describedby="person-msg" />
         {!settings.personId && <p id="person-msg" className="field-error" role="alert">Enter a name or ID to see the tasks.</p>}
+        {settings.style === "game" && (
+          <>
+            <p className="muted">Try Game mode without finishing real tasks. This only changes this phone, and is not logged.</p>
+            <p>Pretend tasks done: {Number(settings.demoDone) || 0}</p>
+            <div className="row">
+              <button className="btn" onClick={() => update({ demoDone: (Number(settings.demoDone) || 0) + 1 })}>Pretend I finished a task</button>
+              <button className="btn" onClick={() => update({ demoDone: 0, gameItems: {} })}>Reset</button>
+            </div>
+          </>
+        )}
         <label htmlFor="week">Week</label>
         <input id="week" type="number" inputMode="numeric" min="1" value={settings.week}
           onChange={(e) => update({ week: Math.max(1, Number(e.target.value) || 1) })} aria-describedby="week-msg" />
