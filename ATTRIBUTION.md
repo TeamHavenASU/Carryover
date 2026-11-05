@@ -57,3 +57,30 @@ product.
 fade.py, and their tests were written with the help of an AI coding
 assistant. I specified the behaviour and the data formats, reviewed every
 line, and can explain the logic and the design decisions in each file.
+
+## Role C
+
+**Libraries:** none added. The resident screens use React and the existing
+frontend setup (Vite, React Router) from Role E's package.json, and browser
+features only: localStorage for settings and speechSynthesis for read-aloud.
+Backend: Python standard library, plus FastAPI and pytest, which were already
+in the project.
+
+**Prior work this builds on:** the screens follow docs/ui_guidelines.md (the
+UI Guide) and the sources listed there. The colour choices follow the AASPIRE
+web accessibility guidelines (Raymaker et al., 2019), which recommend a
+low-contrast neutral palette and both light and dark options. The exact
+colour values are our own choice, checked against WCAG 2.2 AA contrast. The
+help-level logic is not mine: it comes from fade.py and detect.py. Step and
+safety text comes from the task files. No code was taken from any existing
+product.
+
+**Other people's code:** AskForHelp (Role D) is used as it was written. The
+resident page is mounted in Role E's pages/Resident.jsx and uses Role E's
+src/api.js. today.py wraps fade.build_view (Vaishnavi and Mrudula). My parts
+are today.py, event_log.py, resident_routes.py, test_resident.py and
+frontend/src/screens/ and frontend/src/lib/.
+
+**AI assistance:** [Krutika: list the files written with Claude's help and
+write the sentence confirming you reviewed every line and can explain the
+logic. Only keep it if it is true.]

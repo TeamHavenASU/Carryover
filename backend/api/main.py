@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.ai_routes import router as ai_router
 from api.demo_routes import router as demo_router
+from api.resident_routes import router as resident_router
 from api.review_routes import router as review_router
 from api.skill_routes import router as skill_router
 from api.staff_routes import router as staff_router
@@ -25,7 +26,7 @@ app.include_router(demo_router)
 app.include_router(review_router)
 app.include_router(skill_router)
 app.include_router(staff_router)
-# The resident routes (GET /tasks, POST /event, GET /today) are included here too.
+app.include_router(resident_router)  # GET /tasks, GET /today, POST /event
 
 
 @app.get("/health")

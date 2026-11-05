@@ -1,0 +1,131 @@
+/* Calm colors, readable text (rule 6). Text and background pairs are chosen for WCAG AA.
+   Meaning is never carried by color alone (rule 6) and nothing moves (rule 8). */
+.resident {
+  --bg: #f4f1ea;
+  --panel: #ffffff;
+  --text: #22303c;
+  --muted: #4a5a68;
+  --line: #b8c2cc;
+  --accent: #2f5d7c;
+  --accent-text: #ffffff;
+  --focus: #1b4f72;
+  --size: 1.125rem;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.resident[data-theme="dark"] {
+  --bg: #1d242b;
+  --panel: #27313a;
+  --text: #eef1f4;
+  --muted: #c3ccd4;
+  --line: #5d6b78;
+  --accent: #9cc3de;
+  --accent-text: #11202b;
+  --focus: #cfe5f5;
+}
+.resident[data-theme="neutral"] {
+  --bg: #e9e7e2;
+  --panel: #f2f0ec;
+  --text: #33383d;
+  --muted: #4d545b;
+  --line: #b4b1aa;
+  --accent: #4a5f70;
+  --accent-text: #ffffff;
+  --focus: #2f4252;
+}
+.resident[data-theme="cool"] {
+  --bg: #e4eeee;
+  --panel: #f1f7f7;
+  --text: #1f3a3d;
+  --muted: #3f5a5d;
+  --line: #a9c3c3;
+  --accent: #2b6a66;
+  --accent-text: #ffffff;
+  --focus: #1b4a47;
+}
+.resident[data-size="large"] { --size: 1.35rem; }
+.resident[data-size="larger"] { --size: 1.6rem; }
+.resident[data-font="serif"] { --font: Georgia, "Times New Roman", serif; }
+.resident[data-font="verdana"] { --font: Verdana, Geneva, sans-serif; }
+
+.resident, .resident * { box-sizing: border-box; }
+.resident {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--size);
+  line-height: 1.5;
+}
+.resident h1 { font-size: 1.5em; margin: 0.5rem 0; }
+.resident h2 { font-size: 1.25em; margin: 0.5rem 0; }
+.resident p { margin: 0.5rem 0; }
+.resident .muted { color: var(--muted); }
+.resident .card { background: var(--panel); border: 2px solid var(--line); border-radius: 12px; padding: 1rem; margin: 0.75rem 0; }
+
+.resident button, .resident select, .resident input {
+  font: inherit;
+  color: var(--text);
+}
+.resident .btn {
+  display: block;
+  width: 100%;
+  min-height: 3rem;      /* at least 44px tap target */
+  padding: 0.6rem 1rem;
+  margin: 0.5rem 0;
+  background: var(--panel);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+.resident .btn.primary { background: var(--accent); color: var(--accent-text); }
+.resident .btn.link { border-color: var(--line); }
+.resident .btn:focus-visible, .resident select:focus-visible, .resident input:focus-visible, .resident summary:focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 2px;
+}
+.resident .row { display: flex; gap: 0.5rem; }
+.resident .row .btn { flex: 1; }
+.resident .steps-list { padding-left: 1.5rem; }
+.resident .steps-list li { margin: 0.5rem 0; }
+.resident .small-steps { padding-left: 1.5rem; margin: 0.5rem 0; }
+.resident .next-line { color: var(--muted); font-size: 1em; }
+.resident .status { border-left: 6px solid var(--accent); }
+.resident .offer { border: 2px dashed var(--accent); }
+.resident details summary { cursor: pointer; min-height: 2.75rem; padding: 0.5rem 0; }
+.resident label { display: block; margin: 0.75rem 0 0.25rem; }
+.resident select, .resident input[type="text"], .resident input[type="number"] {
+  width: 100%; min-height: 3rem; padding: 0.4rem 0.6rem;
+  background: var(--panel); border: 2px solid var(--line); border-radius: 8px;
+}
+.resident .check { display: flex; align-items: center; gap: 0.75rem; min-height: 3rem; }
+.resident .check input { width: 1.75rem; height: 1.75rem; }
+.resident .topbar { display: flex; justify-content: space-between; align-items: center; }
+.resident .topbar .btn { width: auto; margin: 0; }
+
+/* Picture of the action (rule 9). Follows the pictures on/off setting. */
+.resident .step-picture { display: block; max-width: 100%; height: auto; margin: 0.5rem 0; border-radius: 8px; }
+/* Caution is always visible on its step (UI guide "Caution"). The word CAUTION and the border carry the meaning, not color. */
+.resident .caution { border: 3px solid var(--text); border-radius: 10px; padding: 0.6rem 0.8rem; margin: 0.75rem 0; background: var(--panel); }
+
+/* Palette choice in Settings: a swatch plus the name, so color is never the only cue. */
+.resident .palette { display: flex; align-items: center; gap: 0.75rem; min-height: 3rem; margin: 0.25rem 0; }
+.resident .palette input { width: 1.75rem; height: 1.75rem; }
+.resident .swatch { display: inline-flex; width: 3rem; height: 2rem; border: 2px solid var(--text); border-radius: 6px; overflow: hidden; }
+.resident .swatch span { flex: 1; }
+
+/* Game mode (opt-in). Motion follows the person's animations setting and reduced motion. */
+.resident .area { border: 2px solid var(--accent); }
+.resident .area.next { border-style: dashed; color: var(--muted); }
+.resident .anim-calm { animation: resident-fade 0.8s ease-out; }
+.resident .anim-lively { animation: resident-pop 0.6s ease-out; }
+@keyframes resident-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes resident-pop { from { transform: scale(0.96); opacity: 0.6; } to { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .resident .anim-calm, .resident .anim-lively { animation: none; }
+}
+.resident .preview-row { display: flex; gap: 0.5rem; }
+.resident .preview-row .card { flex: 1; margin: 0.5rem 0; }
+.resident .pic { font-size: 1.5em; margin-right: 0.5rem; }
