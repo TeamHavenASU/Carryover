@@ -37,13 +37,17 @@ LIVE_EVENTS_PATH = DATA_DIR / "live" / "events.csv"
 # - session_id is <person>-<task>-w<NN>, e.g. jeremiah-heat_meal-w03.
 # - help_shown holds "split", "hint" or "hide" (the help level shown).
 # - answer is used only on:
-#     check_answer, end_question, refresher_answer   yes / no
-#     help_offer_answer                              yes / no
-#     small_step_opened                              the substep id, e.g. s4b
-#     setup_answer                                   question_id:value
-#     device_check_answer                            yes / no / not_sure
-#     skill_check_answer                             skill_id:yes or skill_id:not_sure
-#     skill_card_shown, skill_card_not_needed        skill_id
+#     check_answer           yes / no
+#     end_question           yes / keep (Rule 2), trim / keep_all (Rule 3)
+#     refresher_answer       yes / no
+#     help_offer_answer      yes / no
+#     still_want_answer      yes / no
+#     device_check_answer    yes / no / not_sure
+#     small_step_opened      the substep id, e.g. s4b
+#     skill_check_answer     skill_id:yes or skill_id:not_sure
+#     skill_card_shown       the skill_id
+#     skill_card_not_needed  the skill_id
+#     setup_answer           question_id:value
 # - prompted is used only on step_done, values "yes" or "no".
 EVENT_COLUMNS = [
     "person_id",
@@ -98,6 +102,7 @@ ALL_EVENTS = [
     "check_answer",
     "end_question",
     "refresher_answer",
+    "still_want_answer",  # Rule 8 "Do you still want to practice this task?". No step_id; answer holds yes/no
     # first-time setup and skill cards (these use the answer column)
     "setup_answer",  # question_id:value. Settings only; never used by detect or fade
     "device_check_answer",  # the task's first_time_question: yes / no / not_sure

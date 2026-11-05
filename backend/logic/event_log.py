@@ -21,6 +21,7 @@ ANSWER_EVENTS = (
     "end_question",
     "refresher_answer",
     "help_offer_answer",
+    "still_want_answer",
     "small_step_opened",
     "setup_answer",
     "device_check_answer",
