@@ -8,10 +8,13 @@ events from before the week it is asked about.
 """
 from __future__ import annotations
 
+import json
 from datetime import datetime
 
-from logic.data_io import LIVE_EVENTS_PATH, load_definitions, load_events, load_task
-from logic.detect import detect
+from logic.data_io import DATA_DIR, LIVE_EVENTS_PATH, load_definitions, load_events, load_task
+from logic.detect import detect, skill_cards_to_show
+
+SKILLS_DIR = DATA_DIR / "skills"
 
 
 def levels(defs: dict) -> list[str]:
@@ -363,6 +366,21 @@ def trailing_skipped_weeks(history: list[dict], week: int) -> int:
     return count
 
 
+def _skill_card(skill_id: str) -> dict | None:
+    """The card from data/skills/, or None if there is no file for it yet."""
+    path = SKILLS_DIR / f"{skill_id}.json"
+    if path.parent != SKILLS_DIR or not path.is_file():
+        return None
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def skill_cards(history_rows: list[dict], task: dict) -> list[dict]:
+    """Skill cards to show before a step, from detect.skill_cards_to_show,
+    each with the card itself so the screen doesn't need a second lookup."""
+    return [dict(c, card=_skill_card(c["skill_id"])) for c in skill_cards_to_show(history_rows, task)]
+
+
 def _days_since_last(all_events: list[dict], week: int) -> int | None:
     """days_since_last from the first task_opened row of this week, if there is one."""
     for row in all_events:
@@ -464,6 +482,7 @@ def build_view(
         "ask_about_skips": trailing_skipped_weeks(history_rows, week)
         >= defs["fading_rules"]["rule_8_skips_before_asking_once"],
         "check_questions": check_questions,
+        "skill_cards": skill_cards(history_rows, task),
         "sticking_points": points,
         "steps": steps,
     }

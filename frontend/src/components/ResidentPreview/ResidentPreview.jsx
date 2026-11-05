@@ -17,6 +17,12 @@ export default function ResidentPreview({ view }) {
         {view.show_safety_card && <li>First time: show the safety card ({view.show_safety_card}).</li>}
         {view.first_time_question && <li>Ask first: {view.first_time_question.text}</li>}
         {view.new_device && <li>New device: steps start at most help.</li>}
+        {(view.skill_cards || []).map((c) => (
+          <li key={c.skill_id}>
+            Skill card before "{view.steps.find((s) => s.step_id === c.step_id)?.text || c.step_id}":{" "}
+            {c.card ? c.card.title : c.skill_id}
+          </li>
+        ))}
         {view.start_push && <li>Start push: {view.start_push}</li>}
         {view.show_refresher && <li>Ask: "Want a quick look at all the steps first?"</li>}
         {view.ask_about_skips && <li>Ask once if they still want this task.</li>}
