@@ -1,0 +1,28 @@
+file,kind,truth,description
+web_foam_01.jpg,foam,unsafe,Burger inside a white foam takeout container
+web_foam_02.jpg,foam,unsafe,Open empty white foam food container
+web_foam_03.jpg,foam,unsafe,"Black foam takeout boxes stacked, a hand dipping a fry"
+web_foil_01.jpg,foil,unsafe,Food in aluminum foil containers
+web_foil_02.jpg,foil,unsafe,Small servings of food in foil containers
+web_foil_03.jpg,foil,unsafe,Wrinkled aluminum foil surface
+web_takeout_01.jpg,takeout,unsafe,Small brown cardboard takeout box with a metal wire handle
+web_goldtrim_01.jpg,trim,unsafe,White plate with blue flowers and a gold ring
+web_goldtrim_02.jpg,trim,unsafe,Plain plate with a gold metal rim and dried grass
+web_plain_01.jpg,plain,unknown,Plain white mug with no label
+web_plain_02.jpg,plain,unknown,Plain white ceramic bowl with no label
+web_plain_03.jpg,plain,unknown,"Plain white ceramic bowl seen from above, no label"
+web_labeled_01.jpg,label,safe,Ceramic bowl bottom that says microwave and dishwasher safe
+own_labeled_04.jpg,label,safe,Paper plate pack with a microwave safe icon
+own_labeled_05.jpg,label,safe,"Silicone bag package with microwave safe, dishwasher safe and freezer safe icons"
+own_labeled_06.jpg,label,safe,"Paper baking pan box that says microwave safe, oven safe and freezer safe"
+web_notformicrowave_01.jpg,label,unsafe,Stainless steel bento box with a label that says do not microwave
+own_notformicrowave_02.jpg,label,unsafe,Metal baking tin with a tag that says not suitable for microwave ovens
+own_notrecommended_01.jpg,label,unsafe,Plastic bag box that says not recommended for microwave use
+web_package_01.jpg,package,unknown,"Frozen meal box with heating directions, 3 minutes 30 seconds in an 1100 watt microwave"
+web_package_02.jpg,package,unsafe,Frozen lasagna in a foil tray with oven directions
+own_metal_lid_01.jpg,metal,unsafe,"Stainless steel soup warmer lid with a black handle, no text"
+own_nolabel_01.jpg,nolabel,unknown,Clear plastic container bottom with only recycling text and PETE code
+own_dishwasher_safe_01.jpg,label,unknown,Cutting board with a dishwasher safe label and nothing about microwave
+own_paperbox_01.jpg,package,unknown,Brown paper takeout box with only recycling and PE coated print
+own_blurry_01.jpg,blurry,unknown,Blurry white mug
+own_blurry_02.jpg,blurry,unknown,Blurry flower bowl

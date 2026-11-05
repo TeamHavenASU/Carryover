@@ -97,6 +97,7 @@ export default function AskForHelp({
   // This component only sends stuck_pressed and ask_sent. Neither uses help_shown
   // (the resident screen sets that), answer, or prompted (only step_done uses it),
   // so those stay empty here. The resident screen sends step_done, with prompted yes or no.
+  // seconds and days_since_last are numbers on the server, so empty means null, not "".
   function sendEvent(event, step) {
     const row = {
       person_id: personId,
@@ -106,8 +107,8 @@ export default function AskForHelp({
       timestamp: nowStamp(),
       event,
       step_id: step || "",
-      seconds: "",
-      days_since_last: "",
+      seconds: null,
+      days_since_last: null,
       help_shown: "",
       answer: "",
       prompted: "",
@@ -133,6 +134,7 @@ export default function AskForHelp({
   function closePanel() {
     window.speechSynthesis?.cancel();
     recognitionRef.current?.stop();
+    setListening(false);
     setOpen(false);
     setText("");
     setPhoto(null);
@@ -144,11 +146,15 @@ export default function AskForHelp({
   function toggleMic() {
     if (listening) {
       recognitionRef.current?.stop();
+      setListening(false);
       return;
     }
+    window.speechSynthesis?.cancel();
     const rec = new SpeechRecognition();
-    rec.lang = "en-US";
-    rec.continuous = true;      // keep listening through pauses
+    rec.lang = navigator.language || "en-US";
+    const ua = navigator.userAgent;
+    const isSafari = ua.includes("Safari") && ua.indexOf("Chrome") === -1;
+    rec.continuous = isSafari ? false : true; // Safari returns nothing when continuous is on
     rec.interimResults = true;  // show words while the person talks
     const startText = text ? text + " " : "";
     rec.onresult = (e) => {
@@ -160,17 +166,25 @@ export default function AskForHelp({
       setText((startText + spoken).trim());
     };
     rec.onerror = (e) => {
+      setListening(false);
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
         setNotice("The microphone is blocked. Allow it in the browser, or type instead.");
-      } else if (e.error !== "no-speech" && e.error !== "aborted") {
-        setNotice("I couldn't hear that. You can type instead.");
+      } else if (e.error === "no-speech") {
+        setNotice("I did not hear anything. Try again, or type instead.");
+      } else if (e.error !== "aborted") {
+        setNotice("I couldn't hear that (" + e.error + "). You can type instead.");
       }
     };
     rec.onend = () => setListening(false);
     recognitionRef.current = rec;
     setNotice("");
     setListening(true);
-    rec.start();
+    try {
+      rec.start();
+    } catch (err) {
+      setListening(false);
+      setNotice("I couldn't start the microphone. You can type instead.");
+    }
   }
 
   async function onPhotoChosen(e) {
