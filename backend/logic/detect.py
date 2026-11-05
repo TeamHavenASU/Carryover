@@ -9,8 +9,9 @@ events for one task and returns a list of sticking points, for example:
 Codes (the only five):
     cant_start       trouble starting the task
     stuck_at_step    a long pause, or pressed stuck / asked for help, at a step
-    missing_step     answered "no" to a check question, or started a step and
-                     never finished it in a session they finished
+    missing_step     answered "no" to a check question the last 2 times it was
+                     asked, or started a step and never finished it in a
+                     session they finished
     rusty_after_gap  the coming session is after a long break
     none             nothing found
 
@@ -24,6 +25,13 @@ Rules that apply to every code except rusty_after_gap:
     - Only the last `sessions_to_look_at` sessions count (definitions.json, 2).
     - A pattern counts only if it shows up in EVERY session looked at.
       One bad day is not a sticking point.
+
+One exception, for check questions only. They are asked every
+`check_questions.ask_every_n_sessions` sessions (2), so two "no" answers can
+never land in back-to-back sessions. For that part of missing_step we look at
+the last `sessions_to_look_at` times the question was ASKED, and both must be
+"no" and fall within the last `sessions_to_look_at x ask_every_n_sessions`
+sessions (4). A "yes" in between resets it.
 
 Every number comes from definitions.json or the task file. Nothing is typed in here.
 """
@@ -65,6 +73,7 @@ def _settings(definitions: dict) -> dict:
     defaults = definitions.get("defaults", {})
     return {
         "look_at": int(definitions.get("sessions_to_look_at", 2)),
+        "ask_every": int(definitions.get("check_questions", {}).get("ask_every_n_sessions", 2)),
         "opens_for_cant_start": int(defaults.get("opens_without_start_for_trouble_starting", 2)),
         "default_start_time": float(defaults.get("start_time_seconds", 60)),
         "default_long_pause": float(defaults.get("long_pause_seconds", 45)),
@@ -189,18 +198,53 @@ def _stuck_steps(session: list[dict], task: dict, s: dict, first_week: bool) -> 
 
 
 def _missing_steps(session: list[dict]) -> dict[str, str]:
-    """Return {step_id: reason} for each step this session missed."""
-    found: dict[str, str] = {}
-    for row in session:
-        if row.get("event") == "check_answer" and str(row.get("answer", "")).lower() == "no" and row.get("step_id"):
-            found[row["step_id"]] = f"said no to the check question for {row['step_id']}"
+    """Return {step_id: reason} for each step this session started but never finished.
 
+    Only counts in a session the person finished (tapped task_done). Check
+    questions are handled by _missing_from_check_answers, across sessions.
+    """
+    found: dict[str, str] = {}
     if any(r.get("event") == "task_done" for r in session):
         started = [r["step_id"] for r in session if r.get("event") == "step_started" and r.get("step_id")]
         done = {r["step_id"] for r in session if r.get("event") == "step_done" and r.get("step_id")}
         for sid in started:
             if sid not in done and sid not in found:
                 found[sid] = f"started {sid} but never finished it"
+    return found
+
+
+def _check_answers_by_step(sessions: list[list[dict]]) -> dict[str, list[str]]:
+    """Return {step_id: [answer per session it was asked in]}, oldest first.
+
+    One answer per session per step (the last one, if the question was somehow
+    answered twice in the same session). Sessions without the question are skipped.
+    """
+    asked: dict[str, list[str]] = {}
+    for session in sessions:
+        this_session: dict[str, str] = {}
+        for row in session:
+            if row.get("event") == "check_answer" and row.get("step_id"):
+                this_session[row["step_id"]] = str(row.get("answer", "")).strip().lower()
+        for sid, answer in this_session.items():
+            asked.setdefault(sid, []).append(answer)
+    return asked
+
+
+def _missing_from_check_answers(sessions: list[list[dict]], s: dict) -> dict[str, str]:
+    """Return {step_id: evidence} for steps answered "no" the last `look_at` times asked.
+
+    Check questions are only asked every `ask_every` sessions, so this counts
+    asks, not sessions. Both "no" answers must fall within the last
+    look_at x ask_every sessions. A "yes" in between means it does not count.
+    """
+    window = s["look_at"] * s["ask_every"]
+    recent = sessions[-window:] if window > 0 else []
+    found: dict[str, str] = {}
+    for sid, answers in _check_answers_by_step(recent).items():
+        last = answers[-s["look_at"]:]
+        if len(last) == s["look_at"] and all(a == "no" for a in last):
+            found[sid] = (f"In the last {s['look_at']} times it was asked (within the last {window} sessions): "
+                          f"said no to the check question for {sid}")
     return found
 
 
@@ -335,10 +379,16 @@ def detect(events, definitions, days_since_last, task=None):
         for sid, why in sorted(_in_every(stuck).items(), key=lambda kv: order.get(kv[0], 99)):
             results.append({"code": "stuck_at_step", "step_id": sid, "evidence": _evidence(why, n)})
 
-        # missing_step: same step in every session looked at
+        # missing_step, two ways in:
+        #   - started a step but never finished it: same step in every session looked at
+        #   - said no to its check question the last `look_at` times asked (asks are
+        #     every `ask_every` sessions, so this looks across more sessions)
         missing = [_missing_steps(ses) for ses in recent]
-        for sid, why in sorted(_in_every(missing).items(), key=lambda kv: order.get(kv[0], 99)):
-            results.append({"code": "missing_step", "step_id": sid, "evidence": _evidence(why, n)})
+        found = {sid: _evidence(why, n) for sid, why in _in_every(missing).items()}
+        for sid, why in _missing_from_check_answers(sessions, s).items():
+            found.setdefault(sid, why)
+        for sid in sorted(found, key=lambda x: order.get(x, 99)):
+            results.append({"code": "missing_step", "step_id": sid, "evidence": found[sid]})
 
     # rusty_after_gap: about the coming session, uses all of their history
     why = _rusty(days_since_last, sessions, s)
@@ -346,3 +396,58 @@ def detect(events, definitions, days_since_last, task=None):
         results.append({"code": "rusty_after_gap", "step_id": None, "evidence": why})
 
     return results or [{"code": "none", "step_id": None, "evidence": ""}]
+
+
+# --------------------------------------------------------------------------------
+# Skill cards (helper for fade.py's build_view; not a detect code)
+# --------------------------------------------------------------------------------
+SKILL_ANSWERS_THAT_SHOW_CARD = {"not_sure": "Not sure", "no": "No"}
+
+
+def skill_cards_to_show(events, task):
+    """Which skill cards to show this person for this task, and before which step.
+
+    When someone first opens a task, the app asks "Can you do these?" for each
+    base skill the task's steps assume (like reading the cooking time). Each
+    answer is logged as a skill_check_answer event with answer "skill_id:yes",
+    "skill_id:not_sure" or "skill_id:no" (step_id is blank).
+
+    This looks at the person's LATEST answer for each skill. If it is
+    "not_sure" or "no", the card for that skill should be shown. Skills the
+    person said "yes" to, or was never asked about, get no card.
+
+    Only skills that this task's steps actually list in base_skills come back,
+    each once, attached to the FIRST step (in task order) that lists it.
+
+    Returns a list in task step order, for example:
+        [{"skill_id": "read_cooking_time", "step_id": "s1",
+          "reason": "answered Not sure to the skill question"}]
+
+    This is a helper only: detect() does not call it and it adds no detect code.
+    fade.py's build_view decides where the cards go.
+    """
+    events = sorted(events or [], key=lambda r: str(r.get("timestamp", "")))
+    latest: dict[str, str] = {}
+    for row in events:
+        if row.get("event") != "skill_check_answer":
+            continue
+        skill_id, sep, answer = str(row.get("answer", "")).partition(":")
+        skill_id = skill_id.strip()
+        if not sep or not skill_id:
+            continue
+        latest[skill_id] = answer.strip().lower().replace(" ", "_")
+
+    cards = []
+    seen: set[str] = set()
+    for step in task.get("steps", []):
+        for skill_id in step.get("base_skills") or []:
+            answer = latest.get(skill_id)
+            if skill_id in seen or answer not in SKILL_ANSWERS_THAT_SHOW_CARD:
+                continue
+            seen.add(skill_id)
+            cards.append({
+                "skill_id": skill_id,
+                "step_id": step["step_id"],
+                "reason": f"answered {SKILL_ANSWERS_THAT_SHOW_CARD[answer]} to the skill question",
+            })
+    return cards

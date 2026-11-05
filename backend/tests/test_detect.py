@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 import pytest
 
 from logic.data_io import LIVE_EVENTS_PATH, load_definitions, load_events, load_task
-from logic.detect import detect, split_sessions, steps_with_breaks, usual_break, _settings
+from logic.detect import detect, skill_cards_to_show, split_sessions, steps_with_breaks, usual_break, _settings
 
 DEFS = load_definitions()
 TASK = load_task("heat_meal")
@@ -185,17 +185,61 @@ def test_break_time_is_not_a_long_pause():
 # --------------------------------------------------------------------------------
 # missing_step
 # --------------------------------------------------------------------------------
+def answered(week, answer, sid="s7"):
+    """A smooth session where the check question for sid was asked and answered."""
+    return Session(week).all_steps().add("check_answer", sid, answer=answer).done().rows
+
+
+ASK_EVERY = DEFS["check_questions"]["ask_every_n_sessions"]  # 2
+LOOK_AT = DEFS["sessions_to_look_at"]  # 2
+
+
 def test_missing_when_check_answer_no():
-    def said_no(week):
-        return Session(week).all_steps().add("check_answer", "s7", answer="no").done().rows
-    result = detect(said_no(1) + said_no(2), DEFS, 7, TASK)
+    result = detect(answered(1, "no") + answered(2, "no"), DEFS, 7, TASK)
     assert codes(result) == [("missing_step", "s7")]
+    assert "said no to the check question for s7" in result[0]["evidence"]
+
+
+def test_missing_counts_check_asks_not_sessions():
+    # Option C: the question is only asked every 2nd session, so "no" at
+    # sessions 1 and 3 (not asked at 2 and 4) is two "no"s in a row.
+    events = answered(1, "no") + smooth(2) + answered(3, "no") + smooth(4)
+    result = detect(events, DEFS, 7, TASK)
+    assert codes(result) == [("missing_step", "s7")]
+    assert f"last {LOOK_AT} times it was asked" in result[0]["evidence"]
+
+
+def test_missing_check_resets_on_yes_in_between():
+    events = answered(1, "no") + answered(2, "yes") + answered(3, "no")
+    assert ("missing_step", "s7") not in codes(detect(events, DEFS, 7, TASK))
+
+
+def test_missing_check_ignores_old_answers():
+    # Both "no"s are older than the last LOOK_AT x ASK_EVERY (4) sessions.
+    old = answered(1, "no") + answered(2, "no")
+    newer = sum((smooth(w) for w in range(3, 3 + LOOK_AT * ASK_EVERY)), [])
+    assert ("missing_step", "s7") not in codes(detect(old + newer, DEFS, 7, TASK))
+
+
+def test_missing_check_window_comes_from_definitions():
+    # With ask_every_n_sessions = 1 the window shrinks to 2 sessions, so the
+    # same "no at 1 and 3" pattern no longer counts. Proves the 4 isn't typed in.
+    defs = dict(DEFS, check_questions={"ask_every_n_sessions": 1})
+    events = answered(1, "no") + smooth(2) + answered(3, "no") + smooth(4)
+    assert ("missing_step", "s7") not in codes(detect(events, defs, 7, TASK))
 
 
 def test_missing_when_started_but_never_finished():
     events = (Session(1).all_steps(skip_done="s7").done().rows
               + Session(2).all_steps(skip_done="s7").done().rows)
     assert codes(detect(events, DEFS, 7, TASK)) == [("missing_step", "s7")]
+
+
+def test_never_finished_still_needs_every_session_looked_at():
+    # The "started but never finished" path is unchanged: only one of the
+    # last 2 sessions had it, so no missing_step.
+    events = Session(1).all_steps(skip_done="s7").done().rows + smooth(2)
+    assert ("missing_step", "s7") not in codes(detect(events, DEFS, 7, TASK))
 
 
 def test_unfinished_session_is_not_missing_step():
@@ -292,6 +336,65 @@ def test_breaks_flag_not_before_three():
 def test_breaks_never_change_detect_codes():
     events = break_at(1) + break_at(2) + break_at(3)
     assert codes(detect(events, DEFS, 7, TASK)) == [("none", None)]
+
+
+# --------------------------------------------------------------------------------
+# Skill cards (helper for fade.py's build_view)
+# --------------------------------------------------------------------------------
+def skill_answers(*answers):
+    """One session where the person answered the skill check, e.g. 'read_price:yes'."""
+    s = Session(1)
+    for a in answers:
+        s.add("skill_check_answer", answer=a)
+    return s.rows
+
+
+def test_skill_card_shown_when_latest_answer_is_not_sure():
+    cards = skill_cards_to_show(skill_answers("read_cooking_time:not_sure"), TASK)
+    assert cards == [{"skill_id": "read_cooking_time", "step_id": "s1",
+                      "reason": "answered Not sure to the skill question"}]
+
+
+def test_skill_card_not_shown_after_later_yes():
+    events = skill_answers("read_cooking_time:not_sure") + skill_answers("read_cooking_time:yes")
+    assert skill_cards_to_show(events, TASK) == []
+
+
+def test_skill_card_only_for_skills_this_task_uses():
+    # type_address is a buy_online skill; heat_meal never lists it.
+    cards = skill_cards_to_show(skill_answers("type_address:not_sure", "use_oven_mitts:no"), TASK)
+    assert [c["skill_id"] for c in cards] == ["use_oven_mitts"]
+    assert cards[0]["step_id"] == "s5"  # first step in task order that lists it
+    assert cards[0]["reason"] == "answered No to the skill question"
+
+
+def test_skill_cards_empty_when_no_skill_answers():
+    assert skill_cards_to_show(smooth(1), TASK) == []
+    assert skill_cards_to_show([], TASK) == []
+
+
+def test_skill_cards_come_back_in_task_step_order_once_each():
+    # read_cooking_time is on s1 and s4; it comes back once, at s1.
+    cards = skill_cards_to_show(skill_answers("use_oven_mitts:not_sure", "read_cooking_time:not_sure"), TASK)
+    assert [(c["skill_id"], c["step_id"]) for c in cards] == [("read_cooking_time", "s1"), ("use_oven_mitts", "s5")]
+
+
+def test_skill_cards_never_change_detect_codes():
+    events = skill_answers("read_cooking_time:not_sure") + smooth(2)
+    assert codes(detect(events, DEFS, 7, TASK)) == [("none", None)]
+
+
+# --------------------------------------------------------------------------------
+# Safety card text (heat_meal.json)
+# --------------------------------------------------------------------------------
+def test_heat_meal_has_safety_card_content():
+    assert TASK["safety_card"] == "microwave_never"  # the label fade.py and the demo read
+    card = TASK["safety_card_content"]
+    for key in ("title", "never_title", "never", "ok_title", "ok", "also", "source"):
+        assert card[key], f"safety_card_content.{key} is empty"
+    assert isinstance(card["never"], list) and len(card["never"]) > 0
+    assert isinstance(card["ok"], list) and len(card["ok"]) > 0
+    assert all(isinstance(line, str) and line.strip() for line in card["never"] + card["ok"] + card["also"])
 
 
 # --------------------------------------------------------------------------------

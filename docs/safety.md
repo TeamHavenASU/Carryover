@@ -6,6 +6,8 @@ These rules apply to every task. Role D puts the AI rules into the prompts. The 
 
 Shown on step 1 of "Heat a meal" and as a caution card the first time someone opens the task. From USDA and FDA guidance.
 
+The plain-words version the app shows is in heat_meal.json -> safety_card_content.
+
 | Don't use | Why | Source |
 | --- | --- | --- |
 | Metal pans, metal twist ties, food fully wrapped in foil | Metal reflects microwaves and can damage the oven | USDA, FDA |

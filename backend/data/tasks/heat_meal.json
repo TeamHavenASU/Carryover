@@ -5,6 +5,31 @@
   "start_time_seconds": 60,
   "long_pause_seconds": 45,
   "safety_card": "microwave_never",
+  "safety_card_content": {
+    "title": "Before you use the microwave",
+    "never_title": "Never put these in",
+    "never": [
+      "Metal: pans, foil, twist ties, takeout boxes with metal handles",
+      "Plates or cups with gold or silver trim",
+      "Foam cups, bowls or trays",
+      "Yogurt cups, butter tubs or other one-time containers",
+      "Paper bags or newspaper",
+      "Plastic grocery bags or thin storage bags",
+      "Any dish that melted or bent before"
+    ],
+    "ok_title": "OK to use",
+    "ok": [
+      "Dishes that say \"microwave safe\"",
+      "Glass dishes made for heat",
+      "White paper towels or paper plates",
+      "Wax paper or parchment paper"
+    ],
+    "also": [
+      "Heating plain water? It can boil over all at once. Use the time in the microwave's guide.",
+      "Door doesn't close or looks broken? Don't use it. Tell staff."
+    ],
+    "source": "USDA and FDA (see docs/safety.md section 1)"
+  },
   "break_note": {
     "after_minutes": 120,
     "text": "Your food has been out over 2 hours. USDA says food left out that long may not be safe to eat. Ask staff what to do."

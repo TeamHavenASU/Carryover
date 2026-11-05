@@ -35,7 +35,8 @@
   },
   "check_questions": {
     "_note": "Only for folded (no help) steps that have a check_question. Asked at the end of the task.",
-    "ask_every_n_sessions": 2
+    "ask_every_n_sessions": 2,
+    "_counting_note": "Because the question is only asked every ask_every_n_sessions sessions, detect.py counts asks, not sessions, for this part of missing_step: it fires when the last sessions_to_look_at (2) times the question was asked were both 'no' and both fall within the last sessions_to_look_at x ask_every_n_sessions (4) sessions, with a 'yes' in between resetting it."
   },
   "sessions_to_look_at": 2,
   "used_help_events": [
