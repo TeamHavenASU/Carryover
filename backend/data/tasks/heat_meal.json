@@ -9,11 +9,28 @@
     "after_minutes": 120,
     "text": "Your food has been out over 2 hours. USDA says food left out that long may not be safe to eat. Ask staff what to do."
   },
+  "first_time_question": {
+    "id": "used_this_device",
+    "text": "Is this a microwave you've used before?",
+    "answers": [
+      "Yes",
+      "No",
+      "Not sure"
+    ],
+    "if_no": "start_at_most_help"
+  },
   "steps": [
     {
       "step_id": "s1",
       "text": "Read the package",
-      "hint": "Read the package",
+      "base_skills": [
+        "read_cooking_time"
+      ],
+      "picture": {
+        "file": "heat_meal/s1.svg",
+        "alt": "A meal package with the cooking time circled"
+      },
+      "video": null,
       "long_pause_seconds": 90,
       "substeps": [
         {
@@ -36,7 +53,14 @@
     {
       "step_id": "s2",
       "text": "Get it ready for the microwave",
-      "hint": "Get it ready",
+      "base_skills": [
+        "open_package"
+      ],
+      "picture": {
+        "file": "heat_meal/s2.svg",
+        "alt": "Peeling back the film on a meal tray"
+      },
+      "video": null,
       "substeps": [
         {
           "id": "s2a",
@@ -61,7 +85,12 @@
     {
       "step_id": "s3",
       "text": "Put it in and close the door",
-      "hint": "In and close",
+      "base_skills": [],
+      "picture": {
+        "file": "heat_meal/s3.svg",
+        "alt": "A dish in the middle of an open microwave"
+      },
+      "video": null,
       "substeps": [
         {
           "id": "s3a",
@@ -84,7 +113,15 @@
     {
       "step_id": "s4",
       "text": "Set the time and press Start",
-      "hint": "Set the time",
+      "base_skills": [
+        "find_button_by_name",
+        "read_cooking_time"
+      ],
+      "picture": {
+        "file": "heat_meal/s4.svg",
+        "alt": "A finger pressing the Cook Time button"
+      },
+      "video": null,
       "substeps": [
         {
           "id": "s4a",
@@ -114,7 +151,15 @@
     {
       "step_id": "s5",
       "text": "Stir halfway, if the package says so",
-      "hint": "Stir halfway",
+      "safety": "If you stir, use oven mitts. The dish may be hot.",
+      "base_skills": [
+        "use_oven_mitts"
+      ],
+      "picture": {
+        "file": "heat_meal/s5.svg",
+        "alt": "Stirring the food with oven mitts on"
+      },
+      "video": null,
       "wait": true,
       "substeps": [
         {
@@ -123,14 +168,10 @@
         },
         {
           "id": "s5b",
-          "text": "Use oven mitts"
+          "text": "Stir the food. Can't stir it? Turn the dish around"
         },
         {
           "id": "s5c",
-          "text": "Stir or turn the food"
-        },
-        {
-          "id": "s5d",
           "text": "Close the door and press Start"
         }
       ],
@@ -142,31 +183,40 @@
     {
       "step_id": "s6",
       "text": "When it beeps, take it out and let it sit",
-      "hint": "Let it sit",
+      "safety": "Use oven mitts to take the dish out. It may be hot. Lift the cover away from your face. Steam can be hot.",
+      "base_skills": [
+        "use_oven_mitts"
+      ],
+      "picture": {
+        "file": "heat_meal/s6.svg",
+        "alt": "Taking the dish out with oven mitts"
+      },
+      "video": null,
       "wait": true,
       "substeps": [
         {
           "id": "s6a",
-          "text": "It beeps when it's done. It may keep beeping until you open the door. That's OK"
+          "text": "Take the dish out"
         },
         {
           "id": "s6b",
-          "text": "Use oven mitts. The dish is hot"
-        },
-        {
-          "id": "s6c",
-          "text": "Lift the cover away from your face. The steam is hot"
-        },
-        {
-          "id": "s6d",
           "text": "Let it sit a few minutes, or the time on the package"
         }
+      ],
+      "tips": [
+        "It may keep beeping until you open the door. That's OK"
       ]
     },
     {
       "step_id": "s7",
       "text": "Check it's hot all the way through",
-      "hint": "Check it's hot",
+      "safety": "Take a small first bite. Some spots can be very hot.",
+      "base_skills": [],
+      "picture": {
+        "file": "heat_meal/s7.svg",
+        "alt": "Steam coming from the middle of the food"
+      },
+      "video": null,
       "substeps": [
         {
           "id": "s7a",
@@ -175,10 +225,6 @@
         {
           "id": "s7b",
           "text": "Look for steam in the middle"
-        },
-        {
-          "id": "s7c",
-          "text": "Take a small first bite. Some spots can be very hot"
         }
       ],
       "tips": [
@@ -187,5 +233,8 @@
       ],
       "check_question": "Was it hot all the way through?"
     }
-  ]
+  ],
+  "_safety_note": "'safety' is shown on the step as a CAUTION line at every help level, even when the step is folded. Always visible, no tap needed (First Place, Nov 4).",
+  "_levels_note": "No short names (Nov 4). Some help shows the step's full 'text' with no small steps. Most help shows 'text' plus small steps, one at a time.",
+  "_media_note": "picture: simple SVG of the action (ours, no license needed). video: a short point-of-view clip, free license only, credited in ATTRIBUTION.md; null until added. Pictures follow the person's 'pictures on/off' setting. Video never autoplays."
 }

@@ -91,6 +91,20 @@ Background only (not evidence): uxdesign.cc overview blog, Autism Awareness Cent
 | Pollack, M. E., et al. (2003). Autominder. *Robotics and Autonomous Systems*, 44(3–4), 273–282. https://doi.org/10.1016/S0921-8890(03)00077-0 | Research | Existing tool: adaptive reminders |
 | Tromans, S., et al. (2023). The psychological and social impact of the digital self-support system "Brain in Hand" on autistic people. *BJPsych Open*. https://researchportal.plymouth.ac.uk/en/publications/the-psychological-and-social-impact-of-the-digital-self-support-s/ | Research | Existing tool. Some authors work for the company |
 
+## 7. Added after the First Place meeting (Nov 4, afternoon)
+
+| Source | Label | Used for |
+| --- | --- | --- |
+| Aljehany, M. S., & Bennett, K. D. (2019). Meta-analysis of video prompting to teach daily living skills to individuals with autism spectrum disorder. *J. of Special Education Technology*, 34(1), 17–26. https://doi.org/10.1177/0162643418780495 | Research | Video per step: moderate effect across 17 studies (54 people) |
+| Systematic review (2022): video prompting and modeling with handheld devices to teach daily living skills to people with intellectual disability. *Advances in Neurodevelopmental Disorders*. https://link.springer.com/article/10.1007/s41252-022-00273-7 **TODO: authors** | Research | Video on phones/tablets works for daily living skills |
+| Systematic review of point-of-view video prompting to teach daily living skills to individuals with autism (Georgia Southern). https://scholars.georgiasouthern.edu/en/publications/a-systematic-review-of-point-of-view-video-prompting-to-teach-dai/ **TODO: authors, journal** | Research | Clips filmed from the person's own view: large to very large effects |
+| Grove, R., Hoekstra, R. A., Wierda, M., & Begeer, S. (2018). Special interests and subjective wellbeing in autistic adults. *Autism Research*, 11(5), 766–775. https://doi.org/10.1002/aur.1931 | Research | Game themed on their interests; ask for a few (most had more than one); keep it light (very high intensity linked to lower wellbeing) |
+| Lee, D., Frey, G. C., Cothran, D. J., Harezlak, J., & Shih, P. C. (2022). Effects of a gamified, behavior change technique-based mobile app on increasing physical activity and reducing anxiety in adults with ASD. *JMIR Formative Research*, 6(7), e35701. https://doi.org/10.2196/35701 | Research | Gamified app used longer than a non-game app by autistic adults; mixed results otherwise |
+| Lee, D., et al. (2025). A gamified mHealth app ... in autistic adults: protocol. *JMIR Research Protocols*, 14, e71631. https://researchprotocols.org/2025/1/e71631 | Research | Gamification can support autonomy and enjoyment; few rigorous studies with autistic people (why game mode is opt-in and tested in the pilot) |
+| NTNU master's thesis (2020). Social skills learning for adults with autism using digital tasks and gamification. https://hdl.handle.net/11250/2777514 | Research (thesis) | Clear goals, progress, feedback and achievements motivated; ambiguity and technical problems did not. Background only |
+| Kenney (kenney.nl) game assets, CC0 | Official (license) | Optional art for game mode. Credit in ATTRIBUTION.md even though CC0 |
+| First Place AZ meeting, Nov 4 | Partner | Caution always shown; photos and video; game mode with preferences first; base skills; new devices; more detail for some people. See docs/partner_research.md |
+
 ## Don't cite
 
 - Hassan et al. (2025) PDF: about Bambara groundnuts.

@@ -1,0 +1,35 @@
+{
+  "skill_id": "find_button_by_name",
+  "title": "Find a button by its name",
+  "why": "Steps say a button's name, like \"Cook Time\". This is how to find it.",
+  "steps": [
+    {
+      "id": "find_button_by_name_1",
+      "text": "Read the words on the buttons, one row at a time"
+    },
+    {
+      "id": "find_button_by_name_2",
+      "text": "The words may be in a different order, like \"Time Cook\". That is the same button"
+    },
+    {
+      "id": "find_button_by_name_3",
+      "text": "Press it once"
+    },
+    {
+      "id": "find_button_by_name_4",
+      "text": "Check the screen changed"
+    }
+  ],
+  "tips": [
+    "\"Timer\" is a different button. It does not heat food",
+    "Still can't find it? Ask staff to show you once, then try it yourself"
+  ],
+  "used_by": [
+    "heat_meal:s4"
+  ],
+  "picture": {
+    "file": "heat_meal/s4.svg",
+    "alt": "Find a button by its name"
+  },
+  "video": null
+}

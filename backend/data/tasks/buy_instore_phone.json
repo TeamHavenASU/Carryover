@@ -4,12 +4,29 @@
   "start_push": "Just check the price. That's all for now.",
   "start_time_seconds": 60,
   "long_pause_seconds": 45,
+  "first_time_question": {
+    "id": "used_this_device",
+    "text": "Have you paid with your phone at a store before?",
+    "answers": [
+      "Yes",
+      "No",
+      "Not sure"
+    ],
+    "if_no": "start_at_most_help"
+  },
   "steps": [
     {
       "step_id": "s1",
       "part": "decide",
       "text": "Find the price and read it",
-      "hint": "Check the price",
+      "base_skills": [
+        "read_price"
+      ],
+      "picture": {
+        "file": "buy/price_tag.svg",
+        "alt": "A price tag on a shelf under an item"
+      },
+      "video": null,
       "substeps": [],
       "tips": [
         "Can't find it? Look at the aisle signs, or ask a store worker"
@@ -19,7 +36,9 @@
       "step_id": "s2",
       "part": "decide",
       "text": "Check you have enough money for this",
-      "hint": "Check your money",
+      "base_skills": [],
+      "picture": null,
+      "video": null,
       "substeps": [
         {
           "id": "s2a",
@@ -40,7 +59,9 @@
       "step_id": "s3",
       "part": "decide",
       "text": "Ask yourself if you need this right now",
-      "hint": "Do you need it?",
+      "base_skills": [],
+      "picture": null,
+      "video": null,
       "substeps": [],
       "long_pause_seconds": 180
     },
@@ -48,7 +69,14 @@
       "step_id": "s4",
       "part": "decide",
       "text": "Look at one other option, then stop looking",
-      "hint": "One other option",
+      "base_skills": [
+        "compare_two_prices"
+      ],
+      "picture": {
+        "file": "buy/compare.svg",
+        "alt": "Two price tags side by side with the unit price circled"
+      },
+      "video": null,
       "substeps": [],
       "long_pause_seconds": 300,
       "tips": [
@@ -60,7 +88,9 @@
       "step_id": "s5",
       "part": "decide",
       "text": "Decide: buy it, or leave it for now",
-      "hint": "Your choice",
+      "base_skills": [],
+      "picture": null,
+      "video": null,
       "substeps": [],
       "long_pause_seconds": 300,
       "tips": [
@@ -71,7 +101,9 @@
       "step_id": "s6",
       "part": "pay",
       "text": "Take it to the register and wait your turn",
-      "hint": "To the register",
+      "base_skills": [],
+      "picture": null,
+      "video": null,
       "substeps": [],
       "wait": true,
       "tips": [
@@ -82,7 +114,14 @@
       "step_id": "s7",
       "part": "pay",
       "text": "Look at the total on the card reader",
-      "hint": "Check the amount",
+      "base_skills": [
+        "read_total_on_screen"
+      ],
+      "picture": {
+        "file": "buy/reader_total.svg",
+        "alt": "A card reader screen showing the total"
+      },
+      "video": null,
       "substeps": [
         {
           "id": "s7a",
@@ -103,7 +142,15 @@
       "step_id": "s8",
       "part": "pay",
       "text": "Pay with your phone",
-      "hint": "Pay with your phone",
+      "safety": "Never tell anyone your phone passcode. Only hold your phone near the store's card reader.",
+      "base_skills": [
+        "pay_with_phone"
+      ],
+      "picture": {
+        "file": "buy/phone_tap.svg",
+        "alt": "The top of a phone held near a card reader"
+      },
+      "video": null,
       "substeps": [],
       "substeps_by_phone": {
         "iphone_face_id": [
@@ -171,9 +218,14 @@
       "step_id": "s9",
       "part": "pay",
       "text": "Take your receipt and put it away",
-      "hint": "Receipt",
+      "base_skills": [],
+      "picture": null,
+      "video": null,
       "substeps": [],
       "check_question": "Did you get your receipt?"
     }
-  ]
+  ],
+  "_levels_note": "No short names (Nov 4). Some help shows the step's full 'text' with no small steps. Most help shows 'text' plus small steps, one at a time.",
+  "_safety_note": "'safety' is shown on the step as a CAUTION line at every help level, even when folded. Always visible (Nov 4).",
+  "_media_note": "picture: simple SVG of the action (ours). Generic readers, phones and screens only: never a real card, card number, bank app or receipt. video: null until a free-license clip is added and credited."
 }

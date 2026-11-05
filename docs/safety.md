@@ -23,6 +23,24 @@ Also (FDA):
 - Plain water heated in a clean cup can boil over suddenly and burn. Don't heat water longer than the microwave's manual says.
 - Don't use the microwave if the door doesn't close firmly or looks broken. Tell staff.
 
+### Caution on steps (always shown)
+
+Some steps have a `safety` sentence. The screen always shows it as a **CAUTION** line on that step, at every help level, even when the step is folded. No tap needed (First Place asked for this on Nov 4). Someone who does a step on their own still sees it. (Jones et al. 1997: adults learned safety facts placed inside the instructions.)
+
+| Task | Step | Caution |
+| --- | --- | --- |
+| Heat a meal | s5 Stir halfway | If you stir, use oven mitts. The dish may be hot. |
+| Heat a meal | s6 Take it out and let it sit | Use oven mitts to take the dish out. It may be hot. Lift the cover away from your face. Steam can be hot. |
+| Heat a meal | s7 Check it's hot | Take a small first bite. Some spots can be very hot. |
+| Buy in store, card | s8 Pay | Never tell anyone your PIN. Cover the keypad with your other hand when you type it. |
+| Buy in store, phone | s8 Pay | Never tell anyone your phone passcode. Only hold your phone near the store's card reader. |
+| Buy online | s9 Check the address, then pay | Press Place Order only once. Page stuck? Check your orders or email before trying again. Never give your card number to someone who calls, texts or emails you. |
+
+### Pictures and video in the steps
+
+- Step pictures are our own simple drawings (`frontend/public/img/`). Money pictures show generic card readers, phones and screens only: never a real card, card number, bank app or receipt.
+- Videos: only free-license clips, credited in ATTRIBUTION.md, never autoplay, no people's faces.
+
 ### Taking a break while heating a meal
 
 Opening the door pauses the microwave, so a break mid-heating is safe. If the person comes back **more than 2 hours** later, the app shows: "Your food has been out over 2 hours. USDA says food left out that long may not be safe to eat. Ask staff what to do." (USDA: never leave food out of refrigeration over 2 hours; 1 hour above 90°F.) Set in `heat_meal.json` as `break_note`.
