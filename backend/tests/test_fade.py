@@ -172,6 +172,11 @@ def test_hint_waits_use_the_steps_own_long_pause():
     assert fade.hint_waits(slow, TASK, DEFS) == [25, 50, 75]
 
 
+def test_waiting_steps_get_no_hint_waits():
+    waiting = TASK["steps"][1]
+    assert fade.hint_waits(waiting, TASK, DEFS) == []
+
+
 # ---- sessions
 
 
