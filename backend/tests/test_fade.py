@@ -175,6 +175,28 @@ def test_help_shown_by_itself_is_not_done_alone():
     assert fade.offer_less_help(history, STEP, TASK, DEFS) is False
 
 
+def test_a_missing_step_shows_more_help():
+    history = [session("alone", shown="hide", day=d) for d in (7, 8)]
+    assert fade.next_level(history, STEP, TASK, DEFS) == "hide"
+    assert fade.next_level(history, STEP, TASK, DEFS, missing=True) == "hint"
+
+
+def test_a_missing_step_moves_up_only_one_level():
+    # two struggles (Rule 4) and missing_step together still mean one level, not two
+    history = [session("struggled", shown="hide", day=d) for d in (7, 8)]
+    assert fade.next_level(history, STEP, TASK, DEFS, missing=True) == "hint"
+
+
+def test_a_missing_step_wins_over_a_yes_to_less_help():
+    history = [session("alone", day=d) for d in (7, 8, 9)] + [session("alone", day=10, less_help="yes")]
+    assert fade.next_level(history, STEP, TASK, DEFS, missing=True) == "split"
+
+
+def test_a_missing_step_stops_at_most_help():
+    history = [session("alone", shown="split", day=7)]
+    assert fade.next_level(history, STEP, TASK, DEFS, missing=True) == "split"
+
+
 def test_never_offers_less_help_at_the_least_help_level():
     history = [session("alone", shown="hide", day=d) for d in (7, 8, 9)]
     assert fade.offer_less_help(history, STEP, TASK, DEFS) is False
@@ -354,6 +376,16 @@ def test_view_asks_before_showing_less_help(view_files):
     week4 = fade.build_view("p", "toast", 4, events_path=view_files, defs=DEFS)
     assert week4["steps"][0]["mode"] == "hint"
     assert week4["steps"][0]["offer_less_help"] is True
+
+
+def test_view_gives_a_missing_step_more_help(view_files_said_yes, monkeypatch):
+    # s1 is hidden from week 5. If detect reports it missing, week 6 shows it again.
+    missing = [{"code": "missing_step", "step_id": "s1", "evidence": "said no to the check question for s1"}]
+    monkeypatch.setattr(fade, "detect", lambda *args: missing)
+    week6 = fade.build_view("p", "toast", 6, events_path=view_files_said_yes, defs=DEFS)
+    assert week6["steps"][0]["mode"] == "hint"
+    assert week6["steps"][1]["mode"] == "hint"  # other steps are not touched
+    assert week6["sticking_points"] == missing
 
 
 def test_view_shows_less_help_after_yes(view_files_said_yes):

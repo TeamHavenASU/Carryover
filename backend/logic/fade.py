@@ -138,12 +138,15 @@ def _last_all(results: list[str], count: int, wanted: str) -> bool:
     return len(results) >= count and all(r == wanted for r in results[-count:])
 
 
-def next_level(history: list[list[dict]], step: dict, task: dict, defs: dict) -> str:
+def next_level(history: list[list[dict]], step: dict, task: dict, defs: dict, missing: bool = False) -> str:
     """The help level this step shows in the next session.
 
     Rule 2: help never drops by itself. Once the step is done alone often
     enough the person is asked (see offer_less_help), and it drops one level
     only after they answer "yes".
+
+    missing is True when detect.py reports missing_step for this step. Like
+    Rule 4, the step then gets one level more help.
     """
     order = levels(defs)
     rules = defs["fading_rules"]
@@ -151,7 +154,7 @@ def next_level(history: list[list[dict]], step: dict, task: dict, defs: dict) ->
     current, results = state["level"], state["results"]
     i = order.index(current) if current in order else order.index(first_level(defs))
 
-    if _last_all(results, rules["rule_4_more_help_after_struggled_in_a_row"], "struggled"):
+    if missing or _last_all(results, rules["rule_4_more_help_after_struggled_in_a_row"], "struggled"):
         i -= 1
     elif state["said_yes"]:
         i += 1
@@ -280,10 +283,16 @@ def build_view(
 
     points = detect(history_rows, defs, days_since_last, task)
     codes = {p["code"] for p in points}
+    # A missed step gets one level more help, the same way Rule 4 does it.
+    missed = {p["step_id"] for p in points if p["code"] == "missing_step"}
 
     steps = []
     for step in task["steps"]:
-        mode = first_level(defs) if not sessions else next_level(sessions, step, task, defs)
+        mode = (
+            first_level(defs)
+            if not sessions
+            else next_level(sessions, step, task, defs, missing=step["step_id"] in missed)
+        )
         offer = bool(sessions) and offer_less_help(sessions, step, task, defs)
         steps.append(
             {
