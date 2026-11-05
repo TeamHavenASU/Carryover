@@ -39,8 +39,16 @@ TASK = {
     "start_time_seconds": 60,
     "long_pause_seconds": 40,
     "safety_card": "toaster",
+    "first_time_question": {"id": "used_this_device", "text": "Have you used this toaster before?", "if_no": "start_at_most_help"},
     "steps": [
-        {"step_id": "s1", "text": "Put bread in", "hint": "Bread in", "substeps": [{"id": "s1a", "text": "Open the bag"}]},
+        {
+            "step_id": "s1",
+            "text": "Put bread in",
+            "safety": "Keep your fingers out of the slots.",
+            "picture": "toast_s1.svg",
+            "base_skills": ["open_bag"],
+            "substeps": [{"id": "s1a", "text": "Open the bag"}],
+        },
         {"step_id": "s2", "text": "Wait", "wait": True, "check_question": "Did it pop up?"},
     ],
 }
@@ -419,4 +427,56 @@ def test_view_carries_hint_waits_and_substeps(view_files):
     first = view["steps"][0]
     assert first["hint_waits"] == [10, 20, 30]
     assert first["substeps"] == [{"id": "s1a", "text": "Open the bag"}]
-    assert first["hint"] == "Bread in"
+    assert "hint" not in first
+
+
+def test_view_carries_safety_picture_video_and_base_skills(view_files):
+    view = fade.build_view("p", "toast", 2, events_path=view_files, defs=DEFS)
+    first, second = view["steps"]
+    assert first["safety"] == "Keep your fingers out of the slots."
+    assert first["picture"] == "toast_s1.svg"
+    assert first["video"] is None
+    assert first["base_skills"] == ["open_bag"]
+    assert second["safety"] is None
+    assert second["base_skills"] == []
+
+
+def test_safety_is_there_even_when_the_step_is_folded(view_files_said_yes):
+    view = fade.build_view("p", "toast", 6, events_path=view_files_said_yes, defs=DEFS)
+    first = view["steps"][0]
+    assert first["mode"] == "hide"
+    assert first["safety"] == "Keep your fingers out of the slots."
+
+
+def test_a_no_to_the_first_time_question_starts_at_most_help(view_files):
+    view = fade.build_view("p", "toast", 1, events_path=view_files, defs=DEFS, first_time_answer="No")
+    assert [s["mode"] for s in view["steps"]] == ["split", "split"]
+    assert view["new_device"] is True
+    assert view["first_time_question"]["text"] == "Have you used this toaster before?"
+
+
+@pytest.mark.parametrize("answer", ["Yes", "Not sure", None])
+def test_other_answers_keep_the_usual_start(view_files, answer):
+    view = fade.build_view("p", "toast", 1, events_path=view_files, defs=DEFS, first_time_answer=answer)
+    assert [s["mode"] for s in view["steps"]] == ["hint", "hint"]
+    assert view["new_device"] is False
+
+
+def test_the_first_time_question_is_only_asked_the_first_time(view_files):
+    view = fade.build_view("p", "toast", 2, events_path=view_files, defs=DEFS)
+    assert view["first_time_question"] is None
+
+
+def test_a_no_in_the_history_keeps_most_help_until_it_fades(tmp_path, monkeypatch):
+    monkeypatch.setattr(fade, "load_task", lambda task_id: TASK)
+    rows = session("alone", shown="split", day=7)
+    rows.insert(1, row("device_check_answer", time="2026-09-07T10:00:05", answer="no"))
+    path = tmp_path / "events.csv"
+    with open(path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+
+    view = fade.build_view("p", "toast", 2, events_path=path, defs=DEFS)
+    assert view["new_device"] is True
+    assert view["steps"][0]["mode"] == "split"

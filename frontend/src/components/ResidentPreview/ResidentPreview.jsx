@@ -2,7 +2,7 @@ import "./ResidentPreview.css";
 
 const modeLabels = {
   split: "Most help: small steps shown",
-  hint: "Some help: short name only",
+  hint: "Some help: full step",
   hide: "No help: folded under See all steps",
 };
 
@@ -15,6 +15,8 @@ export default function ResidentPreview({ view }) {
 
       <ul className="notes">
         {view.show_safety_card && <li>First time: show the safety card ({view.show_safety_card}).</li>}
+        {view.first_time_question && <li>Ask first: {view.first_time_question.text}</li>}
+        {view.new_device && <li>New device: steps start at most help.</li>}
         {view.start_push && <li>Start push: {view.start_push}</li>}
         {view.show_refresher && <li>Ask: "Want a quick look at all the steps first?"</li>}
         {view.ask_about_skips && <li>Ask once if they still want this task.</li>}
@@ -27,9 +29,10 @@ export default function ResidentPreview({ view }) {
         {view.steps.map((step) => (
           <li key={step.step_id} className="step">
             <div className="step-head">
-              <span className="step-text">{step.mode === "split" ? step.text : step.hint}</span>
+              <span className="step-text">{step.text}</span>
               <span className="pill">{modeLabels[step.mode] || step.mode}</span>
             </div>
+            {step.safety && <p className="caution">CAUTION: {step.safety}</p>}
             {step.substeps.length > 0 && (
               <details open={step.mode === "split"}>
                 <summary>Small steps ({step.substeps.length})</summary>
