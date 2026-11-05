@@ -370,8 +370,8 @@ def main():
             "All 3 no    -> " + high_risk.UNSAFE_REPLY + "\n"
             "Anything else -> " + safety.MICROWAVE_HANDOFF_REPLY
         ),
-        p("The 30 photo test", H3),
-        p("python backend/tests/run_photo_test.py runs about 30 of our own photos (labeled dishes, unlabeled dishes, foil, foam, takeout boxes, blurry photos, no people) through the label rule. It counts how often the AI answered and how often an answer was wrong. The target is zero wrong \"safe\" answers. If there is one, that question type always hands off. Honest limit: 0 errors in 30 photos only shows the error rate is probably under about 10%, which is why the label quote check matters more than the test score.", BODY),
+        p("The 27 photo test", H3),
+        p("python backend/tests/run_photo_test.py runs 27 photos, 15 of our own and 12 free web photos with credits (labeled dishes, unlabeled dishes, foil, foam, takeout boxes, blurry photos, no people) through the label rule. It counts how often the AI answered and how often an answer was wrong. The target is zero wrong \"safe\" answers. If there is one, that question type always hands off. Honest limit: 0 errors in 27 photos only shows the error rate is probably under about 11%, which is why the label quote check matters more than the test score.", BODY),
 
         p("9. Extra detail split", H2),
         p("When the resident's hand setting is on, POST /split with hand: left, right or either adds this to the split prompt. The version waits for a person, like every split. Each small step may be up to 11 words.", BODY),

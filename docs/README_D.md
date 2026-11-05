@@ -51,16 +51,16 @@ pip install -r requirements.txt
 uvicorn api.main:app --reload
 pytest tests                         # no key needed
 python tests/run_ai_cases.py         # writes tests/ai_cases.md (needs a key for the model cases)
-python tests/run_photo_test.py       # the 30 photo safety test (needs a key and your photos)
+python tests/run_photo_test.py       # the 27 photo safety test (needs a key and your photos)
 ```
 
 From the repo root: `python docs/make_prompts_pdf.py` rebuilds `docs/prompts.pdf`.
 
-## The 30 photo test
+## The 27 photo test
 
-1. Take about 30 photos of your own dishes (no people). See the mix at the top of `backend/tests/run_photo_test.py`.
-2. Put them in `backend/tests/ai_images/photo_test/` (git ignores this folder).
-3. Copy `backend/tests/photo_test_manifest_example.csv` to `backend/tests/ai_images/photo_test/manifest.csv` and list each photo with what is really true (`safe`, `unsafe` or `unknown`).
+1. The test set is already in `backend/tests/ai_images/photo_test/`: 27 photos, 15 of our own and 12 free web photos with credits in ATTRIBUTION.md. To add more, take photos of your own dishes (no people) and add a row for each to manifest.csv.
+2. New photos go in `backend/tests/ai_images/photo_test/`. Git ignores this folder, so add new files with `git add -f`.
+3. `manifest.csv` in that folder lists each photo with what is really true (`safe`, `unsafe` or `unknown`). A photo whose printed label clearly says microwave safe is `safe`. The example file is `backend/tests/photo_test_manifest_example.csv`.
 4. Run `python tests/run_photo_test.py`. It writes `tests/photo_test_results.md` with how often the AI answered, how many answers were wrong, and the number that matters: wrong SAFE answers. The target is zero.
 
 ## Using the component
