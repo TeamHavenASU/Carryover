@@ -37,7 +37,10 @@
       "part": "decide",
       "text": "Check you have enough money for this",
       "base_skills": [],
-      "picture": null,
+      "picture": {
+        "file": "buy/enough_money.svg",
+        "alt": "A wallet with a card and some money, next to an item"
+      },
       "video": null,
       "substeps": [
         {
@@ -60,7 +63,10 @@
       "part": "decide",
       "text": "Ask yourself if you need this right now",
       "base_skills": [],
-      "picture": null,
+      "picture": {
+        "file": "buy/need_it.svg",
+        "alt": "An item with a thought bubble: do I need this now?"
+      },
       "video": null,
       "substeps": [],
       "long_pause_seconds": 180
@@ -89,7 +95,10 @@
       "part": "decide",
       "text": "Decide: buy it, or leave it for now",
       "base_skills": [],
-      "picture": null,
+      "picture": {
+        "file": "buy/decide.svg",
+        "alt": "Two choices: put it in the basket, or back on the shelf"
+      },
       "video": null,
       "substeps": [],
       "long_pause_seconds": 300,
@@ -102,7 +111,10 @@
       "part": "pay",
       "text": "Take it to the register and wait your turn",
       "base_skills": [],
-      "picture": null,
+      "picture": {
+        "file": "buy/register_line.svg",
+        "alt": "A store checkout counter with a wait-here sign on the floor"
+      },
       "video": null,
       "substeps": [],
       "wait": true,
@@ -185,7 +197,10 @@
       "part": "pay",
       "text": "Take your receipt and put it away",
       "base_skills": [],
-      "picture": null,
+      "picture": {
+        "file": "buy/receipt.svg",
+        "alt": "A receipt going into a wallet"
+      },
       "video": null,
       "substeps": [],
       "check_question": "Did you get your receipt?"

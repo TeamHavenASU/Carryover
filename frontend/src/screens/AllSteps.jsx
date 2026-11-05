@@ -1,15 +1,21 @@
-// "See all steps": every step's short name, always one tap away.
-export default function AllSteps({ today, inTask, onStart, onBack }) {
+// All steps: the whole task as a numbered list. Tapping a step goes to it.
+export default function AllSteps({ today, inTask, currentIndex, onJump, onStart, onBack }) {
   return (
     <section>
-      <h1>{today.title}: all steps</h1>
-      <ol className="steps-list">
-        {today.steps.map((s) => <li key={s.step_id}>{s.text}</li>)}
+      <ol className="all-steps">
+        {today.steps.map((s, i) => (
+          <li key={s.step_id}>
+            <button className={`btn all-step ${inTask && i === currentIndex ? "on" : ""}`} onClick={() => onJump(i)}
+              aria-current={inTask && i === currentIndex ? "step" : undefined}>
+              <span className="all-step-n">{i + 1}</span>
+              <span>{s.text}{inTask && i === currentIndex ? " (you are here)" : ""}</span>
+            </button>
+          </li>
+        ))}
       </ol>
       {inTask
-        ? <button className="btn primary" onClick={onBack}>Back to my step</button>
-        : <><button className="btn primary" onClick={onStart}>Start</button>
-            <button className="btn link" onClick={onBack}>Back</button></>}
+        ? <button className="btn primary" onClick={onBack}>Go back to my step</button>
+        : <button className="btn primary" onClick={onStart}>Start</button>}
     </section>
   );
 }

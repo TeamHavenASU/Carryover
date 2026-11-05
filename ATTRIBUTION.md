@@ -60,11 +60,24 @@ line, and can explain the logic and the design decisions in each file.
 
 ## Role C
 
-**Libraries:** none added. The resident screens use React and the existing
-frontend setup (Vite, React Router) from Role E's package.json, and browser
-features only: localStorage for settings and speechSynthesis for read-aloud.
+**Libraries:** the resident screens use React and the existing frontend setup
+(Vite, React Router) from Role E's package.json. Added by Role C:
+- framer-motion (MIT): Game mode only, an island sliding in and the reward
+  appearing.
+- lottie-react (MIT, uses lottie-web, MIT): Game mode only, the bird, balloon
+  and kite animations.
+- lucide-react (ISC): the one icon set used on every resident screen.
+Browser features: localStorage for settings and speechSynthesis for read-aloud.
 Backend: Python standard library, plus FastAPI and pytest, which were already
 in the project.
+
+**Pictures and animations:** the step pictures in frontend/public/img/ and
+the skill card picture were redrawn in more detail by
+tools/make_detailed_pictures.py, a script written with AI help (Claude).
+Plain shapes only: no brands, no people (hands only), no card numbers. The
+Lottie files in frontend/public/animations/ (bird, balloon, kite) are our
+own, also written with AI help; no LottieFiles downloads, so no outside
+licence applies.
 
 **Prior work this builds on:** the screens follow docs/ui_guidelines.md (the
 UI Guide) and the sources listed there. The colour choices follow the AASPIRE

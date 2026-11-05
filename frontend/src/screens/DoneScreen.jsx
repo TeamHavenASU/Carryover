@@ -6,15 +6,13 @@ import GameDone from "./GameDone";
 // already says which steps and whether this session is one to ask.
 // A step with offer_less_help: true gets "Want to try with less help next time?"
 // (UI rule 15, the person decides). The answer is logged as end_question, yes or keep.
-export default function DoneScreen({ today, settings, update, personId, donePromise, onFinish, log }) {
-  const total = today.steps.length;
-  const message =
-    settings.praise === "off" ? null
-    : settings.praise === "cheerful" ? `All ${total} steps done. Well done.`
-    : `All ${total} steps done.`;
+export default function DoneScreen({ today, settings, update, personId, donePromise, onFinish, log, dark, world }) {
+  // Short and factual (Carryover decisions): "Heat a meal: done".
+  const message = `${today.title}: done`;
 
   const questions = [
-    ...today.check_questions.map((c) => ({ kind: "check", step_id: c.step_id, text: c.question })),
+    // One check question at most, if one is due (Carryover decisions).
+    ...today.check_questions.slice(0, 1).map((c) => ({ kind: "check", step_id: c.step_id, text: c.question })),
     ...today.steps
       .filter((s) => s.offer_less_help)
       .map((s) => ({ kind: "less", step_id: s.step_id, text: s.text })),
@@ -29,11 +27,7 @@ export default function DoneScreen({ today, settings, update, personId, doneProm
 
   return (
     <section>
-      <h1>{today.title}</h1>
-      {message && <div className="card status"><p>{message}</p></div>}
-      {settings.style === "game" && (
-        <GameDone personId={personId} title={today.title} settings={settings} update={update} donePromise={donePromise} />
-      )}
+      <div className="card status"><p><strong>{message}</strong></p></div>
       {q && (
         <div className="card">
           {q.kind === "less" ? (
@@ -41,8 +35,8 @@ export default function DoneScreen({ today, settings, update, personId, doneProm
               <p className="muted">{q.text}</p>
               <p>Want to try with less help next time?</p>
               <div className="row">
-                <button className="btn" onClick={() => answer("yes")}>Yes, try less help</button>
-                <button className="btn" onClick={() => answer("keep")}>No, keep the help</button>
+                <button className="btn" onClick={() => answer("yes")}>Yes</button>
+                <button className="btn" onClick={() => answer("keep")}>Keep the same help</button>
               </div>
             </>
           ) : (
@@ -56,7 +50,10 @@ export default function DoneScreen({ today, settings, update, personId, doneProm
           )}
         </div>
       )}
-      <button className="btn primary" onClick={onFinish}>Back to the task list</button>
+      {!q && settings.style === "game" && (
+        <GameDone personId={personId} settings={settings} update={update} donePromise={donePromise} dark={dark} world={world} />
+      )}
+      <button className="btn primary" onClick={onFinish}>Go to my tasks</button>
     </section>
   );
 }

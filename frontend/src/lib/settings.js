@@ -10,11 +10,13 @@ export const DEFAULTS = {
   week: 1,
   textSize: "medium",   // medium | large | larger
   font: "sans",         // sans | serif | verdana
-  theme: "soft",        // soft | neutral | cool | dark
+  theme: "green",       // green | soft | neutral | cool (colour palette)
+  mode: "light",        // light | dark
   pictures: true,
   readAloud: false,
   praise: "calm",       // calm | cheerful | off
-  supportPerson: "your support person",
+  supportPerson: "",
+  supportContact: "",   // how to reach them, e.g. a phone number or "text"
   shareWithStaff: false, // off by default
   phoneType: "iphone_face_id", // iphone_face_id | iphone_home_button | android
   // First-time setup (questions and defaults come from definitions.json)
@@ -32,6 +34,10 @@ export const DEFAULTS = {
   // Reading voice (a voice already on the device, and a speed)
   voiceName: "",
   voiceSpeed: "normal", // slow | normal
+  // One-time questions already asked
+  tipReadAsked: false,
+  tipColorAsked: false,
+  skyItems: [],         // Game mode: what joined their sky (bird, balloon, kite)
 };
 
 // Remember, in this browser, that the "still want this task?" question was asked.
@@ -59,20 +65,31 @@ function load() {
   }
 }
 
+// The name to show on "Ask ..." buttons. Never a wrong name: "staff" if none is set.
+export const supportName = (s) => {
+  const name = (s.supportPerson || "").trim();
+  return name && name !== "your support person" ? name : "staff";
+};
+
 // Applied to the resident wrapper only, so the staff and demo pages keep their own look.
 // Palette choices for Settings. bg, panel and accent are only for the swatch.
 export const PALETTES = [
-  { id: "soft", name: "Soft light", bg: "#f4f1ea", panel: "#ffffff", accent: "#2f5d7c" },
-  { id: "neutral", name: "Calm neutral (low contrast)", bg: "#e9e7e2", panel: "#f2f0ec", accent: "#4a5f70" },
+  { id: "green", name: "Soft green", bg: "#eef2ea", panel: "#fbfcf9", accent: "#3f6f47" },
+  { id: "neutral", name: "Calm neutral", bg: "#e9e7e2", panel: "#f2f0ec", accent: "#4a5f70" },
+  { id: "soft", name: "Warm light", bg: "#f4f1ea", panel: "#ffffff", accent: "#2f5d7c" },
   { id: "cool", name: "Cool blue-green", bg: "#e4eeee", panel: "#f1f7f7", accent: "#2b6a66" },
-  { id: "dark", name: "Dark", bg: "#1d242b", panel: "#27313a", accent: "#9cc3de" },
 ];
 
-export const lookAttributes = (s) => ({
-  "data-size": s.textSize,
-  "data-font": s.font,
-  "data-theme": s.theme,
-});
+export const lookAttributes = (s) => {
+  // An older saved "dark" palette becomes the warm palette in dark mode.
+  const legacyDark = s.theme === "dark";
+  return {
+    "data-size": s.textSize,
+    "data-font": s.font,
+    "data-theme": legacyDark ? "soft" : s.theme,
+    "data-mode": legacyDark ? "dark" : s.mode,
+  };
+};
 
 export function useSettings() {
   const [settings, setSettings] = useState(load);

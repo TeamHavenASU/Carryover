@@ -1,48 +1,36 @@
 import { useEffect, useState } from "react";
-import { getGame, getSetup } from "../lib/api";
-import { AREAS_PER_WORLD, themeName, worldState } from "../lib/game";
+import { getGame } from "../lib/api";
+import { worldState } from "../lib/game";
+import SkyWorld, { RewardChoice } from "./SkyWorld";
 
-// "My world" (Game mode only). Areas open as tasks are done and are never taken away.
-// The next area shows as an outline, unless the person turned on "Surprise me".
-export default function GameWorld({ personId, settings, onBack }) {
+// My world (Game mode only): their sky, the reward choice if one is waiting, and milestones.
+export default function GameWorld({ personId, settings, update, dark, world }) {
   const [game, setGame] = useState(null);
-  const [known, setKnown] = useState([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getGame(personId).then(setGame).catch((e) => setError(e.message));
-    getSetup()
-      .then((qs) => setKnown((qs.find((q) => q.id === "interests") || { answers: [] }).answers))
-      .catch(() => {});
+    getGame(personId).then(setGame).catch(() => setError("Your world could not load. Check that the app is connected, then try again."));
   }, [personId]);
 
-  if (error) return <div className="card status" role="alert">{error}</div>;
-  if (!game) return <p className="muted">Loading…</p>;
+  if (error) return <div className="card status" role="alert"><p>{error}</p></div>;
+  if (!game) return <p className="muted" role="status">Loading your world…</p>;
 
-  const theme = themeName(settings.interests, known);
   const { unlocked, next } = worldState(game.tasks_done, game.new_area_every_tasks_done);
+  const items = settings.skyItems || [];
+  const choiceWaiting = items.length < unlocked - 1; // one choice for each island after the first
 
   return (
     <section>
-      <h1>{theme}</h1>
       <p className="muted">Tasks done: {game.tasks_done}</p>
-      {Array.from({ length: unlocked }, (_, i) => (
-        <div key={i} className="card area"><p>{theme}: area {i + 1}</p></div>
-      ))}
-      {next && !settings.surpriseMe && (
-        <div className="card area next">
-          <p>{theme}: area {unlocked + 1}</p>
-          <p>Opens after {next.moreNeeded} more {next.moreNeeded === 1 ? "task" : "tasks"}</p>
-        </div>
-      )}
-      {game.milestones_reached.length > 0 && (
-        <div className="card">
-          <h2>Milestones</h2>
-          <ul>{game.milestones_reached.map((m) => <li key={m}>{m.replace(/^./, (c) => c.toUpperCase())}</li>)}</ul>
-        </div>
-      )}
-      <p className="muted">There are {AREAS_PER_WORLD} areas in a world.</p>
-      <button className="btn primary" onClick={onBack}>Back to the task list</button>
+      {choiceWaiting && <RewardChoice world={world} animations={settings.animations} onPick={(id) => update({ skyItems: [...items, id] })} />}
+      <SkyWorld world={world} unlocked={unlocked} moreNeeded={next && next.moreNeeded} surpriseMe={settings.surpriseMe}
+        items={items} dark={dark} animations={settings.animations} />
+      <div className="card">
+        <h2>Milestones</h2>
+        {game.milestones_reached.length
+          ? <ul>{game.milestones_reached.map((m) => <li key={m}>{m.replace(/^./, (c) => c.toUpperCase())}</li>)}</ul>
+          : <p className="muted">Milestones show here after they happen.</p>}
+      </div>
     </section>
   );
 }

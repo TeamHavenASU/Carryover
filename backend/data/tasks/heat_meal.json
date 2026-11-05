@@ -113,6 +113,7 @@
       "base_skills": [],
       "picture": {
         "file": "heat_meal/s3.svg",
+        "device": true,
         "alt": "A dish in the middle of an open microwave"
       },
       "video": null,
@@ -144,6 +145,7 @@
       ],
       "picture": {
         "file": "heat_meal/s4.svg",
+        "device": true,
         "alt": "A finger pressing the Cook Time button"
       },
       "video": null,

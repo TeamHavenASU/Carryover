@@ -1,124 +1,220 @@
-/* Calm colors, readable text (rule 6). Text and background pairs are chosen for WCAG AA.
-   Meaning is never carried by color alone (rule 6) and nothing moves (rule 8). */
+/* Resident app styles. One set of sizes and spacing for every screen, so each screen looks and
+   behaves the same (UI rule 1). Calm colours with WCAG AA contrast, never colour alone (rule 6),
+   nothing moves unless the person allows it (rule 8). */
+
+/* ---- Colours (4 palettes) and the person's text size and font ---- */
 .resident {
-  --bg: #f4f1ea;
-  --panel: #ffffff;
-  --text: #22303c;
-  --muted: #4a5a68;
-  --line: #b8c2cc;
-  --accent: #2f5d7c;
-  --accent-text: #ffffff;
-  --focus: #1b4f72;
-  --size: 1.125rem;
+  /* Soft green (the demo default), light */
+  --bg: #eef2ea; --panel: #fbfcf9; --text: #243326; --muted: #4b5d4d;
+  --line: #c9d4c6; --field-line: #6d7f6f; --accent: #3f6f47; --accent-text: #ffffff; --focus: #2a4f31;
+  --size: 1.0625rem;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* spacing (4/8px grid), shape and depth, used everywhere */
+  --gap-xs: 0.25rem;
+  --gap-s: 0.5rem;
+  --gap-m: 0.75rem;
+  --gap-l: 1rem;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --control: 3rem; /* every button and field is at least 48px tall */
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
-.resident[data-theme="dark"] {
-  --bg: #1d242b;
-  --panel: #27313a;
-  --text: #eef1f4;
-  --muted: #c3ccd4;
-  --line: #5d6b78;
-  --accent: #9cc3de;
-  --accent-text: #11202b;
-  --focus: #cfe5f5;
+.resident[data-theme="soft"] {
+  --bg: #f4f1ea; --panel: #ffffff; --text: #22303c; --muted: #4a5a68;
+  --line: #c9d0d6; --field-line: #6b7a88; --accent: #2f5d7c; --accent-text: #ffffff; --focus: #1b4f72;
 }
 .resident[data-theme="neutral"] {
-  --bg: #e9e7e2;
-  --panel: #f2f0ec;
-  --text: #33383d;
-  --muted: #4d545b;
-  --line: #b4b1aa;
-  --accent: #4a5f70;
-  --accent-text: #ffffff;
-  --focus: #2f4252;
+  --bg: #e9e7e2; --panel: #f2f0ec; --text: #33383d; --muted: #4d545b;
+  --line: #c4c0b8; --field-line: #6f6b64; --accent: #4a5f70; --accent-text: #ffffff; --focus: #2f4252;
 }
 .resident[data-theme="cool"] {
-  --bg: #e4eeee;
-  --panel: #f1f7f7;
-  --text: #1f3a3d;
-  --muted: #3f5a5d;
-  --line: #a9c3c3;
-  --accent: #2b6a66;
-  --accent-text: #ffffff;
-  --focus: #1b4a47;
+  --bg: #e4eeee; --panel: #f1f7f7; --text: #1f3a3d; --muted: #3f5a5d;
+  --line: #b9cfcf; --field-line: #5d7b7b; --accent: #2b6a66; --accent-text: #ffffff; --focus: #1b4a47;
 }
-.resident[data-size="large"] { --size: 1.35rem; }
-.resident[data-size="larger"] { --size: 1.6rem; }
+/* Dark versions of each palette. All text and buttons pass WCAG AA. */
+.resident[data-mode="dark"] {
+  --bg: #1a231c; --panel: #243026; --text: #e8f0e8; --muted: #c1d1c2;
+  --line: #3f5242; --field-line: #8fa892; --accent: #9fd3a6; --accent-text: #13261a; --focus: #cfeed3;
+}
+.resident[data-mode="dark"][data-theme="soft"] {
+  --bg: #1d242b; --panel: #27313a; --text: #e3e8ec; --muted: #bcc6cf;
+  --line: #3f4b57; --field-line: #8d9cab; --accent: #9cc3de; --accent-text: #11202b; --focus: #cfe5f5;
+}
+.resident[data-mode="dark"][data-theme="neutral"] {
+  --bg: #23221f; --panel: #2e2c28; --text: #ecebe7; --muted: #c9c6bf;
+  --line: #4a4740; --field-line: #a19c92; --accent: #d2c3a3; --accent-text: #1f1d1a; --focus: #f0e6d0;
+}
+.resident[data-mode="dark"][data-theme="cool"] {
+  --bg: #172426; --panel: #203133; --text: #e6f1f1; --muted: #bcd2d2;
+  --line: #36504f; --field-line: #84a6a6; --accent: #8fd1c8; --accent-text: #0f2422; --focus: #c9f0eb;
+}
+.resident[data-size="large"] { --size: 1.25rem; }
+.resident[data-size="larger"] { --size: 1.45rem; }
 .resident[data-font="serif"] { --font: Georgia, "Times New Roman", serif; }
 .resident[data-font="verdana"] { --font: Verdana, Geneva, sans-serif; }
 
+/* ---- Base ---- */
 .resident, .resident * { box-sizing: border-box; }
 .resident {
-  max-width: 40rem;
+  max-width: 26rem;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0 var(--gap-l) var(--gap-l);
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
   font-size: var(--size);
-  line-height: 1.5;
+  line-height: 1.45;
 }
-.resident h1 { font-size: 1.5em; margin: 0.5rem 0; }
-.resident h2 { font-size: 1.25em; margin: 0.5rem 0; }
-.resident p { margin: 0.5rem 0; }
+.resident h1 { font-size: 1.3em; line-height: 1.25; margin: var(--gap-m) 0 var(--gap-s); }
+.resident h2 { font-size: 1.05em; line-height: 1.3; margin: 0 0 var(--gap-s); }
+.resident p { margin: var(--gap-s) 0; }
+.resident ul, .resident ol { margin: var(--gap-s) 0; padding-left: 1.4rem; }
+.resident li { margin: var(--gap-xs) 0; }
 .resident .muted { color: var(--muted); }
-.resident .card { background: var(--panel); border: 2px solid var(--line); border-radius: 12px; padding: 1rem; margin: 0.75rem 0; }
 
-.resident button, .resident select, .resident input {
-  font: inherit;
-  color: var(--text);
+/* ---- Cards ---- */
+.resident .card {
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--gap-l);
+  margin: var(--gap-m) 0;
 }
+.resident .card > :first-child { margin-top: 0; }
+.resident .card > :last-child { margin-bottom: 0; }
+.resident .status { border-left: 6px solid var(--accent); }
+.resident .offer { border: 2px dashed var(--accent); }
+
+/* ---- Buttons and fields: one size everywhere ---- */
+.resident button, .resident select, .resident input { font: inherit; color: var(--text); }
 .resident .btn {
   display: block;
   width: 100%;
-  min-height: 3rem;      /* at least 44px tap target */
-  padding: 0.6rem 1rem;
-  margin: 0.5rem 0;
+  min-height: var(--control);
+  padding: var(--gap-s) var(--gap-l);
+  margin: var(--gap-s) 0;
   background: var(--panel);
   border: 2px solid var(--accent);
-  border-radius: 10px;
-  cursor: pointer;
+  border-radius: var(--radius);
+  font-size: 1em;
   text-align: center;
+  cursor: pointer;
 }
-.resident .btn.primary { background: var(--accent); color: var(--accent-text); }
+.resident .btn.primary { background: var(--accent); color: var(--accent-text); font-weight: 600; }
 .resident .btn.link { border-color: var(--line); }
-.resident .btn:focus-visible, .resident select:focus-visible, .resident input:focus-visible, .resident summary:focus-visible {
-  outline: 4px solid var(--focus);
-  outline-offset: 2px;
+.resident .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.resident .row { display: flex; gap: var(--gap-s); }
+.resident .row .btn { flex: 1; margin: 0; }
+
+/* Small text buttons (top bar, "All steps", "Read to me") */
+.resident .navbtn {
+  display: inline-flex; align-items: center; gap: var(--gap-xs);
+  min-height: 2.75rem;
+  padding: 0 var(--gap-s);
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-size: 0.9em;
+  white-space: nowrap;
+  cursor: pointer;
 }
-.resident .row { display: flex; gap: 0.5rem; }
-.resident .row .btn { flex: 1; }
-.resident .steps-list { padding-left: 1.5rem; }
-.resident .steps-list li { margin: 0.5rem 0; }
-.resident .small-steps { padding-left: 1.5rem; margin: 0.5rem 0; }
-.resident .next-line { color: var(--muted); font-size: 1em; }
-.resident .status { border-left: 6px solid var(--accent); }
-.resident .offer { border: 2px dashed var(--accent); }
-.resident details summary { cursor: pointer; min-height: 2.75rem; padding: 0.5rem 0; }
-.resident label { display: block; margin: 0.75rem 0 0.25rem; }
+.resident .navbtn:hover { border-color: var(--line); }
+
+.resident label { display: block; margin: var(--gap-m) 0 var(--gap-xs); font-size: 0.95em; }
 .resident select, .resident input[type="text"], .resident input[type="number"] {
-  width: 100%; min-height: 3rem; padding: 0.4rem 0.6rem;
-  background: var(--panel); border: 2px solid var(--line); border-radius: 8px;
+  width: 100%;
+  min-height: var(--control);
+  padding: 0 var(--gap-m);
+  background: var(--panel);
+  border: 2px solid var(--field-line);
+  border-radius: 10px;
 }
-.resident .check { display: flex; align-items: center; gap: 0.75rem; min-height: 3rem; }
-.resident .check input { width: 1.75rem; height: 1.75rem; }
-.resident .topbar { display: flex; justify-content: space-between; align-items: center; }
-.resident .topbar .btn { width: auto; margin: 0; }
-
-/* Picture of the action (rule 9). Follows the pictures on/off setting. */
-.resident .step-picture { display: block; max-width: 100%; height: auto; margin: 0.5rem 0; border-radius: 8px; }
-/* Caution is always visible on its step (UI guide "Caution"). The word CAUTION and the border carry the meaning, not color. */
-.resident .caution { border: 3px solid var(--text); border-radius: 10px; padding: 0.6rem 0.8rem; margin: 0.75rem 0; background: var(--panel); }
-
-/* Palette choice in Settings: a swatch plus the name, so color is never the only cue. */
-.resident .palette { display: flex; align-items: center; gap: 0.75rem; min-height: 3rem; margin: 0.25rem 0; }
-.resident .palette input { width: 1.75rem; height: 1.75rem; }
-.resident .swatch { display: inline-flex; width: 3rem; height: 2rem; border: 2px solid var(--text); border-radius: 6px; overflow: hidden; }
+.resident fieldset { border: 0; padding: 0; margin: var(--gap-m) 0 0; }
+.resident legend { font-size: 0.95em; margin-bottom: var(--gap-xs); }
+.resident .check, .resident .palette {
+  display: flex; align-items: center; gap: var(--gap-m);
+  min-height: var(--control); margin: var(--gap-xs) 0;
+}
+.resident .check input, .resident .palette input { width: 1.5rem; height: 1.5rem; flex-shrink: 0; }
+.resident .swatch { display: inline-flex; width: 2.75rem; height: 1.75rem; border: 2px solid var(--text); border-radius: 6px; overflow: hidden; flex-shrink: 0; }
 .resident .swatch span { flex: 1; }
 
-/* Game mode (opt-in). Motion follows the person's animations setting and reduced motion. */
-.resident .area { border: 2px solid var(--accent); }
+.resident .btn:focus-visible, .resident .navbtn:focus-visible, .resident .navtab:focus-visible,
+.resident select:focus-visible, .resident input:focus-visible, .resident summary:focus-visible {
+  outline: 4px solid var(--focus); outline-offset: 2px;
+}
+
+/* ---- Top bar: same height and layout on every screen ---- */
+.resident .topbar {
+  position: sticky; top: 0; z-index: 5;
+  display: grid; grid-template-columns: 6.5rem 1fr 6.5rem; align-items: center;
+  height: 3.5rem;
+  margin: 0 calc(-1 * var(--gap-l)) var(--gap-s);
+  padding: 0 var(--gap-s);
+  background: var(--bg);
+  border-bottom: 2px solid var(--line);
+}
+.resident .topbar-title {
+  margin: 0; font-size: 1em; font-weight: 700; text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.resident .topbar-side { display: flex; }
+.resident .topbar-side.right { justify-content: flex-end; }
+
+/* ---- Bottom bars: Done/Help/Break during a task, Home/My world elsewhere ---- */
+.resident .bottom-actions, .resident .bottom-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  padding: var(--gap-s) var(--gap-l) calc(var(--gap-m) + var(--safe-bottom));
+  background: var(--bg);
+  border-top: 2px solid var(--line);
+}
+.resident .bottom-actions .btn { margin: 0 0 var(--gap-s); }
+.resident .bottom-actions .row .btn { margin: 0; }
+.resident .has-bottom-actions { padding-bottom: calc(9.5rem + var(--safe-bottom)); }
+.resident.has-bottom-nav { padding-bottom: calc(5.5rem + var(--safe-bottom)); }
+.resident .bottom-nav { display: flex; gap: var(--gap-s); }
+.resident .navtab {
+  flex: 1; min-height: var(--control);
+  background: var(--panel); border: 2px solid var(--field-line); border-radius: var(--radius);
+  cursor: pointer;
+}
+.resident .navtab.on { border-color: var(--accent); font-weight: 700; }
+
+/* ---- Step screen ---- */
+.resident .step-head { display: flex; justify-content: space-between; align-items: center; min-height: 2.75rem; }
+.resident .step-count { margin: 0; font-size: 0.9em; }
+.resident .step-text { font-size: 1.2em; margin: 0 0 var(--gap-xs); }
+.resident .read-again { border-color: var(--line); margin: 0 0 var(--gap-s) calc(-1 * var(--gap-s)); }
+.resident .next-line { color: var(--muted); margin: 0; }
+.resident .small-steps { padding-left: 1.4rem; }
+.resident .steps-list li { margin: var(--gap-s) 0; }
+.resident .step-picture { display: block; width: 100%; height: auto; margin: var(--gap-s) 0; border-radius: 10px; }
+.resident details { margin-top: var(--gap-s); }
+.resident details summary { cursor: pointer; min-height: 2.75rem; display: flex; align-items: center; font-weight: 600; }
+.resident .caution {
+  margin: var(--gap-m) 0; padding: var(--gap-m);
+  background: var(--panel); border: 3px solid var(--text); border-radius: var(--radius);
+}
+
+/* ---- Game mode ---- */
+.resident .game-strip {
+  display: flex; align-items: center; gap: var(--gap-s);
+  margin: var(--gap-s) 0 0; padding: var(--gap-s) var(--gap-m);
+  background: var(--panel); border: 2px solid var(--line); border-radius: var(--radius);
+  font-size: 0.9em;
+}
+.resident .game-strip .track { flex: 1; height: 0.6rem; border-radius: 1rem; background: var(--line); overflow: hidden; }
+.resident .game-strip .track span { display: block; height: 100%; background: var(--accent); }
+.resident .world-card {
+  display: flex; align-items: center; gap: var(--gap-m); width: 100%;
+  text-align: left; cursor: pointer; border-color: var(--accent);
+}
+.resident .world-icon, .resident .pic { font-size: 1.5em; line-height: 1; }
+.resident .pic { margin-right: var(--gap-s); }
+.resident .area { border-color: var(--accent); }
 .resident .area.next { border-style: dashed; color: var(--muted); }
+.resident .preview-row { display: flex; flex-direction: column; gap: 0; }
 .resident .anim-calm { animation: resident-fade 0.8s ease-out; }
 .resident .anim-lively { animation: resident-pop 0.6s ease-out; }
 @keyframes resident-fade { from { opacity: 0; } to { opacity: 1; } }
@@ -126,6 +222,135 @@
 @media (prefers-reduced-motion: reduce) {
   .resident .anim-calm, .resident .anim-lively { animation: none; }
 }
-.resident .preview-row { display: flex; gap: 0.5rem; }
-.resident .preview-row .card { flex: 1; margin: 0.5rem 0; }
-.resident .pic { font-size: 1.5em; margin-right: 0.5rem; }
+
+/* ---- One-time question in the middle of the screen ---- */
+.resident .overlay {
+  position: fixed; inset: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: center; padding: var(--gap-l);
+  background: rgba(0, 0, 0, 0.45);
+}
+.resident .overlay .card { max-width: 22rem; width: 100%; margin: 0; }
+
+/* ---- Phone shape on a wide screen; full screen on a phone ---- */
+.phone-stage { display: flex; justify-content: center; }
+@media (min-width: 600px) {
+  .phone-stage { padding: 1rem 0; background: #e4e7ea; min-height: 100vh; }
+  .phone {
+    width: 24rem;
+    height: min(46rem, calc(100vh - 2rem));
+    border: 10px solid #2b3036;
+    border-radius: 36px;
+    overflow: hidden;
+    transform: translateZ(0); /* keeps fixed bars and popups inside the phone */
+  }
+  .phone .resident { height: 100%; overflow-y: auto; max-width: none; margin: 0; }
+}
+@media (max-width: 599px) {
+  .phone { width: 100%; }
+}
+.resident .palette-choice { display: flex; align-items: center; gap: var(--gap-m); text-align: left; }
+.resident .palette-choice.on { border-width: 3px; font-weight: 700; }
+
+
+/* ---- Pressed and quiet feedback ---- */
+.resident .btn:active, .resident .navtab:active, .resident .navbtn:active { transform: translateY(1px); filter: brightness(0.96); }
+.resident .card { box-shadow: var(--shadow); }
+.resident .field-error { color: var(--text); font-weight: 600; border-left: 4px solid var(--accent); padding-left: var(--gap-s); }
+
+/* Tasks are big, plain list buttons */
+.resident .task-btn { text-align: left; font-weight: 600; border-color: var(--field-line); }
+
+/* Bottom bar tabs: icon above its words */
+.resident .navtab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 0.85em; }
+.resident .navtab-icon { font-size: 1.15rem; line-height: 1; }
+
+/* Segmented choice (Light/Dark, Slow/Normal, Game/Normal) */
+.resident .segmented { display: flex; gap: var(--gap-s); }
+.resident .segment {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: var(--gap-s);
+  min-height: var(--control); margin: 0; border: 2px solid var(--field-line); border-radius: 10px; cursor: pointer;
+}
+.resident .segment.on { border-color: var(--accent); border-width: 3px; font-weight: 700; }
+.resident .segment input { width: 1.1rem; height: 1.1rem; }
+
+/* Step screen */
+.resident .step-title { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--gap-s); flex-wrap: wrap; }
+.resident .step-title .step-text { flex: 1 1 12rem; margin: 0; }
+.resident .read-again { border-color: var(--field-line); margin: 0; }
+.resident .folded {
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap-xs);
+  width: 100%; text-align: left; font: inherit; color: var(--text); cursor: pointer;
+}
+.resident .bottom-actions .offer { margin: 0 0 var(--gap-s); padding: var(--gap-m); }
+.resident .fade-in { animation: resident-fade 1.2s ease-out; }
+
+/* All steps */
+.resident .all-steps { list-style: none; padding: 0; }
+.resident .all-step { display: flex; gap: var(--gap-m); align-items: flex-start; text-align: left; border-color: var(--field-line); }
+.resident .all-step.on { border-color: var(--accent); border-width: 3px; font-weight: 600; }
+.resident .all-step-n { min-width: 1.5rem; font-weight: 700; }
+
+/* ---- Game mode: Sky world ---- */
+.resident .sky {
+  position: relative; overflow: hidden;
+  border-radius: var(--radius); padding: var(--gap-l) var(--gap-m) var(--gap-m); margin: var(--gap-m) 0;
+  border: 2px solid var(--line); min-height: 12rem;
+}
+.resident .sky.day { background: linear-gradient(#cfe6f5, #eef6fb); color: #22303c; }
+.resident .sky.night { background: linear-gradient(#0f1e36, #22355a); color: #e3e8ec; }
+.resident .sun { position: absolute; top: 12px; right: 16px; width: 40px; height: 40px; border-radius: 50%; background: #f6d88a; box-shadow: 0 0 0 6px rgba(246, 216, 138, 0.35); }
+.resident .moon { position: absolute; top: 12px; right: 16px; width: 34px; height: 34px; border-radius: 50%; background: #e9e6d8; box-shadow: inset -9px -3px 0 0 #cfcbb8; }
+.resident .stars {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(1.5px 1.5px at 12% 20%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 30% 8%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 55% 15%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 72% 30%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 88% 50%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 20% 60%, #fff 50%, transparent 51%);
+  opacity: 0.8; /* stars stay still: no twinkle */
+}
+.resident .cloud { position: absolute; height: 18px; border-radius: 18px; background: rgba(255, 255, 255, 0.75); pointer-events: none; }
+.resident .sky.night .cloud { background: rgba(255, 255, 255, 0.12); }
+.resident .cloud.c1 { top: 22px; left: 8%; width: 70px; }
+.resident .cloud.c2 { top: 54px; left: 55%; width: 90px; }
+.resident .island { position: relative; width: 72%; margin: var(--gap-s) 0; }
+.resident .island.left { margin-right: auto; }
+.resident .island.right { margin-left: auto; }
+.resident .island-shape { display: block; width: 100%; height: auto; }
+.resident .island.outline { opacity: 0.75; }
+.resident .island-items { position: absolute; left: 22%; right: 22%; top: -6px; display: flex; justify-content: space-around; }
+.resident .sky-item svg { width: 30px; height: 30px; }
+.resident .island-label {
+  margin: -6px auto 0; width: max-content; max-width: 100%; padding: 2px 10px; font-size: 0.85em;
+  background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 999px;
+}
+.resident .reward-btn { display: flex; align-items: center; gap: var(--gap-m); text-align: left; }
+.resident .reward-art svg { width: 28px; height: 28px; display: block; }
+
+/* Calm movement only, and only if Animations is on. */
+@keyframes sky-drift { from { transform: translateX(0); } to { transform: translateX(28px); } }
+@keyframes sky-float { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+@keyframes island-arrive { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.resident .sky[data-anim="calm"] .cloud { animation: sky-drift 40s ease-in-out infinite alternate; }
+.resident .sky[data-anim="lively"] .cloud { animation: sky-drift 20s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: reduce) {
+  .resident .cloud, .resident .sky-item, .resident .island.arrive, .resident .fade-in { animation: none !important; }
+}
+
+.resident .sky-item { display: inline-block; width: 34px; height: 34px; }
+.resident .sky-item svg { width: 100%; height: 100%; }
+.resident .sky-word { width: auto; height: auto; font-size: 0.75em; padding: 1px 6px; background: var(--panel); color: var(--text); border-radius: 999px; }
+.resident .icon-pair { display: inline-flex; gap: 2px; }
+.resident .pic { display: inline-flex; vertical-align: -0.2em; }
+.resident .navbtn svg, .resident .btn svg { vertical-align: -0.2em; }
+
+/* The page colour fills the whole screen, also on short screens and in dark mode. */
+.resident { min-height: 100vh; }
+@media (min-width: 600px) { .phone .resident { min-height: 0; } }
+/* Setup answers are choices, not the main action. */
+.resident .answer-btn { display: flex; align-items: center; justify-content: center; gap: var(--gap-s); border-color: var(--field-line); }
+/* Folds show an arrow that turns when open. */
+.resident details summary { list-style: none; gap: var(--gap-xs); }
+.resident details summary::-webkit-details-marker { display: none; }
+.resident details[open] .chevron { transform: rotate(90deg); }
