@@ -36,7 +36,8 @@ LIVE_EVENTS_PATH = DATA_DIR / "live" / "events.csv"
 # - timestamp is local time, format YYYY-MM-DDTHH:MM:SS (e.g. 2026-11-16T18:02:10).
 # - session_id is <person>-<task>-w<NN>, e.g. jeremiah-heat_meal-w03.
 # - help_shown holds "split", "hint" or "hide" (the help level shown).
-# - answer is used only on check_answer, end_question and refresher_answer.
+# - answer is used only on check_answer, end_question, refresher_answer,
+#   help_offer_answer (yes/no) and small_step_opened (the substep id, e.g. s4b).
 # - prompted is used only on step_done, values "yes" or "no".
 EVENT_COLUMNS = [
     "person_id",
@@ -78,6 +79,12 @@ ALL_EVENTS = [
     "more_help_requested",
     "show_all_pressed",
     "ask_sent",
+    "help_offer_answer",  # Rule 6 "Want help with this step?". answer holds yes/no
+    # Small steps now show one at a time. small_step_opened does NOT count as
+    # used help for Rule 2: it is the level's own content, not extra help.
+    "small_step_opened",  # answer holds the substep id, e.g. s4b
+    "repeat_requested",
+    "step_done_undone",  # "Tapped Done by mistake? Go back"
     # break
     "paused",
     "resumed",
