@@ -57,8 +57,8 @@ ITEMS = {
     "bell": ([ell(50, 50, 46, 46, GOLD), ell(50, 80, 12, 12, "#b8993f"), rect(30, 52, 40, 3, "#b8993f"),
               ell(50, 22, 14, 10, "#b8993f")], "sway"),
     # animals: dog
-    "bone": ([rect(24, 40, 52, 20, CREAM), ell(22, 38, 20, 20, CREAM), ell(22, 62, 20, 20, CREAM),
-              ell(78, 38, 20, 20, CREAM), ell(78, 62, 20, 20, CREAM)], "sway"),
+    "bone": ([rect(24, 40, 52, 20, "#d9bf8e"), ell(22, 38, 20, 20, "#d9bf8e"), ell(22, 62, 20, 20, "#d9bf8e"),
+              ell(78, 38, 20, 20, "#d9bf8e"), ell(78, 62, 20, 20, "#d9bf8e")], "sway"),
     "ball": ([ell(50, 50, 56, 56, ORANGE), ell(50, 50, 56, 8, "#ffffff"), ell(36, 36, 14, 10, "#e9a07a")], "bob"),
     "bowl": ([poly([(12, 46), (88, 46), (76, 82), (24, 82)], BLUE), ell(50, 46, 76, 14, "#9fb9d8"),
               ell(40, 42, 12, 8, BROWN), ell(54, 40, 12, 8, BROWN), ell(62, 44, 10, 6, BROWN)], "bob"),

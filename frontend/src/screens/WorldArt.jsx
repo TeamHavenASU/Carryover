@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Lottie } from "lottie-react";
+import Companion from "./Companion";
 
 const BASE = import.meta.env.BASE_URL;
 const ANIM_BASE = `${BASE}animations/`;
@@ -85,10 +86,28 @@ function Area({ n, world, items, outline, note, arriving, moving, lively }) {
   return <div className={cls}>{body}</div>;
 }
 
+// Animals worlds: the animal itself, with the latest reward, and everything it has been given.
+function CompanionStage({ world, items, moving, lively }) {
+  const latest = items[items.length - 1];
+  const item = latest ? world.items[latest] : null;
+  // Earlier rewards sit on the ground beside the animal: each kind once, newest first, never the
+  // one in its mouth. The full list with counts is in "My rewards".
+  const earlier = [...new Set(items.slice(0, -1).reverse())].filter((id) => id !== latest);
+  return (
+    <div className="companion-stage" data-world="animals">
+      <Companion animal={world.animal} holding={latest} item={item} moving={moving} lively={lively} earlier={earlier} earlierItems={world.items} />
+      <p className="companion-caption">
+        {item ? `Your ${world.animal} has ${item.name.toLowerCase()}.` : `Your ${world.animal} is waiting for its first reward.`}
+      </p>
+    </div>
+  );
+}
+
 export default function WorldArt({ world, unlocked, moreNeeded, surpriseMe, items, animations, arrivingArea, compact }) {
   const reduce = useReducedMotion();
   const moving = animations !== "off" && !reduce;
   const lively = animations === "lively";
+  if (world.companion) return <CompanionStage world={world} items={items} moving={moving} lively={lively} />;
   // Each reward they chose sits on one of their areas, in order.
   const onArea = (n) => items.filter((_, i) => (i % unlocked) + 1 === n);
   const shown = compact ? Math.min(unlocked, 2) : unlocked;

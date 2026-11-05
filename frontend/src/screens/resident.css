@@ -519,3 +519,34 @@
 .resident .sky-stage[data-world="fruits"] .sky-item { width: 66px; height: 66px; }
 .resident .sky-stage[data-world="fruits"] .island-items { left: 10%; right: 10%; top: -30px; flex-wrap: wrap; justify-content: space-around; }
 .resident .sky-stage[data-world="animals"] .sky-item { width: 52px; height: 52px; }
+
+/* The companion animal (dog, cat or fox) in the Animals worlds */
+.resident .companion-stage { text-align: center; margin: var(--gap-m) 0; }
+.resident .companion { width: 78%; max-width: 15rem; height: auto; display: block; margin: 0 auto; }
+.resident .companion-caption {
+  display: inline-block; margin: var(--gap-s) auto; padding: var(--gap-xs) var(--gap-m);
+  background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 999px; font-weight: 600;
+}
+.resident .things { list-style: none; display: flex; flex-wrap: wrap; gap: var(--gap-s); justify-content: center; padding: 0; margin: var(--gap-s) 0; }
+.resident .things li {
+  display: flex; align-items: center; gap: var(--gap-xs); padding: var(--gap-xs) var(--gap-s);
+  background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 999px; font-size: 0.9em;
+}
+.resident .things img { width: 1.6rem; height: 1.6rem; }
+
+/* Profile circle (top right) and the Profile screen */
+.resident .avatar-btn {
+  width: 2.75rem; height: 2.75rem; border-radius: 50%; padding: 0; cursor: pointer;
+  background: var(--accent); color: var(--accent-text); border: 2px solid var(--accent); font-weight: 700; font-size: 1rem;
+}
+.resident .avatar-btn:focus-visible { outline: 4px solid var(--focus); outline-offset: 2px; }
+.resident .profile-head { display: flex; align-items: center; gap: var(--gap-l); }
+.resident .profile-head h1 { margin: 0; }
+.resident .avatar { width: 3.5rem; height: 3.5rem; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-text); font-weight: 700; font-size: 1.5rem; flex-shrink: 0; }
+.resident .stars-row { display: flex; gap: var(--gap-xs); align-items: center; margin: var(--gap-s) 0; }
+
+/* My rewards drop-down */
+.resident .rewards-list ul { list-style: none; padding: 0; margin: var(--gap-s) 0 0; }
+.resident .rewards-list li { display: flex; align-items: center; gap: var(--gap-m); padding: var(--gap-xs) 0; }
+.resident .rewards-list li img { width: 2rem; height: 2rem; }
+.resident .rewards-list li span { flex: 1; }
