@@ -14,6 +14,8 @@ You will be given:
 5. Include the small steps people often forget, like opening, closing, picking up, putting down and checking.
 6. Do not add foods, ingredients, brands or tools that are not already in the task steps.
 7. Do not give medical, allergy or diet advice. Do not add safety warnings or tips.
+   Do not add cooking times, temperatures, prices or money amounts. Do not ask for a card number or PIN.
+   Never say a dish is safe, or that food is cooked.
 8. Do not change what the original step means. Only break it down.
 9. No guilt or judging words.
 

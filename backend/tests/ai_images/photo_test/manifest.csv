@@ -1,0 +1,26 @@
+file,kind,truth,description
+web_foam_01.jpg,foam,unsafe,Foam takeout box from the web
+web_foam_02.jpg,foam,unsafe,Foam takeout box from the web
+web_foam_03.jpg,foam,unsafe,Black foam takeout box from the web
+web_foil_01.jpg,foil,unsafe,Foil tray from the web
+web_foil_02.jpg,foil,unsafe,Foil tray with foil lid from the web
+web_foil_03.jpg,foil,unsafe,"Food wrapped in foil in an oven, from the web"
+web_takeout_01.jpg,takeout,unsafe,Paper takeout box with a metal wire handle from the web
+web_takeout_02.jpg,takeout,unsafe,Takeout boxes with metal handles and Enjoy Thank you words from the web
+web_labeled_01.jpg,labeled,safe,"Plate bottom that says Dishwasher and Microwave Safe, real photo"
+web_labeled_02.jpg,labeled,unsafe,"Bowl bottom with a no microwave symbol and no words, from the web"
+web_package_01.jpg,package,unknown,"Frozen meal box with a time range 6.5 to 7.5 minutes, from the web"
+web_package_02.jpg,package,unknown,"Heating instructions with several times, from the web"
+web_plain_01.jpg,unlabeled,unknown,"Plain white mug, no words, from the web"
+web_plain_02.jpg,unlabeled,unknown,"Plain white bowl, no words, from the web"
+web_plain_03.jpg,unlabeled,unknown,"Plain light blue plate, no words, from the web"
+web_plain_04.jpg,unlabeled,unknown,"Plain light blue bowl, no words, from the web"
+web_goldtrim_01.jpg,trim,unsafe,White plate with a gold rim from the web
+web_silvertrim_01.jpg,trim,unsafe,Blue plate with a silver beaded rim from the web
+web_label_reheat_01.jpg,labeled,safe,"Label graphic that says MICROWAVE SAFE REHEAT ONLY, from the web"
+web_symbols_01.jpg,symbols,unknown,"Container lid with symbols only and no microwave words, from the web"
+web_symbolchart_01.jpg,symbols,unknown,"Chart of microwave symbols with a misspelled title, not a dish, from the web"
+web_notformicrowave_01.jpg,labeled,unsafe,"Bowl bottom that says NOT FOR MICROWAVE, from the web"
+web_notsafe_icons_01.jpg,labeled,unsafe,"Chart of NOT MICROWAVE OVEN SAFE icons, from the web"
+own_blurry_01.jpg,blurry,unknown,"Own blurry photo of a white mug, no words"
+own_blurry_02.jpg,blurry,unknown,"Own blurry photo of a floral bowl, no words"

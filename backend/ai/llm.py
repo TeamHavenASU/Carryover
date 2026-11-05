@@ -30,7 +30,7 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 log = logging.getLogger("carryover.llm")
 
 TIMEOUT_SECONDS = 20
-MAX_OUTPUT_TOKENS = 300
+MAX_OUTPUT_TOKENS = 2000  # room for the model's hidden thinking plus a short reply
 
 SAFE_FALLBACK = {
     "reply": "I'm not sure. Please ask someone you trust.",
@@ -77,7 +77,7 @@ def _call_anthropic(system_prompt, user_text, image, key, model) -> str:
         "messages": [{"role": "user", "content": content}],
     }
     resp = httpx.post(
-        os.getenv("LLM_BASE_URL", "https://api.anthropic.com").rstrip("/") + "/v1/messages",
+        (os.getenv("LLM_BASE_URL") or "https://api.anthropic.com").rstrip("/") + "/v1/messages",
         headers={
             "x-api-key": key,
             "anthropic-version": "2023-06-01",
@@ -107,7 +107,7 @@ def _call_openai_style(system_prompt, user_text, image, key, model) -> str:
             {"role": "user", "content": user_content},
         ],
     }
-    base = os.getenv("LLM_BASE_URL", "https://api.openai.com/v1").rstrip("/")
+    base = (os.getenv("LLM_BASE_URL") or "https://api.openai.com/v1").rstrip("/")
     resp = httpx.post(
         base + "/chat/completions",
         headers={"Authorization": f"Bearer {key}", "content-type": "application/json"},

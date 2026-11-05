@@ -1,4 +1,4 @@
-"""The two routes Role D owns: POST /ask and POST /split.
+"""The routes Role D owns: POST /ask, POST /split, POST /draft_skill and the skill card review routes.
 
 E creates api/main.py. Add these two lines to it:
 
@@ -14,6 +14,7 @@ from pydantic import BaseModel
 
 from ai.ask import ask
 from ai.common import StepNotFound, TaskNotFound
+from ai import skill_card
 from ai.split import split_step
 
 router = APIRouter()
@@ -30,6 +31,13 @@ class AskRequest(BaseModel):
 class SplitRequest(BaseModel):
     task_id: str
     step_id: str
+    hand: str | None = None   # "left", "right" or "either" turns on the extra detail version
+
+
+class DraftSkillRequest(BaseModel):
+    task_id: str
+    step_id: str
+    skill_title: str | None = None   # leave out to let the AI name the missing base skill
 
 
 @router.post("/ask")
@@ -46,6 +54,38 @@ def ask_route(req: AskRequest):
 def split_route(req: SplitRequest):
     """In: task_id, step_id.  Out: {"substeps": ["..."], "approved": false}"""
     try:
-        return split_step(req.task_id, req.step_id)
+        return split_step(req.task_id, req.step_id, req.hand)
     except (TaskNotFound, StepNotFound):
         raise HTTPException(status_code=404, detail="Task or step not found")
+
+
+@router.post("/draft_skill")
+def draft_skill_route(req: DraftSkillRequest):
+    """In: task_id, step_id, skill_title (optional).
+    Out: {"status": "pending" | "exists" | "failed", "skill_id": ..., "card": {...}}
+    A pending card is saved to data/skill_cards_pending.json. A person must approve it."""
+    try:
+        return skill_card.draft_skill_card(req.task_id, req.step_id, req.skill_title)
+    except (TaskNotFound, StepNotFound):
+        raise HTTPException(status_code=404, detail="Task or step not found")
+
+
+@router.get("/skills/pending")
+def pending_skills_route():
+    """Skill cards written by the AI that wait for a person."""
+    return skill_card.pending_cards()
+
+
+@router.post("/skills/{skill_id}/approve")
+def approve_skill_route(skill_id: str):
+    card = skill_card.approve_card(skill_id)
+    if card is None:
+        raise HTTPException(status_code=404, detail="Skill card not found")
+    return {"skill_id": skill_id, "approved": True}
+
+
+@router.post("/skills/{skill_id}/reject")
+def reject_skill_route(skill_id: str):
+    if not skill_card.reject_card(skill_id):
+        raise HTTPException(status_code=404, detail="Skill card not found")
+    return {"skill_id": skill_id, "rejected": True}

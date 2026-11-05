@@ -13,6 +13,10 @@ from pathlib import Path
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 TASKS_DIR = Path(os.getenv("TASKS_DIR", BACKEND_DIR / "data" / "tasks"))
 PROMPTS_DIR = BACKEND_DIR / "prompts"
+SKILLS_DIR = Path(os.getenv("SKILLS_DIR", BACKEND_DIR / "data" / "skills"))
+SKILL_PENDING_FILE = Path(
+    os.getenv("SKILL_CARDS_PENDING_FILE", BACKEND_DIR / "data" / "skill_cards_pending.json")
+)
 PENDING_FILE = Path(
     os.getenv("SPLITS_PENDING_FILE", BACKEND_DIR / "data" / "splits_pending.json")
 )
