@@ -294,6 +294,18 @@ def test_opening_every_small_step_has_nothing_to_trim():
     assert fade.offer_trim_small_steps(history, SPLIT_STEP, SPLIT_TASK, DEFS) is False
 
 
+def test_the_first_small_step_always_counts_as_used():
+    # s1a is shown by the split level itself and is never logged as opened.
+    # Opening every other small step means all of them: nothing to trim.
+    history = [split_session(["s1b", "s1c", "s1d"], day=d) for d in (7, 8, 9)]
+    assert fade.offer_trim_small_steps(history, SPLIT_STEP, SPLIT_TASK, DEFS) is False
+    # Opening only s1c still offers, and a trim keeps s1a with it.
+    history = [split_session(["s1c"], day=d) for d in (7, 8, 9)]
+    assert fade.offer_trim_small_steps(history, SPLIT_STEP, SPLIT_TASK, DEFS) is True
+    history += [split_session(["s1c"], day=10, answer="trim")]
+    assert [s["id"] for s in fade.small_steps_for(history, SPLIT_STEP, SPLIT_TASK, DEFS)] == ["s1a", "s1c"]
+
+
 def test_sessions_not_at_split_break_the_run():
     history = [split_session(["s1b"], day=7), split_session([], day=8, shown="hint"), split_session(["s1b"], day=9)]
     history += [split_session(["s1b"], day=10)]
@@ -304,8 +316,8 @@ def test_trim_keeps_only_the_opened_small_steps_in_their_order():
     history = [split_session(["s1d", "s1b"], day=d) for d in (7, 8, 9)]
     history += [split_session(["s1d", "s1b"], day=10, answer="trim")]
     kept = fade.small_steps_for(history, SPLIT_STEP, SPLIT_TASK, DEFS)
-    assert [s["id"] for s in kept] == ["s1b", "s1d"]
-    assert kept[0] == {"id": "s1b", "text": "Take out two slices"}
+    assert [s["id"] for s in kept] == ["s1a", "s1b", "s1d"]  # s1a, the first, is always kept
+    assert kept[1] == {"id": "s1b", "text": "Take out two slices"}
     assert fade.offer_trim_small_steps(history, SPLIT_STEP, SPLIT_TASK, DEFS) is False
 
 
@@ -325,7 +337,7 @@ def test_tips_are_not_small_steps():
     history = [split_session(["s1b", "tip1"], day=d) for d in (7, 8, 9)]
     assert fade.offer_trim_small_steps(history, SPLIT_STEP, SPLIT_TASK, DEFS) is True
     history += [split_session(["s1b"], day=10, answer="trim")]
-    assert [s["id"] for s in fade.small_steps_for(history, SPLIT_STEP, SPLIT_TASK, DEFS)] == ["s1b"]
+    assert [s["id"] for s in fade.small_steps_for(history, SPLIT_STEP, SPLIT_TASK, DEFS)] == ["s1a", "s1b"]
 
 
 def test_rule_3_answers_do_not_count_as_rule_2_answers():
@@ -552,6 +564,6 @@ def test_view_shows_only_the_kept_small_steps_after_trim(tmp_path, monkeypatch):
     path = _write_rows(tmp_path / "events.csv", sessions)
     week5 = fade.build_view("p", "toast", 5, events_path=path, defs=DEFS)
     step = week5["steps"][0]
-    assert [s["id"] for s in step["substeps"]] == ["s1b", "s1c"]
+    assert [s["id"] for s in step["substeps"]] == ["s1a", "s1b", "s1c"]
     assert step["offer_trim_small_steps"] is False
     assert step["tips"] == SPLIT_STEP["tips"]  # tips are never trimmed

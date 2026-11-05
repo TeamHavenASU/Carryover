@@ -224,6 +224,13 @@ def _small_step_state(history: list[list[dict]], step: dict, task: dict, defs: d
                 for r in session
                 if r["event"] == "small_step_opened" and r["step_id"] == sid and r["answer"] in ids
             )
+            if opened:
+                # At split the first small step is shown by the level itself
+                # and is never logged as small_step_opened. Without this, a
+                # trim would drop the first breakdown from someone who is
+                # stuck, which is backwards. So it always counts as used, and
+                # opening all the others counts as opening all of them.
+                opened |= {ids[0]}
             if not opened:
                 state["streak"] = []  # opened nothing: nothing to keep
             elif state["streak"] and state["streak"][-1] != opened:
