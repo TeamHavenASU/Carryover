@@ -435,6 +435,9 @@ def simulate_session(
     else:
         t += timedelta(seconds=round(start_time(task) * rng.uniform(0.1, 0.5)))
 
+    # Rule 2 offers for this session, decided from earlier sessions only.
+    offered = {s["step_id"]: fade.offer_less_help(history, s, task, _defs()) for s in task["steps"]}
+
     # The steps
     shown: dict[str, str] = {}
     outcomes: dict[str, str] = {}
@@ -494,14 +497,14 @@ def simulate_session(
             add(t, "check_answer", step_id=sid, help_shown=shown[sid],
                 answer="no" if outcomes[sid] == "forgot" else "yes")
 
-    # Rule 2: once a step has been done alone often enough (counting this
-    # session), the app asks "Want to try this step with less help?". The
-    # answer is an end_question row: "yes" (show me less) or "keep". Uses
-    # fade.offer_less_help so the data follows the same rule as the app.
-    # Fixed spacing (no random draws), so adding these rows moves nothing else.
+    # Rule 2: the screen reads offer_less_help from the view it gets when the
+    # task opens, which fade.py works out from earlier sessions only. So the
+    # offer belongs to this session if it was due before this session began,
+    # and the person answers at the end: an end_question row, "yes" (show me
+    # less) or "keep". Fixed spacing (no random draws).
     for step in task["steps"]:
         sid = step["step_id"]
-        if not fade.offer_less_help(history + [rows], step, task, _defs()):
+        if not offered[sid]:
             continue
         asked_before = sum(1 for s in history for r in s if r["event"] == "end_question" and r["step_id"] == sid)
         keep = asked_before + 1 in cfg.get("keep_less_help", {}).get(sid, [])
