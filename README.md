@@ -209,3 +209,5 @@ This test is a sanity check, not proof. With 0 wrong answers on 27 images, the t
 Two package photos (the Stasher bag and the If You Care pan box) are marked `safe` because the printed label says microwave safe.
 
 To run it: `cd backend && python tests/run_photo_test.py`
+
+AI tools helped build parts of this section. See "How AI tools were used (Role D)" in ATTRIBUTION.md for which files and what I did myself.
