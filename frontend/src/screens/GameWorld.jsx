@@ -3,6 +3,8 @@ import { getGame } from "../lib/api";
 import { worldState } from "../lib/game";
 import WorldArt, { RewardChoice } from "./WorldArt";
 import HowGameWorks from "./HowGameWorks";
+import RewardsList from "./RewardsList";
+import { STAR_EVERY, totalRewards } from "../lib/rewards";
 
 // My world (Game mode only): their world, a reward to pick if one is waiting, and milestones.
 // The rewards they picked are kept for each world separately, so switching worlds loses nothing.
@@ -30,6 +32,10 @@ export default function GameWorld({ personId, settings, update, world }) {
       {choiceWaiting && <RewardChoice world={world} animations={settings.animations} onPick={pick} />}
       <WorldArt world={world} unlocked={unlocked} moreNeeded={next && next.moreNeeded} surpriseMe={settings.surpriseMe}
         items={items} animations={settings.animations} />
+      <RewardsList world={world} items={items} />
+      {totalRewards(settings) > 0 && totalRewards(settings) % STAR_EVERY === 0 && (
+        <div className="card status" role="status"><p>You earned a star. You can see it on your profile.</p></div>
+      )}
       <details className="card">
         <summary>Milestones</summary>
         {game.milestones_reached.length

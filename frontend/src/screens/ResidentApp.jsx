@@ -23,6 +23,7 @@ import HowGameWorks from "./HowGameWorks";
 import { resolveWorld } from "../lib/worlds";
 import GameBackdrop from "./Backdrops";
 import ChooseWorld from "./ChooseWorld";
+import ProfileScreen from "./ProfileScreen";
 
 // One screen at a time. All step text and help levels come from /today (Format 3).
 export default function ResidentApp() {
@@ -240,6 +241,7 @@ export default function ResidentApp() {
   const back = {
     world: () => setView("tasks"),
     chooseworld: () => setView("tasks"),
+    profile: () => setView("tasks"),
     settings: () => setView("tasks"),
     start: closeWithoutStart,
     firstopen: closeWithoutStart,
@@ -251,10 +253,16 @@ export default function ResidentApp() {
     break: resume,
     done: () => setView("tasks"),
   }[view] || null;
-  const names = { tasks: inSetup ? "Welcome" : "My tasks", world: "My world", chooseworld: "Choose your world", settings: "Settings", help: "Help", all: "All steps", break: "Take a break" };
+  const names = { tasks: inSetup ? "Welcome" : "My tasks", world: "My world", chooseworld: "Choose your world", profile: "Profile", settings: "Settings", help: "Help", all: "All steps", break: "Take a break" };
   const title = names[view] || (today ? today.title : "Carryover");
   const allStepsLink = view === "step" ? (
     <button className="navbtn" onClick={() => { log("show_all_pressed", { step_id: step.step_id }); setView("all"); }}>All steps</button>
+  ) : null;
+  // The profile circle sits at the top right of the top-level screens.
+  const profileCircle = ["tasks", "world"].includes(view) && ready && s.setupDone ? (
+    <button className="avatar-btn" onClick={() => setView("profile")} aria-label="Profile">
+      <span aria-hidden="true">{(s.personId || "?").charAt(0).toUpperCase()}</span>
+    </button>
   ) : null;
   const showBottomNav = ready && s.setupDone && ["tasks", "world", "settings"].includes(view);
   const dark = (s.theme === "dark" ? "dark" : s.mode) === "dark";
@@ -263,7 +271,7 @@ export default function ResidentApp() {
   return (
     <div className={`resident ${showBottomNav ? "has-bottom-nav" : ""} ${s.style === "game" ? "game" : ""}`} {...lookAttributes({ ...s, theme: previewTheme || s.theme })}>
       {s.style === "game" && <GameBackdrop world={world} dark={dark} animations={s.animations} />}
-      <TopBar title={title} onBack={back} right={allStepsLink} />
+      <TopBar title={title} onBack={back} right={allStepsLink || profileCircle} />
 
       {error && <div className="card status" role="alert"><p>{error}</p></div>}
 
@@ -355,6 +363,8 @@ export default function ResidentApp() {
           }
         />
       )}
+
+      {view === "profile" && <ProfileScreen settings={s} />}
 
       {view === "chooseworld" && (
         <ChooseWorld settings={s} update={update} onDone={() => setView("tasks")} />

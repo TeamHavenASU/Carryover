@@ -38,6 +38,7 @@ export const DEFAULTS = {
   tipReadAsked: false,
   tipColorAsked: false,
   demoDone: 0,          // testing only: pretend this many extra tasks are done
+  demoRewards: 0,       // testing only: pretend this many extra rewards were picked
   gameWorld: "",        // "" until chosen (the sky is shown), then sky | space | animals | fruits
   animalChoice: "cat",  // cat | dog | fox (when the world is Animals)
   fruitChoice: "apple", // apple | strawberry | mango (when the world is Fruits)

@@ -168,8 +168,9 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
             <p>Pretend tasks done: {Number(settings.demoDone) || 0}</p>
             <div className="row">
               <button className="btn" onClick={() => update({ demoDone: (Number(settings.demoDone) || 0) + 1 })}>Pretend I finished a task</button>
-              <button className="btn" onClick={() => update({ demoDone: 0, gameItems: {} })}>Reset</button>
+              <button className="btn" onClick={() => update({ demoDone: 0, demoRewards: 0, gameItems: {} })}>Reset</button>
             </div>
+            <button className="btn" onClick={() => update({ demoRewards: (Number(settings.demoRewards) || 0) + 10 })}>Pretend I earned 10 rewards</button>
           </>
         )}
         <label htmlFor="week">Week</label>

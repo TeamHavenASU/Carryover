@@ -7,7 +7,8 @@
 // A typed interest (setup "What do you love?" > "other") will get its own world, with the plan
 // written by the AI. TODO(Role D, Manaswi): add that AI call; the four worlds below are fixed.
 
-const item = (name, animation) => ({ name, animation: animation || null });
+// attach: where the item sits on the companion animal (mouth, front or collar).
+const item = (name, animation, attach) => ({ name, animation: animation || null, attach: attach || null });
 
 const SKY = {
   family: "sky", key: "sky", name: "Sky",
@@ -25,22 +26,22 @@ const SPACE = {
 
 const ANIMALS = {
   cat: {
-    family: "animals", key: "animals:cat", name: "Cats", variant: "cat",
+    family: "animals", key: "animals:cat", name: "Cats", variant: "cat", animal: "cat", companion: true,
     areaWord: "spot", shape: "platform", area: (n) => `Cozy spot ${n}`,
     rewardQuestion: "You finished a task. Pick a gift for your cat.",
-    items: { yarn: item("A ball of yarn", "yarn"), fish: item("A fish", "fish"), bell: item("A bell", "bell") },
+    items: { yarn: item("A ball of yarn", "yarn", "front"), fish: item("A fish", "fish", "mouth"), bell: item("A bell", "bell", "collar") },
   },
   dog: {
-    family: "animals", key: "animals:dog", name: "Dogs", variant: "dog",
+    family: "animals", key: "animals:dog", name: "Dogs", variant: "dog", animal: "dog", companion: true,
     areaWord: "spot", shape: "platform", area: (n) => `Park spot ${n}`,
     rewardQuestion: "You finished a task. Pick a gift for your dog.",
-    items: { bone: item("A bone", "bone"), ball: item("A ball", "ball"), bowl: item("A bowl", "bowl") },
+    items: { bone: item("A bone", "bone", "mouth"), ball: item("A ball", "ball", "mouth"), bowl: item("A bowl", "bowl", "front") },
   },
   fox: {
-    family: "animals", key: "animals:fox", name: "Foxes", variant: "fox",
+    family: "animals", key: "animals:fox", name: "Foxes", variant: "fox", animal: "fox", companion: true,
     areaWord: "clearing", shape: "platform", area: (n) => `Forest clearing ${n}`,
     rewardQuestion: "You finished a task. Pick a gift for your fox.",
-    items: { acorn: item("An acorn", "acorn"), leaf: item("A leaf", "leaf"), mushroom: item("A mushroom", "mushroom") },
+    items: { acorn: item("An acorn", "acorn", "mouth"), leaf: item("A leaf", "leaf", "mouth"), mushroom: item("A mushroom", "mushroom", "front") },
   },
 };
 

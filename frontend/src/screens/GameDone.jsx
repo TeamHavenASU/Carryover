@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getGame } from "../lib/api";
 import { label, playSound, worldState } from "../lib/game";
+import { STAR_EVERY, totalRewards } from "../lib/rewards";
 import WorldArt, { RewardChoice } from "./WorldArt";
 
 // Game mode on the done screen: a calm moment in their sky. If a new island arrived, it slides
@@ -48,7 +49,10 @@ export default function GameDone({ personId, settings, update, donePromise, worl
 
   return (
     <>
-      {opened && <p className="card-text">A new {world.areaWord} opened in your world.</p>}
+      {opened && !world.companion && <p className="card-text">A new {world.areaWord} opened in your world.</p>}
+      {totalRewards(settings) > 0 && totalRewards(settings) % STAR_EVERY === 0 && !choiceWaiting && (
+        <div className="card status" role="status"><p>You earned a star. You can see it on your profile.</p></div>
+      )}
       {choiceWaiting && <RewardChoice world={world} animations={settings.animations} onPick={pickReward} />}
       <WorldArt world={world} unlocked={unlocked} moreNeeded={next && next.moreNeeded} surpriseMe={settings.surpriseMe}
         items={items} animations={settings.animations} arrivingArea={opened ? unlocked : null} compact />
