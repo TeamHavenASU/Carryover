@@ -1,0 +1,46 @@
+.staff-summary p {
+  margin: 0 0 8px;
+}
+
+.staff-filter {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 44px;
+}
+
+.staff-filter input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--calm-accent);
+}
+
+.staff-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.staff-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+}
+
+.staff-head h2 {
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.staff-list .points {
+  padding-left: 20px;
+  margin: 8px 0 0;
+  display: grid;
+  gap: 8px;
+}
+
+.staff-list .small {
+  font-size: 0.85em;
+  margin: 2px 0 0;
+}
