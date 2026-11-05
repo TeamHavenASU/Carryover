@@ -74,7 +74,7 @@ The demo reads `backend/data/live/events.csv`. To make it again (same result eve
 
 ```
 cd backend
-python -m sim.simulate
+python -m sim.simulate --force
 ```
 
 ## Tests
