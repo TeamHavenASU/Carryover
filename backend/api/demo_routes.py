@@ -22,6 +22,8 @@ def people():
     """Every person and task in the event log, with the last week that has events."""
     found: dict[tuple[str, str], int] = {}
     for row in load_events(EVENTS_PATH):
+        if not row["task_id"]:
+            continue  # feedback_answer rows are about the app, not a task
         key = (row["person_id"], row["task_id"])
         found[key] = max(found.get(key, 0), row["week"] or 0)
     return [

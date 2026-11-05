@@ -34,6 +34,7 @@ All step text comes from `backend/data/tasks/*.json`. The help level for each st
 | 20 | Game mode is the person's choice | Normal mode: no points, stars or game. Game mode (opt-in, switch any time): a world themed on their interests that opens as they learn, next area outlined ahead of time, milestones, unlockables. Rewards never depend on using less help; interest content is never taken away. Sound: Off / Very soft / Soft / Normal; animations: Off / Calm / Lively. No milestone for doing a step "on your own" (it could make someone avoid asking for help) | First Place (Nov 4); Research: Grove et al. 2018 (special interests); Lee et al. 2022 (gamified app, autistic adults); Deci, Koestner & Ryan 1999 (why it's opt-in and never tied to less help) |
 
 | 21 | The person picks the reading voice | Read-aloud uses a voice they pick from the voices already on their device (free, offline), and a speed (Slow / Normal). Offered when read-aloud is first turned on. Paid voices (e.g. ElevenLabs) are roadmap only | Hassell; Ours: privacy and cost |
+| 22 | Feedback is optional | A 'Tell us what you think' section in Settings: taps only, each answer tied to a setting the person can change; the help answer explains how help works and never changes the help level. Shared only if sharing is on | Research: Wehmeyer & Abery 2013; COGA (test with users) |
 
 ## Game mode (prototype)
 

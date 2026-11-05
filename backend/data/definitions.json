@@ -82,6 +82,7 @@
     "skill_card_shown": "Event: a skill card was shown before a step (step_id, answer = skill_id). Counts as used help.",
     "device_check_answer": "Event: answer to the task's first_time_question (answer yes / no / not_sure).",
     "setup_answer": "Event: one first-time setup answer (answer = question_id:value). Settings only; never used by detect or fade.",
+    "feedback_answer": "Event: one feedback answer (answer = question_id:value). Logged with an empty task_id because it is about the app, not a task. Never used by detect, fade or learn.",
     "skill_card_not_needed": "Event: the person said yes to 'Want me to stop showing this?' for a skill card (answer = skill_id). Game mode shows a milestone."
   },
   "take_a_break": {
@@ -227,5 +228,175 @@
       ]
     },
     "where": "Settings, not first-time setup (setup stays at 4 questions). Offered the first time read-aloud is turned on."
+  },
+  "feedback": {
+    "_status": "decided Nov 5",
+    "_note": "'Tell us what you think' in Settings. Optional, taps only (no typed text), always there in Settings. Each answer is tied to a setting the person can change right there: 'setting' is the Settings key the screens use (like the first_time_setup ids). The help question is recorded only and NEVER changes the help level. Shared with staff only if sharing is on. Logged as feedback_answer (answer = question_id:value) with an empty task_id.",
+    "title": "Tell us what you think",
+    "intro": "Tap one for each. You can change your answer any time.",
+    "thanks": "Thanks. Your answer is saved.",
+    "questions": [
+      {
+        "id": "movement",
+        "text": "Movement and animations",
+        "answers": [
+          {
+            "value": "just_right",
+            "text": "Just right"
+          },
+          {
+            "value": "too_much",
+            "text": "Too much",
+            "action": {
+              "text": "Want less movement? Tap one.",
+              "options": [
+                {
+                  "setting": "animations",
+                  "value": "calm",
+                  "text": "Calm"
+                },
+                {
+                  "setting": "animations",
+                  "value": "off",
+                  "text": "Off"
+                }
+              ]
+            }
+          },
+          {
+            "value": "too_little",
+            "text": "Too little",
+            "action": {
+              "text": "Want more movement? Tap one.",
+              "options": [
+                {
+                  "setting": "animations",
+                  "value": "lively",
+                  "text": "Lively"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "sound",
+        "text": "Sounds",
+        "answers": [
+          {
+            "value": "just_right",
+            "text": "Just right"
+          },
+          {
+            "value": "too_loud",
+            "text": "Too loud",
+            "action": {
+              "text": "Want it quieter? Tap one.",
+              "options": [
+                {
+                  "setting": "sound",
+                  "value": "soft",
+                  "text": "Soft"
+                },
+                {
+                  "setting": "sound",
+                  "value": "very_soft",
+                  "text": "Very soft"
+                },
+                {
+                  "setting": "sound",
+                  "value": "off",
+                  "text": "Off"
+                }
+              ]
+            }
+          },
+          {
+            "value": "too_quiet",
+            "text": "Too quiet",
+            "action": {
+              "text": "Want it louder? Tap one.",
+              "options": [
+                {
+                  "setting": "sound",
+                  "value": "soft",
+                  "text": "Soft"
+                },
+                {
+                  "setting": "sound",
+                  "value": "normal",
+                  "text": "Normal"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "colors",
+        "text": "Colors",
+        "answers": [
+          {
+            "value": "just_right",
+            "text": "Just right"
+          },
+          {
+            "value": "too_bright",
+            "text": "Too bright",
+            "action": {
+              "text": "Want a calmer look? Tap one.",
+              "options": [
+                {
+                  "setting": "theme",
+                  "value": "neutral",
+                  "text": "Calm neutral colors"
+                },
+                {
+                  "setting": "mode",
+                  "value": "dark",
+                  "text": "Dark mode"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "help",
+        "text": "Amount of help",
+        "_note": "Recorded only: never changes the help level. The numbers in the notes mirror fading_rules rule_2_show_less_after_done_alone (3) and rule_4_more_help_after_struggled_in_a_row (2).",
+        "answers": [
+          {
+            "value": "just_right",
+            "text": "Just right"
+          },
+          {
+            "value": "too_much",
+            "text": "Too much",
+            "note": "The app offers less help after you've done a step on your own 3 times. It always asks you first."
+          },
+          {
+            "value": "too_little",
+            "text": "Too little",
+            "note": "You can tap Help with this step any time, and the app gives more help if a step is hard twice."
+          }
+        ]
+      }
+    ],
+    "check_in": {
+      "after_tasks_done": 3,
+      "asked_once": true,
+      "questions": [
+        "movement",
+        "sound",
+        "colors"
+      ],
+      "text": "How is Carryover feeling for you?",
+      "answers": [
+        "good",
+        "some_things_bother_me",
+        "not_now"
+      ]
+    }
   }
 }

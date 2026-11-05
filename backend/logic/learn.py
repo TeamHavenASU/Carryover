@@ -109,6 +109,10 @@ def update_scores(events: list[dict], path: str | Path | None = SCORES_PATH, def
     scores: dict = {EVERYONE: {}}
     groups: dict[tuple[str, str], list[dict]] = {}
     for row in events:
+        # feedback_answer rows are about the app, not a task, so their task_id is
+        # empty. There is no task file to score them against: load_task("") raises.
+        if not row.get("task_id"):
+            continue
         groups.setdefault((row["person_id"], row["task_id"]), []).append(row)
 
     for (person, task_id), rows in sorted(groups.items()):
