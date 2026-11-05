@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { get, post } from "../api";
+import SkillCardReview from "../components/SkillCardReview/SkillCardReview";
 import "./Review.css";
 
 const MIN_STEPS = 3;
@@ -80,6 +81,8 @@ export default function Review() {
           onReject={() => reject(item)}
         />
       ))}
+
+      <SkillCardReview />
     </>
   );
 }

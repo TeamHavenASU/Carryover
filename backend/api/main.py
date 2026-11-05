@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.ai_routes import router as ai_router
 from api.demo_routes import router as demo_router
 from api.review_routes import router as review_router
+from api.skill_routes import router as skill_router
 
 app = FastAPI(title="Carryover")
 
@@ -21,6 +22,7 @@ app.add_middleware(
 app.include_router(ai_router)
 app.include_router(demo_router)
 app.include_router(review_router)
+app.include_router(skill_router)
 # The resident routes (GET /tasks, POST /event, GET /today) are included here too.
 
 
