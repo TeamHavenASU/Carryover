@@ -37,6 +37,7 @@ from pathlib import Path
 if __package__ in (None, ""):  # run as a plain script: make logic/ importable
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from logic import fade  # noqa: E402
 from logic.data_io import (  # noqa: E402
     ALL_EVENTS,
     EVENT_COLUMNS,
@@ -73,6 +74,8 @@ PATTERN_FROM_WEEK = WEEKS - 2  # patterns show in every session of weeks 8, 9 an
 #   unsure_skills  base skills answered "not_sure" at the skill check, so their
 #                  skill card shows until no longer needed
 #   phone          which substeps_by_phone list to use (phone tasks only)
+#   keep_less_help {step_id: [n, ...]}: answer "keep" to the n-th Rule 2 offer of
+#                  less help on that step. Every other offer is answered "yes".
 # ================================================================================
 _DEMO = {
     "jeremiah": {
@@ -96,6 +99,9 @@ _DEMO = {
         "skill_start": 0.5,
         "skill_gain": 0.04,
         "start_hours": (17, 18),
+        # Demo beat: offered less help on s3, she says "keep" and the app respects it.
+        # s3 has no check question, so this changes no random draws.
+        "keep_less_help": {"s3": [1]},
     },
     "sam": {  # the contrast case: no pattern, improves over the 10 weeks
         "task_id": "heat_meal",
@@ -253,9 +259,9 @@ def decide_help(person: str, task: dict, step_id: str, week: int, history: list[
 
     TEMPORARY: a simple scripted progression so the demo data looks right.
     Week 1 starts at help_levels.week_1_level (most help after a "no" to the
-    device check). After the step is done alone
-    rule_2_show_less_after_done_alone times at the current level it drops one
-    level (toward "hide"); after struggling
+    device check). It drops one level (toward "hide") only after the person
+    answered "yes" to Rule 2's offer of less help (the end_question rows
+    written in simulate_session); a "keep" holds it. After struggling
     rule_4_more_help_after_struggled_in_a_row times in a row it rises one level
     (toward "split"). This will be replaced by a call into fade.py, a one-line
     change to the return below.
@@ -266,25 +272,36 @@ def decide_help(person: str, task: dict, step_id: str, week: int, history: list[
 
     current = _start_level(person)
     since_change: list[str] = []  # results at the current level, oldest first
+    said_yes = False  # "yes" to less help since the level last changed
     for session in history:
         shown, result = step_result(session, step, task)
         if shown is None:
             continue
         if shown != current:
-            current, since_change = shown, []
+            current, since_change, said_yes = shown, [], False
         since_change.append(result)
+        answer = _less_help_answer(session, step_id)
+        if answer == fade.LESS_HELP_KEEP:
+            since_change, said_yes = [], False
+        elif answer == fade.LESS_HELP_YES:
+            said_yes = True
 
     if week == 1:
         return _start_level(person)
 
     i = levels.index(current)
     up = rules["rule_4_more_help_after_struggled_in_a_row"]
-    down = rules["rule_2_show_less_after_done_alone"]
     if len(since_change) >= up and all(r == "struggled" for r in since_change[-up:]):
         i = max(i - 1, 0)
-    elif len(since_change) >= down and all(r == "alone" for r in since_change[-down:]):
+    elif said_yes:
         i = min(i + 1, len(levels) - 1)
     return levels[i]
+
+
+def _less_help_answer(session: list[dict], step_id: str) -> str | None:
+    """The Rule 2 answer ("yes" or "keep") for this step in a session, or None."""
+    answers = [r["answer"] for r in session if r["event"] == "end_question" and r["step_id"] == step_id]
+    return answers[-1] if answers else None
 
 
 # --------------------------------------------------------------------------------
@@ -476,6 +493,21 @@ def simulate_session(
             t += timedelta(seconds=rng.randint(3, 10))
             add(t, "check_answer", step_id=sid, help_shown=shown[sid],
                 answer="no" if outcomes[sid] == "forgot" else "yes")
+
+    # Rule 2: once a step has been done alone often enough (counting this
+    # session), the app asks "Want to try this step with less help?". The
+    # answer is an end_question row: "yes" (show me less) or "keep". Uses
+    # fade.offer_less_help so the data follows the same rule as the app.
+    # Fixed spacing (no random draws), so adding these rows moves nothing else.
+    for step in task["steps"]:
+        sid = step["step_id"]
+        if not fade.offer_less_help(history + [rows], step, task, _defs()):
+            continue
+        asked_before = sum(1 for s in history for r in s if r["event"] == "end_question" and r["step_id"] == sid)
+        keep = asked_before + 1 in cfg.get("keep_less_help", {}).get(sid, [])
+        t += timedelta(seconds=4)
+        add(t, "end_question", step_id=sid, help_shown=shown[sid],
+            answer=fade.LESS_HELP_KEEP if keep else fade.LESS_HELP_YES)
 
     t += timedelta(seconds=rng.randint(2, 6))
     add(t, "task_done")
