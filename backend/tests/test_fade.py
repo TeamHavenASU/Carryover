@@ -19,6 +19,7 @@ DEFS = {
     },
     "fading_rules": {
         "rule_2_show_less_after_done_alone": 3,
+        "rule_2_ask_again_after_keep_it": 3,
         "rule_4_more_help_after_struggled_in_a_row": 2,
         "rule_5_offer_up_front_after_opened_in_a_row": 3,
         "rule_6_hint_wait_fractions_of_long_pause": [0.25, 0.5, 0.75],
@@ -65,8 +66,11 @@ def row(event, session_id="p-toast-w01", week=1, time="2026-09-07T10:00:00", **e
     return base
 
 
-def session(result, shown="hint", day=7):
-    """One session where step s1 went a certain way: alone, prompted, opened or struggled."""
+def session(result, shown="hint", day=7, less_help=None):
+    """One session where step s1 went a certain way: alone, prompted, opened or struggled.
+
+    less_help adds the person's Rule 2 answer for s1 at the end: "yes" or "keep".
+    """
     t = f"2026-09-{day:02d}T10:00:"
     rows = [
         row("task_opened", time=t + "00"),
@@ -79,6 +83,8 @@ def session(result, shown="hint", day=7):
     else:
         prompted = "yes" if result in ("opened", "prompted") else "no"
         rows.append(row("step_done", time=t + "40", step_id="s1", seconds=20.0, help_shown=shown, prompted=prompted))
+    if less_help:
+        rows.append(row("end_question", time=t + "52", step_id="s1", answer=less_help))
     rows.append(row("task_done", time=t + "55"))
     return rows
 
@@ -116,14 +122,62 @@ def test_no_history_gives_the_week_1_level():
     assert fade.next_level([], STEP, TASK, DEFS) == "hint"
 
 
-def test_three_alone_in_a_row_shows_less():
+def test_three_alone_in_a_row_asks_but_does_not_show_less_by_itself():
     history = [session("alone", day=d) for d in (7, 8, 9)]
-    assert fade.next_level(history, STEP, TASK, DEFS) == "hide"
+    assert fade.offer_less_help(history, STEP, TASK, DEFS) is True
+    assert fade.next_level(history, STEP, TASK, DEFS) == "hint"
 
 
 def test_two_alone_is_not_enough():
     history = [session("alone", day=d) for d in (7, 8)]
+    assert fade.offer_less_help(history, STEP, TASK, DEFS) is False
     assert fade.next_level(history, STEP, TASK, DEFS) == "hint"
+
+
+def test_yes_shows_one_level_less():
+    history = [session("alone", day=d) for d in (7, 8, 9)]
+    history += [session("alone", day=10, less_help="yes")]
+    assert fade.next_level(history, STEP, TASK, DEFS) == "hide"
+    assert fade.offer_less_help(history, STEP, TASK, DEFS) is False
+
+
+def test_keep_holds_the_level_and_asks_again_after_three_more():
+    history = [session("alone", day=d) for d in (7, 8, 9)]
+    history += [session("alone", day=10, less_help="keep")]
+    assert fade.next_level(history, STEP, TASK, DEFS) == "hint"
+    assert fade.offer_less_help(history, STEP, TASK, DEFS) is False
+    for day in (11, 12):
+        history += [session("alone", day=day)]
+        assert fade.next_level(history, STEP, TASK, DEFS) == "hint"
+        assert fade.offer_less_help(history, STEP, TASK, DEFS) is False
+    history += [session("alone", day=13)]
+    assert fade.next_level(history, STEP, TASK, DEFS) == "hint"
+    assert fade.offer_less_help(history, STEP, TASK, DEFS) is True
+
+
+def test_keep_then_yes_shows_less():
+    history = [session("alone", day=d) for d in (7, 8, 9)]
+    history += [session("alone", day=10, less_help="keep")]
+    history += [session("alone", day=d) for d in (11, 12, 13)]
+    history += [session("alone", day=14, less_help="yes")]
+    assert fade.next_level(history, STEP, TASK, DEFS) == "hide"
+
+
+def test_a_struggle_resets_the_count_for_less_help():
+    history = [session("alone", day=7), session("alone", day=8), session("struggled", day=9), session("alone", day=10)]
+    assert fade.offer_less_help(history, STEP, TASK, DEFS) is False
+    history += [session("alone", day=d) for d in (11, 12)]
+    assert fade.offer_less_help(history, STEP, TASK, DEFS) is True
+
+
+def test_help_shown_by_itself_is_not_done_alone():
+    history = [session("alone", day=7), session("alone", day=8), session("prompted", day=9)]
+    assert fade.offer_less_help(history, STEP, TASK, DEFS) is False
+
+
+def test_never_offers_less_help_at_the_least_help_level():
+    history = [session("alone", shown="hide", day=d) for d in (7, 8, 9)]
+    assert fade.offer_less_help(history, STEP, TASK, DEFS) is False
 
 
 def test_two_struggled_in_a_row_shows_more():
@@ -158,7 +212,7 @@ def test_the_count_starts_again_after_a_level_change():
 
 
 def test_decide_level_matches_the_simulator_arguments():
-    history = [session("alone", day=d) for d in (7, 8, 9)]
+    history = [session("alone", day=d) for d in (7, 8)] + [session("alone", day=9, less_help="yes")]
     assert fade.decide_level("p", TASK, "s1", 2, history, DEFS) == "hide"
     assert fade.decide_level("p", TASK, "s1", 1, history, DEFS) == "hint"
 
@@ -246,14 +300,11 @@ def test_skipped_weeks_are_counted_back_from_this_week():
 # ---- build_view
 
 
-@pytest.fixture
-def view_files(tmp_path, monkeypatch):
-    """A one step task and an event log with two weeks of easy sessions."""
-    monkeypatch.setattr(fade, "load_task", lambda task_id: TASK)
-    path = tmp_path / "events.csv"
+def _write_log(path, weeks):
+    """Write one easy session per week. weeks is [(week, day, less_help answer or None, shown)]."""
     rows = []
-    for week, day in ((1, 7), (2, 14), (3, 21)):
-        for r in session("alone", day=day):
+    for week, day, less_help, shown in weeks:
+        for r in session("alone", shown=shown, day=day, less_help=less_help):
             r["week"] = week
             r["session_id"] = f"p-toast-w{week:02d}"
             rows.append(r)
@@ -262,6 +313,22 @@ def view_files(tmp_path, monkeypatch):
         writer.writeheader()
         writer.writerows(rows)
     return path
+
+
+@pytest.fixture
+def view_files(tmp_path, monkeypatch):
+    """A one step task and an event log with three weeks of easy sessions."""
+    monkeypatch.setattr(fade, "load_task", lambda task_id: TASK)
+    return _write_log(tmp_path / "events.csv", [(1, 7, None, "hint"), (2, 14, None, "hint"), (3, 21, None, "hint")])
+
+
+@pytest.fixture
+def view_files_said_yes(tmp_path, monkeypatch):
+    """Easy sessions; asked in week 4, the person said "yes", and week 5 showed less help."""
+    monkeypatch.setattr(fade, "load_task", lambda task_id: TASK)
+    weeks = [(1, 7, None, "hint"), (2, 14, None, "hint"), (3, 21, None, "hint"), (4, 28, "yes", "hint")]
+    weeks += [(5, 29, None, "hide")]
+    return _write_log(tmp_path / "events.csv", weeks)
 
 
 def test_view_in_week_1_has_the_starting_level_and_the_safety_card(view_files):
@@ -276,22 +343,43 @@ def test_view_only_uses_earlier_weeks(view_files):
     # three alone sessions exist in weeks 1 to 3. In week 3 only two are known.
     week3 = fade.build_view("p", "toast", 3, events_path=view_files, defs=DEFS)
     week4 = fade.build_view("p", "toast", 4, events_path=view_files, defs=DEFS)
-    assert week3["steps"][0]["mode"] == "hint"
-    assert week4["steps"][0]["mode"] == "hide"
+    assert week3["steps"][0]["offer_less_help"] is False
+    assert week4["steps"][0]["offer_less_help"] is True
     assert week3["session_number"] == 3
     assert week3["show_safety_card"] is None
 
 
-def test_view_lists_check_questions_for_hidden_steps_every_second_session(view_files, monkeypatch):
+def test_view_asks_before_showing_less_help(view_files):
+    # three alone sessions: week 4 keeps the level and asks instead of dropping it
+    week4 = fade.build_view("p", "toast", 4, events_path=view_files, defs=DEFS)
+    assert week4["steps"][0]["mode"] == "hint"
+    assert week4["steps"][0]["offer_less_help"] is True
+
+
+def test_view_shows_less_help_after_yes(view_files_said_yes):
+    week5 = fade.build_view("p", "toast", 5, events_path=view_files_said_yes, defs=DEFS)
+    assert week5["steps"][0]["mode"] == "hide"
+    assert week5["steps"][0]["offer_less_help"] is False
+
+
+def test_view_lists_check_questions_for_hidden_steps_every_second_session(view_files_said_yes, monkeypatch):
     with_question = dict(TASK, steps=[dict(STEP, check_question="Is the bread in?"), TASK["steps"][1]])
     monkeypatch.setattr(fade, "load_task", lambda task_id: with_question)
 
-    week4 = fade.build_view("p", "toast", 4, events_path=view_files, defs=DEFS)
-    assert week4["session_number"] == 4
-    assert week4["check_questions"] == [{"step_id": "s1", "question": "Is the bread in?"}]
+    # s1 is hidden from week 5 (after "yes" in week 4). Session 6 is even: asked.
+    week6 = fade.build_view("p", "toast", 6, events_path=view_files_said_yes, defs=DEFS)
+    assert week6["session_number"] == 6
+    assert week6["check_questions"] == [{"step_id": "s1", "question": "Is the bread in?"}]
 
-    week3 = fade.build_view("p", "toast", 3, events_path=view_files, defs=DEFS)
-    assert week3["check_questions"] == []
+    # session 5 is odd: not asked
+    week5 = fade.build_view("p", "toast", 5, events_path=view_files_said_yes, defs=DEFS)
+    assert week5["session_number"] == 5
+    assert week5["check_questions"] == []
+
+    # session 4 is even, but s1 is not hidden yet in week 4
+    week4 = fade.build_view("p", "toast", 4, events_path=view_files_said_yes, defs=DEFS)
+    assert week4["session_number"] == 4
+    assert week4["check_questions"] == []
 
 
 def test_view_carries_hint_waits_and_substeps(view_files):

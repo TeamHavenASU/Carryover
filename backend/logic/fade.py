@@ -96,18 +96,42 @@ def step_result(session: list[dict], step: dict, task: dict, defs: dict) -> tupl
     return shown, "alone"
 
 
-def _level_and_streak(history: list[list[dict]], step: dict, task: dict, defs: dict) -> tuple[str, list[str]]:
-    """The level the step was last shown at, and the results since it last changed."""
-    current = first_level(defs)
-    results: list[str] = []
+# Rule 2 answers to "Want to try this step with less help?", logged as an
+# end_question row with the step's step_id (exact strings from Role A).
+LESS_HELP_YES = "yes"  # show me less
+LESS_HELP_KEEP = "keep"  # keep it as it is
+
+
+def _less_help_answer(session: list[dict], step_id: str) -> str | None:
+    """The person's last Rule 2 answer for this step in this session, or None."""
+    answers = [r["answer"] for r in session if r["event"] == "end_question" and r["step_id"] == step_id]
+    return answers[-1] if answers else None
+
+
+def _step_state(history: list[list[dict]], step: dict, task: dict, defs: dict) -> dict:
+    """Where a step stands after these sessions.
+
+    level     the level it was last shown at
+    results   results since the level last changed, or since the last "keep"
+    kept      the person said "keep" since the level last changed
+    said_yes  the person said "yes" to less help since the level last changed
+    """
+    state = {"level": first_level(defs), "results": [], "kept": False, "said_yes": False}
     for session in history:
         shown, result = step_result(session, step, task, defs)
         if result is None:
             continue
-        if shown and shown != current:
-            current, results = shown, []
-        results.append(result)
-    return current, results
+        if shown and shown != state["level"]:
+            state = {"level": shown, "results": [], "kept": False, "said_yes": False}
+        state["results"].append(result)
+        answer = _less_help_answer(session, step["step_id"])
+        if answer == LESS_HELP_KEEP:
+            # Respect it: start counting again, and ask again only after
+            # rule_2_ask_again_after_keep_it more sessions done alone.
+            state.update(results=[], kept=True, said_yes=False)
+        elif answer == LESS_HELP_YES:
+            state["said_yes"] = True
+    return state
 
 
 def _last_all(results: list[str], count: int, wanted: str) -> bool:
@@ -115,19 +139,41 @@ def _last_all(results: list[str], count: int, wanted: str) -> bool:
 
 
 def next_level(history: list[list[dict]], step: dict, task: dict, defs: dict) -> str:
-    """The help level this step shows in the next session."""
+    """The help level this step shows in the next session.
+
+    Rule 2: help never drops by itself. Once the step is done alone often
+    enough the person is asked (see offer_less_help), and it drops one level
+    only after they answer "yes".
+    """
     order = levels(defs)
     rules = defs["fading_rules"]
-    current, results = _level_and_streak(history, step, task, defs)
+    state = _step_state(history, step, task, defs)
+    current, results = state["level"], state["results"]
     i = order.index(current) if current in order else order.index(first_level(defs))
 
     if _last_all(results, rules["rule_4_more_help_after_struggled_in_a_row"], "struggled"):
         i -= 1
-    elif _last_all(results, rules["rule_2_show_less_after_done_alone"], "alone"):
+    elif state["said_yes"]:
         i += 1
     elif _last_all(results, rules["rule_5_offer_up_front_after_opened_in_a_row"], "opened"):
         i -= 1
     return order[max(0, min(i, len(order) - 1))]
+
+
+def offer_less_help(history: list[list[dict]], step: dict, task: dict, defs: dict) -> bool:
+    """Rule 2: should the app ask "Want to try this step with less help?" this session.
+
+    True after rule_2_show_less_after_done_alone sessions in a row done alone
+    at the current level, or after rule_2_ask_again_after_keep_it more if the
+    person last said "keep". Never at the least help level, and not again
+    once they have said "yes".
+    """
+    rules = defs["fading_rules"]
+    state = _step_state(history, step, task, defs)
+    if state["level"] == levels(defs)[-1] or state["said_yes"]:
+        return False
+    need = rules["rule_2_ask_again_after_keep_it"] if state["kept"] else rules["rule_2_show_less_after_done_alone"]
+    return _last_all(state["results"], need, "alone")
 
 
 def decide_level(person: str, task: dict, step_id: str, week: int, history: list[list[dict]], defs: dict | None = None) -> str:
@@ -238,12 +284,16 @@ def build_view(
     steps = []
     for step in task["steps"]:
         mode = first_level(defs) if not sessions else next_level(sessions, step, task, defs)
+        offer = bool(sessions) and offer_less_help(sessions, step, task, defs)
         steps.append(
             {
                 "step_id": step["step_id"],
                 "text": step["text"],
                 "hint": step.get("hint", step["text"]),
                 "mode": mode,
+                # Rule 2: ask at the end of this session "Want to try this step
+                # with less help?" and log the answer as end_question, "yes" or "keep".
+                "offer_less_help": offer,
                 "wait": bool(step.get("wait")),
                 "long_pause_seconds": long_pause(step, task, defs),
                 "hint_waits": hint_waits(step, task, defs),
