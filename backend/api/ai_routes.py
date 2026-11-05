@@ -1,4 +1,4 @@
-"""The routes Role D owns: POST /ask, POST /split, POST /draft_skill and the skill card review routes.
+"""The routes Role D owns: POST /ask, POST /split, POST /draft_skill. The skill card review routes are in api/skill_routes.py.
 
 E creates api/main.py. Add these two lines to it:
 
@@ -68,24 +68,3 @@ def draft_skill_route(req: DraftSkillRequest):
         return skill_card.draft_skill_card(req.task_id, req.step_id, req.skill_title)
     except (TaskNotFound, StepNotFound):
         raise HTTPException(status_code=404, detail="Task or step not found")
-
-
-@router.get("/skills/pending")
-def pending_skills_route():
-    """Skill cards written by the AI that wait for a person."""
-    return skill_card.pending_cards()
-
-
-@router.post("/skills/{skill_id}/approve")
-def approve_skill_route(skill_id: str):
-    card = skill_card.approve_card(skill_id)
-    if card is None:
-        raise HTTPException(status_code=404, detail="Skill card not found")
-    return {"skill_id": skill_id, "approved": True}
-
-
-@router.post("/skills/{skill_id}/reject")
-def reject_skill_route(skill_id: str):
-    if not skill_card.reject_card(skill_id):
-        raise HTTPException(status_code=404, detail="Skill card not found")
-    return {"skill_id": skill_id, "rejected": True}

@@ -598,14 +598,21 @@ def test_skill_card_unknown_step():
         skill_card.draft_skill_card("heat_meal", "s99", "x")
 
 
-def test_routes(fake_model):
+def test_routes(fake_model, monkeypatch):
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
 
+    from api import skill_routes
     from api.ai_routes import router
+
+    # The review routes (pending, approve, reject) are Role E's, in api/skill_routes.py.
+    # Point them at the same temporary files this test uses.
+    monkeypatch.setattr(skill_routes, "SKILLS_DIR", skill_card.SKILLS_DIR)
+    monkeypatch.setattr(skill_routes, "PENDING_FILE", skill_card.SKILL_PENDING_FILE)
 
     app = FastAPI()
     app.include_router(router)
+    app.include_router(skill_routes.router)
     client = TestClient(app)
     fake_model([GOOD_CARD])
     r = client.post("/draft_skill", json={"task_id": "heat_meal", "step_id": "s4", "skill_title": "Find the Start button"})
