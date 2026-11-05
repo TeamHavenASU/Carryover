@@ -140,7 +140,12 @@ def decide_level(person: str, task: dict, step_id: str, week: int, history: list
 
 
 def hint_waits(step: dict, task: dict, defs: dict) -> list[int]:
-    """Seconds to wait before offering help, at 1/4, 1/2 and 3/4 of the long pause."""
+    """Seconds to wait before offering help, at 1/4, 1/2 and 3/4 of the long pause.
+
+    Waiting steps (food heating, a timer) never offer help, so they get no times.
+    """
+    if step.get("wait"):
+        return []
     pause = long_pause(step, task, defs)
     return [round(f * pause) for f in defs["fading_rules"]["rule_6_hint_wait_fractions_of_long_pause"]]
 
