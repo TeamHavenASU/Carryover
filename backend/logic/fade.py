@@ -26,6 +26,24 @@ def first_level(defs: dict) -> str:
     return hl[hl["week_1_level"]]
 
 
+def start_level(defs: dict, first_time_answer: str | None = None) -> str:
+    """The level a task starts at. A "No" to the task's first_time_question
+    (a device they haven't used before) starts it at most help."""
+    if is_new_device(first_time_answer):
+        return levels(defs)[0]
+    return first_level(defs)
+
+
+def is_new_device(first_time_answer: str | None) -> bool:
+    return (first_time_answer or "").strip().lower() == "no"
+
+
+def first_time_answer_from(events: list[dict]) -> str | None:
+    """The person's last answer to the task's first_time_question, if they gave one."""
+    answers = [r["answer"] for r in events if r["event"] == "device_check_answer" and r["answer"]]
+    return answers[-1] if answers else None
+
+
 def long_pause(step: dict, task: dict, defs: dict) -> float:
     """The step's own long pause, else the task's, else the default."""
     default = defs["defaults"]["long_pause_seconds"]
@@ -360,16 +378,24 @@ def build_view(
     events_path=LIVE_EVENTS_PATH,
     defs: dict | None = None,
     days_since_last: int | None = None,
+    first_time_answer: str | None = None,
 ) -> dict:
     """What the resident sees for this task in this week.
 
     Only events from weeks before `week` are used for the help levels.
+
+    first_time_answer is the answer to the task's first_time_question in this
+    session. If it is not given, the last answer in the history is used. A "No"
+    starts every step at most help, and from then on the level shown last time
+    carries over, so it fades the normal way (Rule 2).
     """
     defs = defs or load_definitions()
     task = load_task(task_id)
 
     history_rows = load_events(events_path, person_id, task_id, up_to_week=week - 1)
     sessions = split_sessions(history_rows, defs)
+    if first_time_answer is None:
+        first_time_answer = first_time_answer_from(history_rows)
 
     if days_since_last is None:
         all_rows = load_events(events_path, person_id, task_id)
@@ -383,7 +409,7 @@ def build_view(
     steps = []
     for step in task["steps"]:
         mode = (
-            first_level(defs)
+            start_level(defs, first_time_answer)
             if not sessions
             else next_level(sessions, step, task, defs, missing=step["step_id"] in missed)
         )
@@ -392,8 +418,12 @@ def build_view(
             {
                 "step_id": step["step_id"],
                 "text": step["text"],
-                "hint": step.get("hint", step["text"]),
                 "mode": mode,
+                # Shown as a CAUTION line at every help level, even when folded.
+                "safety": step.get("safety"),
+                "picture": step.get("picture"),
+                "video": step.get("video"),
+                "base_skills": step.get("base_skills", []),
                 # Rule 2: ask at the end of this session "Want to try this step
                 # with less help?" and log the answer as end_question, "yes" or "keep".
                 "offer_less_help": offer,
@@ -428,6 +458,8 @@ def build_view(
         "start_push": task.get("start_push") if start_push_on(sessions, task, defs) else None,
         "show_refresher": "rusty_after_gap" in codes,
         "show_safety_card": task.get("safety_card") if not sessions else None,
+        "first_time_question": task.get("first_time_question") if not sessions else None,
+        "new_device": is_new_device(first_time_answer),
         "break_note": task.get("break_note"),
         "ask_about_skips": trailing_skipped_weeks(history_rows, week)
         >= defs["fading_rules"]["rule_8_skips_before_asking_once"],

@@ -58,9 +58,11 @@ flowchart TD
 
 1. The resident screen asks for today's view of a task.
 2. `fade.build_view()` loads the task file and the person's earlier events.
-3. For each step it works out the help level (`split`, `hint` or `hide`) from how the last sessions went. The rules and numbers are in `definitions.json`.
-4. The view also says whether to show the start push, the safety card, a refresher, and which check questions are due.
-5. The screen shows what the view says and never picks a help level itself.
+3. For each step it works out the help level (`split`, `hint` or `hide`) from how the last sessions went. The rules and numbers are in `definitions.json`. Some help (`hint`) shows the full step text; there are no short names.
+4. Each step also carries `safety`, `picture`, `video` and `base_skills`. `safety` is shown as a CAUTION line at every help level, even when the step is folded.
+5. The first time a task is opened, the view carries the task's `first_time_question`. If the answer is No (`first_time_answer`, or the `device_check_answer` in the history), every step starts at most help and `new_device` is true. After that the level shown last time carries over and fades the normal way.
+6. The view also says whether to show the start push, the safety card, a refresher, and which check questions are due.
+7. The screen shows what the view says and never picks a help level itself.
 
 In the demo, the week slider sets the week. Only events from earlier weeks are used, so the app can't see the future.
 

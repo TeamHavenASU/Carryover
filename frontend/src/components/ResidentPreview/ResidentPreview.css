@@ -45,3 +45,10 @@
   font-size: 0.85em;
   margin: 6px 0 0;
 }
+
+.preview .caution {
+  font-weight: 600;
+  border-left: 4px solid #b3541e;
+  padding-left: 8px;
+  margin: 6px 0 0;
+}
