@@ -51,7 +51,7 @@ export default function DoneScreen({ today, settings, update, personId, doneProm
         </div>
       )}
       {!q && settings.style === "game" && (
-        <GameDone personId={personId} settings={settings} update={update} donePromise={donePromise} dark={dark} world={world} />
+        <GameDone personId={personId} settings={settings} update={update} donePromise={donePromise} world={world} />
       )}
       <button className="btn primary" onClick={onFinish}>Go to my tasks</button>
     </section>

@@ -48,6 +48,7 @@ LIVE_EVENTS_PATH = DATA_DIR / "live" / "events.csv"
 #     skill_card_shown       the skill_id
 #     skill_card_not_needed  the skill_id
 #     setup_answer           question_id:value
+#     feedback_answer        question_id:value (task_id is EMPTY: about the app, not a task)
 # - prompted is used only on step_done, values "yes" or "no".
 EVENT_COLUMNS = [
     "person_id",
@@ -103,6 +104,7 @@ ALL_EVENTS = [
     "end_question",
     "refresher_answer",
     "still_want_answer",  # Rule 8 "Do you still want to practice this task?". No step_id; answer holds yes/no
+    "feedback_answer",  # Settings "Tell us what you think". answer holds question_id:value; task_id is EMPTY (about the app, not a task)
     # first-time setup and skill cards (these use the answer column)
     "setup_answer",  # question_id:value. Settings only; never used by detect or fade
     "device_check_answer",  # the task's first_time_question: yes / no / not_sure

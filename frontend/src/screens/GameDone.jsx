@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { getGame } from "../lib/api";
 import { label, playSound, worldState } from "../lib/game";
-import SkyWorld, { RewardChoice } from "./SkyWorld";
+import { STAR_EVERY, totalRewards } from "../lib/rewards";
+import WorldArt, { RewardChoice } from "./WorldArt";
 
 // Game mode on the done screen: a calm moment in their sky. If a new island arrived, it slides
 // in (only if animations are on) and they choose what joins their sky. The first time a sound or
 // an animation would play, they are asked which one they want.
-export default function GameDone({ personId, settings, update, donePromise, dark, world }) {
+export default function GameDone({ personId, settings, update, donePromise, world }) {
   const [game, setGame] = useState(null);
   const [played, setPlayed] = useState(false);
 
@@ -39,17 +40,22 @@ export default function GameDone({ personId, settings, update, donePromise, dark
   if (needAnim) return pick("How much should things move?", game.settings.animations, "animations", "animationsAsked");
 
   const every = game.new_area_every_tasks_done;
-  const { unlocked, next } = worldState(game.tasks_done, every);
-  const opened = game.tasks_done > 0 && game.tasks_done % every === 0;
-  const items = settings.skyItems || [];
-  const choiceWaiting = items.length < unlocked - 1;
+  const done = game.tasks_done + (Number(settings.demoDone) || 0);
+  const { unlocked, next } = worldState(done, every);
+  const opened = done > 0 && done % every === 0;
+  const items = (settings.gameItems || {})[world.key] || [];
+  const choiceWaiting = items.length < done; // one reward for every task finished
+  const pickReward = (id) => update({ gameItems: { ...(settings.gameItems || {}), [world.key]: [...items, id] } });
 
   return (
     <>
-      {opened && <p>A new {world.areaWord} arrived in your {world.id === "sky" ? "sky" : "world"}.</p>}
-      {choiceWaiting && <RewardChoice world={world} animations={settings.animations} onPick={(id) => update({ skyItems: [...items, id] })} />}
-      <SkyWorld world={world} unlocked={unlocked} moreNeeded={next && next.moreNeeded} surpriseMe={settings.surpriseMe}
-        items={items} dark={dark} animations={settings.animations} arrivingIsland={opened ? unlocked : null} compact />
+      {opened && !world.companion && <p className="card-text">A new {world.areaWord} opened in your world.</p>}
+      {totalRewards(settings) > 0 && totalRewards(settings) % STAR_EVERY === 0 && !choiceWaiting && (
+        <div className="card status" role="status"><p>You earned a star. You can see it on your profile.</p></div>
+      )}
+      {choiceWaiting && <RewardChoice world={world} animations={settings.animations} onPick={pickReward} />}
+      <WorldArt world={world} unlocked={unlocked} moreNeeded={next && next.moreNeeded} surpriseMe={settings.surpriseMe}
+        items={items} animations={settings.animations} arrivingArea={opened ? unlocked : null} compact />
     </>
   );
 }

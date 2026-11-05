@@ -169,6 +169,17 @@ def test_people_lists_each_person_and_task(events_file):
     assert people == [{"person_id": "amy", "task_id": "heat_meal", "title": people[0]["title"], "last_week": 3}]
 
 
+def test_people_ignores_feedback_rows_with_no_task(events_file):
+    # feedback_answer is about the app, not a task, so its task_id is empty.
+    with open(events_file, "a", newline="") as f:
+        csv.DictWriter(f, fieldnames=FIELDS).writerow({
+            **dict.fromkeys(FIELDS, ""), "person_id": "amy", "task_id": "", "session_id": "amy-settings-w03",
+            "week": 3, "timestamp": "2026-09-21T10:02:00", "event": "feedback_answer", "answer": "sound:too_loud",
+        })
+    people = client.get("/demo/people").json()
+    assert [(p["person_id"], p["task_id"]) for p in people] == [("amy", "heat_meal")]
+
+
 def test_help_counts_have_one_entry_per_week_up_to_the_slider(events_file):
     params = {"person_id": "amy", "task_id": "heat_meal"}
     counts = client.get("/demo/help_counts", params={**params, "up_to_week": 3}).json()

@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
+import { get } from "../api";
+import { logEvent, sessionId } from "../lib/api";
+import { AnswerIcon } from "../lib/icons";
 import { PALETTES, deviceVoices } from "../lib/settings";
+import { WORLD_CHOICES } from "../lib/worlds";
 
 // Settings (Carryover decisions): Looks, Reading voice, Game or Normal, Sound, Animations,
 // Support person, Sharing with staff, Phone type, Redo first-time setup. Labels sit above
@@ -7,6 +11,13 @@ import { PALETTES, deviceVoices } from "../lib/settings";
 export default function SettingsScreen({ settings, update, onRedoSetup }) {
   const [voices, setVoices] = useState(deviceVoices);
   const [confirm, setConfirm] = useState(null); // "redo" | "sharing"
+  // "Tell us what you think": questions, answers and their actions come from definitions.json (GET /feedback).
+  const [feedback, setFeedback] = useState(null);
+  const [feedbackError, setFeedbackError] = useState("");
+  const [justAnswered, setJustAnswered] = useState({}); // question id -> the answer tapped this visit
+  useEffect(() => {
+    get("/feedback").then(setFeedback).catch(() => setFeedbackError("The questions could not load. Check that the app is connected."));
+  }, []);
 
   // Voices on the device load a moment after the page does.
   useEffect(() => {
@@ -55,6 +66,57 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
   );
   const week = Number(settings.week);
 
+  // One tap = one feedback_answer row (answer "question_id:value", like setup_answer). It is about
+  // the app, not a task, so task_id is empty and the session id says "settings" where the task
+  // id would go. Nothing is logged until the person has said who they are.
+  const answerFeedback = (q, a) => {
+    update({ feedback: { ...(settings.feedback || {}), [q.id]: a.value } });
+    setJustAnswered((m) => ({ ...m, [q.id]: a }));
+    if (!settings.personId || !(week >= 1)) return;
+    logEvent({
+      person_id: settings.personId,
+      task_id: "",
+      session_id: sessionId(settings.personId, "settings", week),
+      week,
+      event: "feedback_answer",
+      answer: `${q.id}:${a.value}`,
+    });
+  };
+  // Only the sound choices have a picture in the icon set; it always sits next to its words.
+  const optionIcon = (o) => (o.setting === "sound" ? <AnswerIcon id={o.value === "normal" ? "normal_sound" : o.value} /> : null);
+  const feedbackQuestion = (q) => {
+    const picked = (settings.feedback || {})[q.id];
+    const a = justAnswered[q.id];
+    return (
+      <fieldset key={q.id}>
+        <legend>{q.text}</legend>
+        <div className="segmented">
+          {q.answers.map((ans) => (
+            <label key={ans.value} className={`segment ${picked === ans.value ? "on" : ""}`}>
+              <input type="radio" name={`feedback-${q.id}`} value={ans.value} checked={picked === ans.value} onChange={() => answerFeedback(q, ans)} />
+              {ans.text}
+            </label>
+          ))}
+        </div>
+        {a && (
+          <div role="status">
+            {a.note && <p className="muted">{a.note}</p>}
+            {a.action && <p>{a.action.text}</p>}
+            {a.action && a.action.options.map((o) => {
+              const on = settings[o.setting] === o.value;
+              return (
+                <button key={`${o.setting}-${o.value}`} className="btn answer-btn" aria-pressed={on} onClick={() => update({ [o.setting]: o.value })}>
+                  {optionIcon(o)}{o.text}{on ? " (on now)" : ""}
+                </button>
+              );
+            })}
+            {!a.note && !a.action && <p className="muted">{feedback.thanks}</p>}
+          </div>
+        )}
+      </fieldset>
+    );
+  };
+
   return (
     <section>
       <div className="card">
@@ -92,7 +154,24 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
       <div className="card">
         <h2>Game or Normal</h2>
         {radios("Style", "style", [["normal", "Normal"], ["game", "Game"]])}
-        {settings.style === "game" && toggle("Surprise me (hide the next island until it opens)", "surpriseMe")}
+        <p className="muted">Game: the whole app sits in a world you choose. Finish a task to pick a reward, and a new area opens every 2 tasks. Normal: no game at all.</p>
+        {settings.style === "game" && (
+          <>
+            <label htmlFor="gameWorld">Game world</label>
+            <select id="gameWorld" value={settings.gameWorld || "sky"} onChange={(e) => update({ gameWorld: e.target.value })}>
+              {WORLD_CHOICES.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}
+            </select>
+            {WORLD_CHOICES.filter((w) => w.sub && w.id === (settings.gameWorld || "sky")).map((w) => (
+              <div key={w.id}>
+                <label htmlFor={w.sub}>{w.id === "animals" ? "Which animal" : "Which fruit"}</label>
+                <select id={w.sub} value={settings[w.sub]} onChange={(e) => update({ [w.sub]: e.target.value })}>
+                  {w.options.map(([v, t]) => <option key={v} value={v}>{t}</option>)}
+                </select>
+              </div>
+            ))}
+            {toggle("Surprise me (hide the next area until it opens)", "surpriseMe")}
+          </>
+        )}
       </div>
 
       <div className="card">
@@ -139,11 +218,29 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
       </div>
 
       <div className="card">
+        <h2>{feedback ? feedback.title : "Tell us what you think"}</h2>
+        {feedbackError && <p className="muted">{feedbackError}</p>}
+        {feedback && <p className="muted">{feedback.intro}</p>}
+        {feedback && feedback.questions.map(feedbackQuestion)}
+      </div>
+
+      <div className="card">
         <h2>For testing</h2>
         <label htmlFor="person">Who is using this (name or ID)</label>
         <input id="person" type="text" autoComplete="off" value={settings.personId}
           onChange={(e) => update({ personId: e.target.value.trim() })} aria-describedby="person-msg" />
         {!settings.personId && <p id="person-msg" className="field-error" role="alert">Enter a name or ID to see the tasks.</p>}
+        {settings.style === "game" && (
+          <>
+            <p className="muted">Try Game mode without finishing real tasks. This only changes this phone, and is not logged.</p>
+            <p>Pretend tasks done: {Number(settings.demoDone) || 0}</p>
+            <div className="row">
+              <button className="btn" onClick={() => update({ demoDone: (Number(settings.demoDone) || 0) + 1 })}>Pretend I finished a task</button>
+              <button className="btn" onClick={() => update({ demoDone: 0, demoRewards: 0, gameItems: {} })}>Reset</button>
+            </div>
+            <button className="btn" onClick={() => update({ demoRewards: (Number(settings.demoRewards) || 0) + 10 })}>Pretend I earned 10 rewards</button>
+          </>
+        )}
         <label htmlFor="week">Week</label>
         <input id="week" type="number" inputMode="numeric" min="1" value={settings.week}
           onChange={(e) => update({ week: Math.max(1, Number(e.target.value) || 1) })} aria-describedby="week-msg" />

@@ -37,7 +37,13 @@ export const DEFAULTS = {
   // One-time questions already asked
   tipReadAsked: false,
   tipColorAsked: false,
-  skyItems: [],         // Game mode: what joined their sky (bird, balloon, kite)
+  feedback: {},         // "Tell us what you think" in Settings: question id -> latest answer (also logged as feedback_answer)
+  demoDone: 0,          // testing only: pretend this many extra tasks are done
+  demoRewards: 0,       // testing only: pretend this many extra rewards were picked
+  gameWorld: "",        // "" until chosen (the sky is shown), then sky | space | animals | fruits
+  animalChoice: "cat",  // cat | dog | fox (when the world is Animals)
+  fruitChoice: "apple", // apple | strawberry | mango (when the world is Fruits)
+  gameItems: {},        // rewards they picked, kept for each world: { "sky": ["bird"], "animals:cat": ["yarn"] }
 };
 
 // Remember, in this browser, that the "still want this task?" question was asked.

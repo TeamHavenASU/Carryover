@@ -339,7 +339,7 @@
 }
 
 .resident .sky-item { display: inline-block; width: 34px; height: 34px; }
-.resident .sky-item svg { width: 100%; height: 100%; }
+.resident .sky-item svg, .resident .sky-item img { width: 100%; height: 100%; display: block; }
 .resident .sky-word { width: auto; height: auto; font-size: 0.75em; padding: 1px 6px; background: var(--panel); color: var(--text); border-radius: 999px; }
 .resident .icon-pair { display: inline-flex; gap: 2px; }
 .resident .pic { display: inline-flex; vertical-align: -0.2em; }
@@ -354,3 +354,199 @@
 .resident details summary { list-style: none; gap: var(--gap-xs); }
 .resident details summary::-webkit-details-marker { display: none; }
 .resident details[open] .chevron { transform: rotate(90deg); }
+
+/* ---- Game mode: the sky is the whole background ---- */
+.resident.game { background: transparent; position: relative; }
+.resident.game > *:not(.game-backdrop) { position: relative; z-index: 1; }
+.resident.game .topbar, .resident.game .bottom-actions, .resident.game .bottom-nav { position: sticky; }
+.resident.game .bottom-actions, .resident.game .bottom-nav { position: fixed; }
+.resident.game .overlay { position: fixed; }
+.resident.game .topbar { background: var(--panel); }
+.resident.game .bottom-actions, .resident.game .bottom-nav { background: var(--panel); }
+.resident.game h1, .resident.game .muted, .resident.game .card-text, .resident.game .step-count { text-shadow: none; }
+.game-backdrop { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+
+/* Sky: pale day sky with a sun, or a deep night sky with a moon and still stars */
+.game-backdrop[data-world="sky"].light { background: linear-gradient(#bfe0f4 0%, #dff0fa 55%, #f3f9fd 100%); }
+.game-backdrop[data-world="sky"].dark { background: linear-gradient(#0b1730 0%, #172b4d 60%, #22355a 100%); }
+.game-backdrop .sun { position: absolute; top: 70px; right: 22px; width: 54px; height: 54px; border-radius: 50%; background: #f6d88a; box-shadow: 0 0 0 10px rgba(246, 216, 138, 0.35), 0 0 0 22px rgba(246, 216, 138, 0.15); }
+.game-backdrop .moon { position: absolute; top: 70px; right: 24px; width: 46px; height: 46px; border-radius: 50%; background: #e9e6d8; box-shadow: inset -12px -4px 0 0 #cfcbb8; }
+.game-backdrop .stars {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(1.6px 1.6px at 12% 14%, #fff 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 30% 8%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 55% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 72% 30%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 88% 52%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 20% 62%, #fff 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 44% 78%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 80% 86%, #fff 50%, transparent 51%);
+  opacity: 0.85; /* still: stars never twinkle */
+}
+.game-backdrop[data-world="space"].light .stars { opacity: 0.35; filter: invert(0.35) sepia(1) hue-rotate(210deg); }
+.game-backdrop .bg-cloud { position: absolute; fill: rgba(255, 255, 255, 0.9); }
+.game-backdrop.dark .bg-cloud { fill: rgba(255, 255, 255, 0.14); }
+.game-backdrop .bg-cloud.c1 { top: 110px; left: -10px; width: 120px; }
+.game-backdrop .bg-cloud.c2 { top: 300px; right: -20px; width: 150px; }
+.game-backdrop .bg-cloud.c3 { top: 520px; left: 14%; width: 100px; }
+@keyframes bg-drift { from { transform: translateX(0); } to { transform: translateX(46px); } }
+.game-backdrop[data-anim="calm"] .bg-cloud { animation: bg-drift 14s ease-in-out infinite alternate; }
+.game-backdrop[data-anim="calm"] .bg-cloud.c2 { animation-duration: 18s; }
+.game-backdrop[data-anim="calm"] .bg-cloud.c3 { animation-duration: 22s; }
+.game-backdrop[data-anim="lively"] .bg-cloud { animation: bg-drift 8s ease-in-out infinite alternate; }
+.game-backdrop .bg-flyer { position: absolute; left: 0; width: 70px; height: 70px; }
+
+/* Space: soft lilac for light mode, deep space for dark mode */
+.game-backdrop[data-world="space"].light { background: linear-gradient(#e2dcf4 0%, #ece8f8 55%, #f5f3fc 100%); }
+.game-backdrop[data-world="space"].dark { background: radial-gradient(ellipse at 50% 38%, #2b1a58 0%, #17103c 42%, #070716 100%); }
+.game-backdrop .nebula { position: absolute; inset: 0; background: radial-gradient(60% 40% at 25% 30%, rgba(165, 130, 220, 0.35), transparent 70%), radial-gradient(50% 35% at 80% 70%, rgba(120, 160, 230, 0.28), transparent 70%); }
+.game-backdrop .space-planet { position: absolute; top: 80px; right: 18px; width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #f0c3a3, #c98558); box-shadow: 0 0 0 1px rgba(0,0,0,0.05); }
+.game-backdrop .space-planet::after { content: ""; position: absolute; left: -18px; right: -18px; top: 28px; height: 10px; border-radius: 50%; border: 3px solid #e5c66b; transform: rotate(-12deg); }
+.game-backdrop .space-moon { position: absolute; top: 300px; left: 18px; width: 38px; height: 38px; border-radius: 50%; background: #d9d4ea; box-shadow: inset -9px -3px 0 0 #bdb6d6; }
+
+/* Animals: a warm background and faint paw prints, with the chosen animal's face */
+.game-backdrop[data-variant="cat"].light { background: linear-gradient(#f7e3d3 0%, #fbeee2 100%); }
+.game-backdrop[data-variant="cat"].dark { background: linear-gradient(#1d1627 0%, #30233d 100%); }
+.game-backdrop[data-variant="dog"].light { background: linear-gradient(#dfeed4 0%, #f1f7e8 100%); }
+.game-backdrop[data-variant="dog"].dark { background: linear-gradient(#12221a 0%, #1f3a29 100%); }
+.game-backdrop[data-variant="fox"].light { background: linear-gradient(#f6d8bd 0%, #fbe9db 100%); }
+.game-backdrop[data-variant="fox"].dark { background: linear-gradient(#22160f 0%, #3a2518 100%); }
+.game-backdrop .decor-img { position: absolute; opacity: 0.12; }
+.game-backdrop.dark .decor-img { filter: invert(1); opacity: 0.14; }
+.game-backdrop .big-face { right: 10px; top: 70px; width: 110px; height: 110px; opacity: 0.09; }
+.game-backdrop.dark .big-face { opacity: 0.1; }
+
+/* Fruits: a soft tint of the fruit, with faint fruit scattered about */
+.game-backdrop[data-variant="apple"].light { background: linear-gradient(#f5dcd6 0%, #fbefec 100%); }
+.game-backdrop[data-variant="apple"].dark { background: linear-gradient(#26120f 0%, #3f1f1b 100%); }
+.game-backdrop[data-variant="strawberry"].light { background: linear-gradient(#f8dce4 0%, #fdf0f4 100%); }
+.game-backdrop[data-variant="strawberry"].dark { background: linear-gradient(#260f1d 0%, #401a30 100%); }
+.game-backdrop[data-variant="mango"].light { background: linear-gradient(#fbe8bb 0%, #fdf5df 100%); }
+.game-backdrop[data-variant="mango"].dark { background: linear-gradient(#251b09 0%, #40300f 100%); }
+.game-backdrop .fruit-decor { opacity: 0.55; }
+.game-backdrop.dark .fruit-decor { filter: none; opacity: 0.32; }
+.game-backdrop .decor-img.falling { opacity: 0.5; }
+.game-backdrop.dark .decor-img.falling { filter: none; opacity: 0.35; }
+/* Animal toys and treats keep their own colours, only the paw prints and faces are tinted */
+.game-backdrop[data-world="animals"] .decor-img { opacity: 0.5; }
+.game-backdrop[data-world="animals"].dark .decor-img { filter: none; opacity: 0.32; }
+.game-backdrop[data-world="animals"] .decor-img[src$="paw.svg"], .game-backdrop[data-world="animals"] .big-face { opacity: 0.1; }
+.game-backdrop[data-world="animals"].dark .decor-img[src$="paw.svg"], .game-backdrop[data-world="animals"].dark .big-face { filter: invert(1); opacity: 0.12; }
+.game-backdrop[data-world="animals"] .big-face { width: 130px; height: 130px; right: 6px; top: 64px; }
+
+/* Cat: a window with the sky outside */
+.game-backdrop .scene-window { position: absolute; top: 64px; right: 18px; width: 96px; height: 120px; opacity: 0.9; }
+.game-backdrop .win-frame { fill: #c99a63; }
+.game-backdrop .win-sky { fill: #cfe6f5; }
+.game-backdrop.dark .win-frame { fill: #6a5036; }
+.game-backdrop.dark .win-sky { fill: #12203c; }
+.game-backdrop .win-sun { fill: #f6d88a; }
+.game-backdrop .win-moon { fill: #e9e6d8; }
+.game-backdrop .win-bar { stroke: #c99a63; stroke-width: 5; fill: none; }
+.game-backdrop.dark .win-bar { stroke: #6a5036; }
+.game-backdrop[data-variant="cat"] .big-face { top: auto; bottom: 90px; right: 10px; }
+
+/* Dog: rolling hills and a fence */
+.game-backdrop .scene-hills { position: absolute; left: 0; right: 0; bottom: 70px; width: 100%; height: 170px; }
+.game-backdrop .hill-a { fill: #bfe0a8; } .game-backdrop .hill-b { fill: #a9d28f; }
+.game-backdrop.dark .hill-a { fill: #1c3a26; } .game-backdrop.dark .hill-b { fill: #244a30; }
+.game-backdrop .scene-fence { position: absolute; left: 0; right: 0; bottom: 76px; width: 100%; height: 70px; }
+.game-backdrop .fence { stroke: #fff; stroke-width: 5; fill: none; opacity: 0.85; }
+.game-backdrop.dark .fence { stroke: #6f8a74; opacity: 0.7; }
+
+/* Fox: a pine forest along the bottom */
+.game-backdrop .scene-pines { position: absolute; left: 0; right: 0; bottom: 70px; width: 100%; height: 150px; }
+.game-backdrop .pine { fill: #c9936a; opacity: 0.8; }
+.game-backdrop.dark .pine { fill: #170f0a; opacity: 0.95; }
+
+/* Space, dark mode: a galaxy with a bright core, spiral arms and a dust lane */
+.game-backdrop .galaxy { position: absolute; left: -35%; top: 22%; width: 170%; height: 46%; transform: rotate(-22deg); }
+.game-backdrop .galaxy::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 226, 190, 0.7) 0%, rgba(226, 160, 235, 0.45) 14%, rgba(130, 118, 238, 0.3) 32%, rgba(62, 84, 205, 0.16) 52%, transparent 72%);
+}
+.game-backdrop .galaxy::after {
+  content: ""; position: absolute; left: 8%; right: 8%; top: 46%; height: 8%; border-radius: 50%;
+  background: rgba(8, 6, 22, 0.55); filter: blur(5px);
+}
+.game-backdrop .galaxy-arms {
+  position: absolute; inset: 4%;
+  background: repeating-conic-gradient(from 20deg at 50% 50%, rgba(206, 178, 255, 0.4) 0deg 11deg, transparent 11deg 52deg);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 8%, transparent 62%);
+  mask-image: radial-gradient(ellipse at 50% 50%, #000 8%, transparent 62%);
+  filter: blur(7px);
+}
+.game-backdrop .galaxy-core { position: absolute; left: 44%; top: 36%; width: 12%; height: 28%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 240, 215, 0.95), rgba(255, 214, 160, 0.4) 55%, transparent 75%); }
+.game-backdrop .stars-dense {
+  position: absolute; inset: 0; opacity: 0.8;
+  background-image:
+    radial-gradient(1.2px 1.2px at 6% 8%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 18% 22%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 27% 5%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 38% 28%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 47% 11%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 60% 6%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 69% 22%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 82% 9%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 93% 24%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 10% 70%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 24% 82%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 36% 66%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 52% 90%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 63% 74%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 76% 88%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 88% 68%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 96% 84%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 14% 48%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 90% 46%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 4% 92%, #fff 50%, transparent 51%);
+}
+@keyframes galaxy-turn { from { transform: rotate(-22deg); } to { transform: rotate(-17deg); } }
+.game-backdrop[data-anim="calm"] .galaxy { animation: galaxy-turn 60s ease-in-out infinite alternate; }
+.game-backdrop[data-anim="lively"] .galaxy { animation: galaxy-turn 30s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: reduce) {
+  .game-backdrop .bg-cloud { animation: none !important; }
+}
+
+/* The islands and what sits on them (cards sit on the sky, so these need no box of their own) */
+.sky-stage { margin: var(--gap-m) 0; }
+.how-game summary { font-weight: 700; }
+.how-game ul { padding-left: 1.2rem; }
+.card-text { color: var(--text); font-weight: 600; }
+
+/* Choose your game world */
+.resident .world-choice { display: flex; align-items: center; gap: var(--gap-m); text-align: left; border-color: var(--field-line); }
+.resident .world-choice.on { border-color: var(--accent); border-width: 3px; }
+.resident .world-swatch { width: 3rem; height: 3rem; flex-shrink: 0; border-radius: 12px; border: 2px solid var(--text); }
+.resident .world-swatch.sky { background: linear-gradient(#bfe0f4, #f3f9fd); }
+.resident .world-swatch.space { background: linear-gradient(#15103a, #7a5fc4); }
+.resident .world-swatch.animals { background: linear-gradient(#f7e3d3, #d9a982); }
+.resident .world-swatch.fruits { background: linear-gradient(#f8dce4, #e5a23a); }
+.resident .reward-art img { width: 28px; height: 28px; display: block; }
+.resident .card summary { font-weight: 700; }
+
+/* Fruit worlds: bigger rewards sitting on the crates */
+.resident .sky-stage[data-world="fruits"] .sky-item { width: 66px; height: 66px; }
+.resident .sky-stage[data-world="fruits"] .island-items { left: 10%; right: 10%; top: -30px; flex-wrap: wrap; justify-content: space-around; }
+.resident .sky-stage[data-world="animals"] .sky-item { width: 52px; height: 52px; }
+
+/* The companion animal (dog, cat or fox) in the Animals worlds */
+.resident .companion-stage { text-align: center; margin: var(--gap-m) 0; }
+.resident .companion { width: 78%; max-width: 15rem; height: auto; display: block; margin: 0 auto; }
+.resident .companion-caption {
+  display: inline-block; margin: var(--gap-s) auto; padding: var(--gap-xs) var(--gap-m);
+  background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 999px; font-weight: 600;
+}
+.resident .things { list-style: none; display: flex; flex-wrap: wrap; gap: var(--gap-s); justify-content: center; padding: 0; margin: var(--gap-s) 0; }
+.resident .things li {
+  display: flex; align-items: center; gap: var(--gap-xs); padding: var(--gap-xs) var(--gap-s);
+  background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 999px; font-size: 0.9em;
+}
+.resident .things img { width: 1.6rem; height: 1.6rem; }
+
+/* Profile circle (top right) and the Profile screen */
+.resident .avatar-btn {
+  width: 2.75rem; height: 2.75rem; border-radius: 50%; padding: 0; cursor: pointer;
+  background: var(--accent); color: var(--accent-text); border: 2px solid var(--accent); font-weight: 700; font-size: 1rem;
+}
+.resident .avatar-btn:focus-visible { outline: 4px solid var(--focus); outline-offset: 2px; }
+.resident .profile-head { display: flex; align-items: center; gap: var(--gap-l); }
+.resident .profile-head h1 { margin: 0; }
+.resident .avatar { width: 3.5rem; height: 3.5rem; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-text); font-weight: 700; font-size: 1.5rem; flex-shrink: 0; }
+.resident .stars-row { display: flex; gap: var(--gap-xs); align-items: center; margin: var(--gap-s) 0; }
+
+/* My rewards drop-down */
+.resident .rewards-list ul { list-style: none; padding: 0; margin: var(--gap-s) 0 0; }
+.resident .rewards-list li { display: flex; align-items: center; gap: var(--gap-m); padding: var(--gap-xs) 0; }
+.resident .rewards-list li img { width: 2rem; height: 2rem; }
+.resident .rewards-list li span { flex: 1; }

@@ -158,6 +158,22 @@ def test_refresher_counts_when_said_yes_and_works_without_a_struggle(toast):
     assert scores["p"]["refresher"] == counts(2, 1)
 
 
+def test_rows_with_no_task_are_skipped(monkeypatch):
+    """feedback_answer rows are about the app, so their task_id is empty. They must not
+    reach load_task, which refuses an empty id, and they must not change any score."""
+    def strict_load_task(task_id):
+        if task_id != "toast":
+            raise ValueError(f"Unknown task_id {task_id!r}")
+        return TASK
+    monkeypatch.setattr(learn, "load_task", strict_load_task)
+    sessions = session(7, "hint", "alone") + session(8, "hint", "struggled")
+    feedback = row("feedback_answer", "2026-09-07T10:01:00", answer="movement:too_much")
+    feedback.update(task_id="", session_id="p-settings-w01")
+    scores = learn.update_scores(sessions + [feedback], path=None, defs=DEFS)
+    assert scores == learn.update_scores(sessions, path=None, defs=DEFS)
+    assert scores["p"]["hint:s1"] == counts(2, 1)
+
+
 # ---- update_scores on the real events.csv
 
 
