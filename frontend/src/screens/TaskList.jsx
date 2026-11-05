@@ -1,5 +1,5 @@
 // My tasks: the task list, plus a "go back to it" card when a task is paused.
-export default function TaskList({ taskIds, titles, onOpen, loaded, resume, onResume }) {
+export default function TaskList({ taskIds, titles, onOpen, loaded, resume, onResume, game, chooseWorld }) {
   return (
     <section>
       {resume && (
@@ -8,6 +8,13 @@ export default function TaskList({ taskIds, titles, onOpen, loaded, resume, onRe
           <button className="btn primary" onClick={onResume}>Go back to my step</button>
         </div>
       )}
+      {chooseWorld && (
+        <div className="card status">
+          <p>Game mode: choose your game world.</p>
+          <button className="btn primary" onClick={chooseWorld}>Choose your world</button>
+        </div>
+      )}
+      {game}
       <h1>What do you want to do?</h1>
       {!loaded && <p className="muted" role="status">Loading your tasks…</p>}
       {loaded && taskIds.length === 0 && <div className="card"><p>No tasks yet. Ask staff to add one.</p></div>}

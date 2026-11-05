@@ -77,8 +77,8 @@ export default function SetupScreen({ update }) {
             <div className="preview-row">
               <div className="card">
                 <h2>Game style</h2>
-                <p>A sky with floating islands. A new island arrives as you do tasks.</p>
-                <p className="muted">You choose what joins your sky: a bird, a balloon or a kite.</p>
+                <p>The whole app sits in a sky. Finish a task and pick something for your sky: a bird, a balloon, a kite or a rainbow. Every 2 tasks a new cloud island arrives.</p>
+                <p className="muted">Asking for help never changes it. Nothing is taken away.</p>
               </div>
               <div className="card">
                 <h2>Normal</h2>
