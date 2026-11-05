@@ -97,6 +97,7 @@ export default function AskForHelp({
   // This component only sends stuck_pressed and ask_sent. Neither uses help_shown
   // (the resident screen sets that), answer, or prompted (only step_done uses it),
   // so those stay empty here. The resident screen sends step_done, with prompted yes or no.
+  // seconds and days_since_last are numbers on the server, so empty means null, not "".
   function sendEvent(event, step) {
     const row = {
       person_id: personId,
@@ -106,8 +107,8 @@ export default function AskForHelp({
       timestamp: nowStamp(),
       event,
       step_id: step || "",
-      seconds: "",
-      days_since_last: "",
+      seconds: null,
+      days_since_last: null,
       help_shown: "",
       answer: "",
       prompted: "",
@@ -156,20 +157,15 @@ export default function AskForHelp({
     rec.continuous = isSafari ? false : true; // Safari returns nothing when continuous is on
     rec.interimResults = true;  // show words while the person talks
     const startText = text ? text + " " : "";
-    rec.onstart = () => console.log("speech: started");
-    rec.onaudiostart = () => console.log("speech: audio started");
-    rec.onspeechstart = () => console.log("speech: heard speech");
     rec.onresult = (e) => {
       let spoken = "";
       for (let i = 0; i < e.results.length; i++) {
         spoken += e.results[i][0].transcript + " ";
       }
-      console.log("speech: result", spoken);
       // Fill the text box. The person checks it, then taps Send.
       setText((startText + spoken).trim());
     };
     rec.onerror = (e) => {
-      console.log("speech: error", e.error);
       setListening(false);
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
         setNotice("The microphone is blocked. Allow it in the browser, or type instead.");
@@ -179,17 +175,13 @@ export default function AskForHelp({
         setNotice("I couldn't hear that (" + e.error + "). You can type instead.");
       }
     };
-    rec.onend = () => {
-      console.log("speech: ended");
-      setListening(false);
-    };
+    rec.onend = () => setListening(false);
     recognitionRef.current = rec;
     setNotice("");
     setListening(true);
     try {
       rec.start();
     } catch (err) {
-      console.log("speech: start failed", err);
       setListening(false);
       setNotice("I couldn't start the microphone. You can type instead.");
     }
