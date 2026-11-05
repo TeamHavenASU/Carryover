@@ -177,6 +177,10 @@
           "text": "If it asks for a PIN, type it and press the green button"
         },
         {
+          "id": "s8c2", 
+          "text": "If it asks about cash back, press No"
+        },
+        {
           "id": "s8d",
           "text": "Wait for \"Approved\""
         },
