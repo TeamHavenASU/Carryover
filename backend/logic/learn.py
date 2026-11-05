@@ -25,7 +25,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from logic.data_io import DATA_DIR, load_definitions, load_task
+from logic.data_io import DATA_DIR, LIVE_EVENTS_PATH, load_definitions, load_events, load_task
 from logic.fade import split_sessions, start_push_on, started_with_trouble, step_result
 
 SCORES_PATH = DATA_DIR / "scores.json"
@@ -208,3 +208,16 @@ def choose_help(person_id: str, detection: dict, scores: dict, definitions: dict
             return code
     best = max(value for _, value in estimates)
     return next(code for code, value in estimates if value == best)
+
+
+def main() -> None:
+    """Recount every help in backend/data/live/events.csv into backend/data/scores.json.
+
+    Run from backend/:  python -m logic.learn
+    """
+    scores = update_scores(load_events(LIVE_EVENTS_PATH))
+    print(f"Wrote {SCORES_PATH}: {len(scores[EVERYONE])} help codes, {len(scores) - 1} residents")
+
+
+if __name__ == "__main__":
+    main()
