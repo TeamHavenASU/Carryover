@@ -129,3 +129,7 @@ Our own photos (15), taken by the team:
 - own_blurry_01.jpg, own_blurry_02.jpg
 
 Brand names on packaging in our own photos belong to their owners. We use them only to test label reading.
+
+### How AI tools were used
+
+AI assistants helped with drafting code and documentation, organizing the photo test set, and checking details such as licence wording. All images were chosen and verified by hand, and all code and text was reviewed, tested and edited by the team before it was committed.
