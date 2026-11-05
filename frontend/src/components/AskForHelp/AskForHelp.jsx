@@ -6,10 +6,10 @@ import "./AskForHelp.css";
  *
  *   <AskForHelp
  *     personId="jeremiah"
- *     taskId="sandwich"
- *     stepId="s3"            // the step on screen now, or null
+ *     taskId="heat_meal"
+ *     stepId="s4"            // the step on screen now, or null
  *     week={3}
- *     sessionId="jeremiah-sandwich-w03"
+ *     sessionId="jeremiah-heat_meal-w03"
  *     autoRead={false}       // optional, from C's settings: read replies aloud
  *   />
  *
@@ -19,6 +19,9 @@ import "./AskForHelp.css";
  *   - nothing is sent until they tap "Send"
  *   - the reply is shown large, with a read aloud button
  *   - "That helped" / "Still stuck". "Still stuck" suggests asking a person
+ *
+ * Photos: the panel tells the person the photo goes to an AI service, and not to photograph
+ * people, cards, receipts, checkout pages or bank apps (docs/safety.md, section 2).
  *
  * Privacy: the text and the photo are never stored here. After sending, the
  * photo is cleared from state. The only thing logged is an ask_sent event that
@@ -90,6 +93,10 @@ export default function AskForHelp({
   );
 
   // One usage record (Format 2). Fire and forget: a failed log never blocks help.
+  // The 12 columns match EVENT_COLUMNS in backend/logic/data_io.py.
+  // This component only sends stuck_pressed and ask_sent. Neither uses help_shown
+  // (the resident screen sets that), answer, or prompted (only step_done uses it),
+  // so those stay empty here. The resident screen sends step_done, with prompted yes or no.
   function sendEvent(event, step) {
     const row = {
       person_id: personId,
@@ -103,6 +110,7 @@ export default function AskForHelp({
       days_since_last: "",
       help_shown: "",
       answer: "",
+      prompted: "",
     };
     fetch(`${apiBase}/event`, {
       method: "POST",
@@ -140,13 +148,24 @@ export default function AskForHelp({
     }
     const rec = new SpeechRecognition();
     rec.lang = "en-US";
-    rec.interimResults = false;
+    rec.continuous = true;      // keep listening through pauses
+    rec.interimResults = true;  // show words while the person talks
+    const startText = text ? text + " " : "";
     rec.onresult = (e) => {
-      const heard = Array.from(e.results).map((r) => r[0].transcript).join(" ");
+      let spoken = "";
+      for (let i = 0; i < e.results.length; i++) {
+        spoken += e.results[i][0].transcript + " ";
+      }
       // Fill the text box. The person checks it, then taps Send.
-      setText((old) => (old ? old + " " : "") + heard);
+      setText((startText + spoken).trim());
     };
-    rec.onerror = () => setNotice("I couldn't hear that. You can type instead.");
+    rec.onerror = (e) => {
+      if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+        setNotice("The microphone is blocked. Allow it in the browser, or type instead.");
+      } else if (e.error !== "no-speech" && e.error !== "aborted") {
+        setNotice("I couldn't hear that. You can type instead.");
+      }
+    };
     rec.onend = () => setListening(false);
     recognitionRef.current = rec;
     setNotice("");
@@ -252,7 +271,13 @@ export default function AskForHelp({
                 onChange={onPhotoChosen}
               />
             </div>
-            <p className="ask-note">Take a photo of the thing you're stuck on, not yourself.</p>
+            <p className="ask-note">
+              Take a photo of the thing you're stuck on. Please no people, cards, receipts, checkout
+              pages or bank apps.
+            </p>
+            <p className="ask-note">
+              A photo is sent to an AI service to get an answer. It is not saved.
+            </p>
             {notice && <p className="ask-note" role="status">{notice}</p>}
 
             <div className="ask-row">

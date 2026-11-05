@@ -29,11 +29,13 @@ from .common import (
     read_prompt,
     task_text,
 )
-from .safety import new_food_words
+from .safety import new_food_words, reply_breaks_rules
 
 MIN_SUBSTEPS = 3
 MAX_SUBSTEPS = 6
 MAX_WORDS = 7   # "under 8 words"
+MAX_WORDS_EXTRA = 11  # extra detail names the hand and the direction, so it needs a few more words
+HANDS = ("left", "right", "either")
 
 # Used only if fewer than 2 real examples exist in the task files yet.
 # This is the example from the Build Spec (Format 1).
@@ -86,7 +88,7 @@ def pick_examples(task_id: str, step_id: str, step_text: str = "", count: int = 
     return examples[:count]
 
 
-def build_user_prompt(task: dict, step: dict, examples: list[dict]) -> str:
+def build_user_prompt(task: dict, step: dict, examples: list[dict], hand: str | None = None) -> str:
     lines = []
     for i, ex in enumerate(examples, 1):
         lines.append(f"Example {i}")
@@ -103,6 +105,15 @@ def build_user_prompt(task: dict, step: dict, examples: list[dict]) -> str:
     lines.append(f"Step to split: {step['text']}")
     if step.get("hint"):
         lines.append(f"Short version of the step: {step['hint']}")
+    if hand:
+        lines.append("")
+        lines.append(
+            "Extra detail is on. The person's hand setting is: "
+            + ("they use their left hand" if hand == "left"
+               else "they use their right hand" if hand == "right"
+               else "either hand is fine, so do not name a hand")
+            + "."
+        )
     lines.append("")
     lines.append("Reply with JSON only.")
     return "\n".join(lines)
@@ -111,7 +122,7 @@ def build_user_prompt(task: dict, step: dict, examples: list[dict]) -> str:
 # --------------------------------------------------------------------------------
 # Checking the model's answer in code
 # --------------------------------------------------------------------------------
-def validate_substeps(raw: str, task: dict, step: dict) -> tuple[list[str] | None, str]:
+def validate_substeps(raw: str, task: dict, step: dict, max_words: int = MAX_WORDS) -> tuple[list[str] | None, str]:
     """Return (clean list, "") if the answer is good, or (None, reason) if not."""
     data = extract_json(raw)
     if data is None:
@@ -126,8 +137,8 @@ def validate_substeps(raw: str, task: dict, step: dict) -> tuple[list[str] | Non
     if not MIN_SUBSTEPS <= len(cleaned) <= MAX_SUBSTEPS:
         return None, f"it gave {len(cleaned)} steps, it must give {MIN_SUBSTEPS} to {MAX_SUBSTEPS}"
     for c in cleaned:
-        if len(c.split()) > MAX_WORDS:
-            return None, f'"{c}" is longer than {MAX_WORDS} words'
+        if len(c.split()) > max_words:
+            return None, f'"{c}" is longer than {max_words} words'
         if re.search(r"\b(and|then)\b|[;,]", c.lower()):
             return None, f'"{c}" has more than one action'
     if len({c.lower() for c in cleaned}) != len(cleaned):
@@ -137,6 +148,11 @@ def validate_substeps(raw: str, task: dict, step: dict) -> tuple[list[str] | Non
     foods = new_food_words(" ".join(cleaned), allowed)
     if foods:
         return None, "it named food that is not in the task: " + ", ".join(foods)
+    # No cooking times, no money numbers, no "safe" or "cooked" claims, no buying advice.
+    # (A phrase that the task's own steps already use is fine.)
+    broken = reply_breaks_rules(" ".join(cleaned))
+    if broken and broken not in allowed:
+        return None, f'"{broken}" is not allowed. No times, money, "safe" or "cooked" words, or buying advice'
     return cleaned, ""
 
 
@@ -151,7 +167,7 @@ def _read_pending() -> list[dict]:
         return []
 
 
-def save_pending(task_id: str, step_id: str, substeps: list[str]) -> str | None:
+def save_pending(task_id: str, step_id: str, substeps: list[str], hand: str | None = None) -> str | None:
     """Add a waiting entry. Returns its split_id, or None if the same one already waits."""
     with _write_lock:
         entries = _read_pending()
@@ -161,18 +177,23 @@ def save_pending(task_id: str, step_id: str, substeps: list[str]) -> str | None:
                 and e.get("step_id") == step_id
                 and e.get("approved") is False
                 and e.get("substeps") == substeps
+                and e.get("hand") == hand
             ):
                 return None  # same suggestion already waiting for review
         split_id = f"{task_id}-{step_id}-{uuid.uuid4().hex[:6]}"
-        entries.append(
-            {
-                "split_id": split_id,
-                "task_id": task_id,
-                "step_id": step_id,
-                "substeps": substeps,
-                "approved": False,
-            }
-        )
+        entry = {
+            "split_id": split_id,
+            "task_id": task_id,
+            "step_id": step_id,
+            "substeps": substeps,
+            "approved": False,
+        }
+        if hand:
+            # Extra detail version. A person must approve it. It is marked so the
+            # review page can show which hand it was written for.
+            entry["variant"] = "extra_detail"
+            entry["hand"] = hand
+        entries.append(entry)
         PENDING_FILE.parent.mkdir(parents=True, exist_ok=True)
         tmp = PENDING_FILE.with_suffix(".tmp")
         tmp.write_text(json.dumps(entries, indent=2), encoding="utf-8")
@@ -183,21 +204,28 @@ def save_pending(task_id: str, step_id: str, substeps: list[str]) -> str | None:
 # --------------------------------------------------------------------------------
 # The main function
 # --------------------------------------------------------------------------------
-def split_step(task_id: str, step_id: str) -> dict:
+def split_step(task_id: str, step_id: str, hand: str | None = None) -> dict:
     """Ask the model to split one step. Returns {"substeps": [...], "approved": False}.
 
     On success the substeps are also saved to splits_pending.json for a person to
     approve. If the model fails or gives bad steps twice, we return an empty list
     and save nothing.
+    hand: "left", "right" or "either" turns on the extra detail version, which names
+    the hand and the direction. None is the normal split.
     Raises TaskNotFound or StepNotFound (the route turns these into a 404).
     """
+    if hand is not None and hand not in HANDS:
+        hand = None
     task = load_task(task_id)
     step = next((s for s in task.get("steps", []) if s["step_id"] == step_id), None)
     if step is None:
         raise StepNotFound(step_id)
 
     system_prompt = read_prompt("split_system.md")
-    user_prompt = build_user_prompt(task, step, pick_examples(task_id, step_id, step["text"]))
+    if hand:
+        system_prompt += "\n\n" + read_prompt("split_extra_detail.md")
+    max_words = MAX_WORDS_EXTRA if hand else MAX_WORDS
+    user_prompt = build_user_prompt(task, step, pick_examples(task_id, step_id, step["text"]), hand)
 
     problem = ""
     for attempt in range(2):  # first try, then ONE retry
@@ -210,8 +238,8 @@ def split_step(task_id: str, step_id: str) -> dict:
         raw = llm.call_llm(system_prompt, prompt)
         if llm.is_fallback(raw):
             break
-        substeps, problem = validate_substeps(raw, task, step)
+        substeps, problem = validate_substeps(raw, task, step, max_words)
         if substeps is not None:
-            save_pending(task_id, step_id, substeps)
+            save_pending(task_id, step_id, substeps, hand)
             return {"substeps": substeps, "approved": False}
     return {"substeps": [], "approved": False}
