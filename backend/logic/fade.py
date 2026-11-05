@@ -119,11 +119,27 @@ def step_result(session: list[dict], step: dict, task: dict, defs: dict) -> tupl
 LESS_HELP_YES = "yes"  # show me less
 LESS_HELP_KEEP = "keep"  # keep it as it is
 
+# Rule 3 answers to "Want to see just the small steps you use?", also logged
+# as an end_question row with the step's step_id (to be confirmed with Role A).
+SMALL_STEPS_TRIM = "trim"  # show only the small steps I open
+SMALL_STEPS_KEEP_ALL = "keep_all"  # keep all of them
+
+
+def _end_answer(session: list[dict], step_id: str, allowed: tuple[str, ...]) -> str | None:
+    """The person's last end_question answer for this step in this session that
+    is one of `allowed`, or None. Rule 2 and Rule 3 share end_question, so each
+    reads only its own answers."""
+    answers = [
+        r["answer"]
+        for r in session
+        if r["event"] == "end_question" and r["step_id"] == step_id and r["answer"] in allowed
+    ]
+    return answers[-1] if answers else None
+
 
 def _less_help_answer(session: list[dict], step_id: str) -> str | None:
     """The person's last Rule 2 answer for this step in this session, or None."""
-    answers = [r["answer"] for r in session if r["event"] == "end_question" and r["step_id"] == step_id]
-    return answers[-1] if answers else None
+    return _end_answer(session, step_id, (LESS_HELP_YES, LESS_HELP_KEEP))
 
 
 def _step_state(history: list[list[dict]], step: dict, task: dict, defs: dict) -> dict:
@@ -195,6 +211,84 @@ def offer_less_help(history: list[list[dict]], step: dict, task: dict, defs: dic
         return False
     need = rules["rule_2_ask_again_after_keep_it"] if state["kept"] else rules["rule_2_show_less_after_done_alone"]
     return _last_all(state["results"], need, "alone")
+
+
+def _small_step_state(history: list[list[dict]], step: dict, task: dict, defs: dict) -> dict:
+    """Rule 3: which small steps this person opens at a split step.
+
+    streak   the set of small steps opened in each session in a row at split,
+             all the same set (empty when there is no run going)
+    trimmed  the small step ids kept after the person answered "trim", else None
+
+    Only small_step_opened rows count. Tips are not small steps, so Rule 3
+    ignores them (definitions.json, terms.tips): any id that is not one of
+    the step's substeps is left out.
+    """
+    sid = step["step_id"]
+    ids = [s["id"] for s in step.get("substeps", []) if isinstance(s, dict)]
+    need = defs["fading_rules"]["rule_3_keep_only_used_small_steps_after"]
+    state = {"streak": [], "trimmed": None}
+    for session in history:
+        shown, result = step_result(session, step, task, defs)
+        if result is None:
+            continue
+        # The set offered this session was decided before it started.
+        offered = state["streak"][-1] if len(state["streak"]) >= need else None
+        if shown != levels(defs)[0]:
+            state["streak"] = []  # not at split: no run of split sessions
+        else:
+            opened = frozenset(
+                r["answer"]
+                for r in session
+                if r["event"] == "small_step_opened" and r["step_id"] == sid and r["answer"] in ids
+            )
+            if opened:
+                # At split the first small step is shown by the level itself
+                # and is never logged as small_step_opened. Without this, a
+                # trim would drop the first breakdown from someone who is
+                # stuck, which is backwards. So it always counts as used, and
+                # opening all the others counts as opening all of them.
+                opened |= {ids[0]}
+            if not opened:
+                state["streak"] = []  # opened nothing: nothing to keep
+            elif state["streak"] and state["streak"][-1] != opened:
+                state["streak"] = [opened]  # a different set starts a new run
+            else:
+                state["streak"].append(opened)
+
+        answer = _end_answer(session, sid, (SMALL_STEPS_TRIM, SMALL_STEPS_KEEP_ALL))
+        if answer == SMALL_STEPS_TRIM and offered and state["trimmed"] is None:
+            state["trimmed"] = [i for i in ids if i in offered]  # original order
+        elif answer == SMALL_STEPS_KEEP_ALL:
+            state["streak"] = []  # keep them all; offer again after a new run
+    return state
+
+
+def offer_trim_small_steps(history: list[list[dict]], step: dict, task: dict, defs: dict) -> bool:
+    """Rule 3: should the app ask "Want to see just the small steps you use?" this session.
+
+    True when, at split, the person opened the same small steps, and only
+    those, in rule_3_keep_only_used_small_steps_after sessions in a row, and
+    has not answered "trim" yet. After "keep_all" the count starts again.
+    Never when they opened every small step (there would be nothing to drop).
+    """
+    need = defs["fading_rules"]["rule_3_keep_only_used_small_steps_after"]
+    state = _small_step_state(history, step, task, defs)
+    if state["trimmed"] is not None or len(state["streak"]) < need:
+        return False
+    ids = {s["id"] for s in step.get("substeps", []) if isinstance(s, dict)}
+    return state["streak"][-1] != ids
+
+
+def small_steps_for(history: list[list[dict]], step: dict, task: dict, defs: dict) -> list:
+    """The step's substeps for the view: all of them, or after a "trim" answer
+    only the ones the person opened, in their original order. With no "trim"
+    answer this is the task file's list, unchanged."""
+    substeps = step.get("substeps", [])
+    trimmed = _small_step_state(history, step, task, defs)["trimmed"]
+    if trimmed is None:
+        return substeps
+    return [s for s in substeps if isinstance(s, dict) and s["id"] in trimmed]
 
 
 def decide_level(person: str, task: dict, step_id: str, week: int, history: list[list[dict]], defs: dict | None = None) -> str:
@@ -336,7 +430,9 @@ def build_view(
                 "wait": bool(step.get("wait")),
                 "long_pause_seconds": long_pause(step, task, defs),
                 "hint_waits": hint_waits(step, task, defs),
-                "substeps": step.get("substeps", []),
+                # Rule 3: only after a "trim" answer is this shorter than the task file's list.
+                "substeps": small_steps_for(sessions, step, task, defs) if sessions else step.get("substeps", []),
+                "offer_trim_small_steps": bool(sessions) and offer_trim_small_steps(sessions, step, task, defs),
                 "tips": step.get("tips", []),
                 "check_question": step.get("check_question"),
             }
