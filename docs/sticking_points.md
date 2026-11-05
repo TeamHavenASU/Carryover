@@ -37,12 +37,14 @@ Executive function differences are broad and fairly stable in autism (Demetriou 
 | Stir or not | Not every food needs stirring; package decides; leftovers do | 5 | "Stir halfway, if the package says so"; tip for leftovers |
 | Pausing | Our microwave has no Stop button; opening the door pauses it | 5 | "Open the door. It pauses the microwave" |
 | Door | Pull handle vs door button | 3 | "Pull the handle or press the door button" |
-| Repeating beeps | Some microwaves keep beeping until the door is opened | 6 | "It may keep beeping until you open the door. That's OK" |
-| Steam and hot spots | Steam under the cover; hot dish; food hotter in some spots | 6–7 | Safety notes inside small steps (Jones et al. 1997) |
+| Repeating beeps | Some microwaves keep beeping until the door is opened | 6 | Tip: "It may keep beeping until you open the door. That's OK" |
+| Steam and hot spots | Steam under the cover; hot dish; food hotter in some spots | 5–7 | Caution button on steps 5–7, at every help level (Jones et al. 1997) |
 | Not hot in the middle | Food not done needs more time (Smith) | 7 | Tip: +30 Sec and check again; 165°F (USDA) |
 | Food already inside | Listed as a possible error by Smith | 3 | "Check nothing else is inside" |
 | How much fits | Dish too big to turn | 2 | Tip: one dish that fits and can turn freely |
 | Needs a break | Not everyone wants to do a task in one go | Any | "Take a break" button: clock stops, place is saved, never counts as struggling. After 2+ hours, a food safety note (USDA 2-hour rule) |
+| Missing a base skill | First Place (Nov 4): clear steps don't help if someone can't yet do what a step assumes (read "2 min 30 sec", find a button by its name, open a package) | 1, 2, 4, 5, 6 | `base_skills` per step; "Can you do these?" the first time; skill card before the step if "Not sure" or stuck at Most help 2 sessions |
+| A new or different microwave | First Place (Nov 4): residents struggle with a device they haven't used, or one that differs from the one they learned on | All | `first_time_question`: "Is this a microwave you've used before?" No: start at Most help. Roadmap: photos of their own microwave |
 | Starting at all (opening the fridge, packages) | General skills; differ by home | Start | Start push only. Roadmap: ask why they're stuck and link to a short task for that skill |
 
 ## General case analysis: how microwaves differ
@@ -86,4 +88,6 @@ Executive function differences are broad and fairly stable in autism (Demetriou 
 | Tip amount | A decision at checkout | 8 (online) | Small step: choose an amount you're OK with. The app never suggests how much |
 | Internet problems | Page stalls or errors at checkout | 9 (online) | Tip: don't press Place Order again; check orders or email first, so you don't pay twice |
 | Card declined or reader error | Payment doesn't go through | 8 (in store) | Tip: try once more, or ask the cashier |
+| Missing a base skill (buying) | Reading a price, comparing prices, reading the total, tapping or inserting a card, paying with a phone, typing an address | 1, 4, 7–9 | Skill cards: read_price, compare_two_prices, read_total_on_screen, tap_or_insert_card, pay_with_phone, type_address |
+| New card reader or app | Readers and apps all look different | Pay steps | `first_time_question` per buying task; No: start at Most help |
 | Pictures that don't match | A picture of a different device or a different color can confuse someone who reads it literally | All | Roadmap: photos of the person's own microwave, taken once at setup (no people). Until then, pictures show the action, not a specific device. Plain adult style, nothing childish |
