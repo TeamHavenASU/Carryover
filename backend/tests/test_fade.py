@@ -628,3 +628,40 @@ def test_a_no_in_the_history_keeps_most_help_until_it_fades(tmp_path, monkeypatc
     view = fade.build_view("p", "toast", 2, events_path=path, defs=DEFS)
     assert view["new_device"] is True
     assert view["steps"][0]["mode"] == "split"
+
+
+def _write_skill_rows(path, answer):
+    rows = session("alone", day=7)
+    rows.insert(1, row("skill_check_answer", time="2026-09-07T10:00:05", answer=answer))
+    with open(path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    return path
+
+
+def test_view_shows_a_skill_card_before_the_step_that_needs_it(tmp_path, monkeypatch):
+    monkeypatch.setattr(fade, "load_task", lambda task_id: TASK)
+    skills = tmp_path / "skills"
+    skills.mkdir()
+    (skills / "open_bag.json").write_text('{"skill_id": "open_bag", "title": "Open a bag"}')
+    monkeypatch.setattr(fade, "SKILLS_DIR", skills)
+    path = _write_skill_rows(tmp_path / "events.csv", "open_bag:not_sure")
+
+    cards = fade.build_view("p", "toast", 2, events_path=path, defs=DEFS)["skill_cards"]
+    assert [(c["skill_id"], c["step_id"]) for c in cards] == [("open_bag", "s1")]
+    assert cards[0]["card"]["title"] == "Open a bag"
+
+
+def test_view_has_no_skill_card_after_a_yes(tmp_path, monkeypatch):
+    monkeypatch.setattr(fade, "load_task", lambda task_id: TASK)
+    path = _write_skill_rows(tmp_path / "events.csv", "open_bag:yes")
+    assert fade.build_view("p", "toast", 2, events_path=path, defs=DEFS)["skill_cards"] == []
+
+
+def test_a_skill_card_without_a_file_still_shows_with_no_card(tmp_path, monkeypatch):
+    monkeypatch.setattr(fade, "load_task", lambda task_id: TASK)
+    monkeypatch.setattr(fade, "SKILLS_DIR", tmp_path / "no_skills")
+    path = _write_skill_rows(tmp_path / "events.csv", "open_bag:no")
+    cards = fade.build_view("p", "toast", 2, events_path=path, defs=DEFS)["skill_cards"]
+    assert cards == [{"skill_id": "open_bag", "step_id": "s1", "reason": cards[0]["reason"], "card": None}]
