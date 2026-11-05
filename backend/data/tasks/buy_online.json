@@ -34,7 +34,10 @@
       "part": "decide",
       "text": "Check you have enough money for this",
       "base_skills": [],
-      "picture": null,
+      "picture": {
+        "file": "buy/enough_money.svg",
+        "alt": "A wallet with a card and some money, next to an item"
+      },
       "video": null,
       "substeps": [
         {
@@ -57,7 +60,10 @@
       "part": "decide",
       "text": "Ask yourself if you need this right now",
       "base_skills": [],
-      "picture": null,
+      "picture": {
+        "file": "buy/need_it.svg",
+        "alt": "An item with a thought bubble: do I need this now?"
+      },
       "video": null,
       "substeps": [],
       "long_pause_seconds": 180
@@ -86,7 +92,10 @@
       "part": "decide",
       "text": "Decide: buy it, or leave it for now",
       "base_skills": [],
-      "picture": null,
+      "picture": {
+        "file": "buy/decide.svg",
+        "alt": "Two choices: put it in the basket, or back on the shelf"
+      },
       "video": null,
       "substeps": [],
       "long_pause_seconds": 300,
@@ -111,7 +120,10 @@
       "part": "pay",
       "text": "Choose delivery or pickup",
       "base_skills": [],
-      "picture": null,
+      "picture": {
+        "file": "buy/delivery_pickup.svg",
+        "alt": "A phone screen with two choices: Delivery or Pickup"
+      },
       "video": null,
       "substeps": [
         {
@@ -219,7 +231,10 @@
       "part": "pay",
       "text": "Save the confirmation",
       "base_skills": [],
-      "picture": null,
+      "picture": {
+        "file": "buy/confirmation.svg",
+        "alt": "An order confirmation screen with a check mark"
+      },
       "video": null,
       "substeps": [
         {

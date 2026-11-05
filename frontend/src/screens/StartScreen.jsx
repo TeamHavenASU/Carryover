@@ -10,9 +10,8 @@ export default function StartScreen({ today, onStart, onLook, onRefresherAnswer,
   if (!askedSkips) {
     return (
       <section>
-        <h1>{today.title}</h1>
         <div className="card">
-          <p>Do you still want to do this task?</p>
+          <p>Do you still want to practice this task?</p>
           <button className="btn primary" onClick={() => { onSkipAnswer("yes"); setAskedSkips(true); }}>Yes</button>
           <button className="btn" onClick={() => { onSkipAnswer("no"); onBack(); }}>No, not now</button>
         </div>
@@ -24,14 +23,13 @@ export default function StartScreen({ today, onStart, onLook, onRefresherAnswer,
   if (!asked) {
     return (
       <section>
-        <h1>{today.title}</h1>
         <div className="card">
           <p>It's been a while since you did this. Want a quick look at all the steps first?</p>
           <button className="btn primary" onClick={() => { onRefresherAnswer("yes"); setAsked(true); onLook(); }}>
-            Yes, show me
+            Yes
           </button>
           <button className="btn" onClick={() => { onRefresherAnswer("no"); setAsked(true); }}>
-            No, let's start
+            No, start
           </button>
         </div>
       </section>
@@ -40,11 +38,9 @@ export default function StartScreen({ today, onStart, onLook, onRefresherAnswer,
 
   return (
     <section>
-      <h1>{today.title}</h1>
       {today.start_push && <div className="card"><p>{today.start_push}</p></div>}
       <button className="btn primary" onClick={onStart}>Start</button>
       <button className="btn" onClick={onLook}>Quick look at all steps</button>
-      <button className="btn link" onClick={onBack}>Back to the task list</button>
     </section>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Icon } from "../lib/icons";
 
 // How much of the step is showing, from the help level in today's view:
 //   0 = folded: "Next: <step>"                       -> mode "hide"
@@ -17,19 +18,18 @@ const videoSource = (v) => {
   return /^(https?:)?\//.test(file) ? file : VIDEO_BASE + file;
 };
 
-// Under pictures of a device: the task file does not mark them yet, so a picture whose
-// description names a microwave counts, or one marked device: true.
+// Under pictures of a device: a picture marked device: true in the task file, or one whose
+// description names a microwave.
 const isDevicePicture = (p) => p.device === true || /microwave/i.test(p.alt || "");
 
 export default function StepScreen({
-  step, today, settings, index, paused, praiseLine, awayNote, log, onDone, onBackStep, onBreak, onSeeAll, onSpeak,
+  step, settings, paused, praiseLine, awayNote, log, onDone, onBreak, onHelp, onSpeak, splitToken,
 }) {
   const base = BASE[step.mode] ?? 1;
   const [reveal, setReveal] = useState(base);
   const [offerStage, setOfferStage] = useState(0);
   const [offerAnswered, setOfferAnswered] = useState(0); // stages already answered
   const [shownSmall, setShownSmall] = useState(1);       // small steps showing at Most help
-  const [askMessage, setAskMessage] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
 
   // prompted = "yes" only if help came to the person during this step (they said yes to
@@ -86,8 +86,23 @@ export default function StepScreen({
     setReveal(next);
   }
 
+  // "Show the small steps" on the Help screen comes back here as a new splitToken.
+  useEffect(() => {
+    if (!splitToken || reveal >= 2) return;
+    log(reveal === 0 ? "hint_requested" : "more_help_requested", { step_id: step.step_id, help_shown: "split" });
+    setReveal(2);
+  }, [splitToken]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // "Help with this step" counts as used help the moment it is tapped (hint_requested is in
+  // definitions.json used_help_events), so opening Help and leaving never looks like "done alone".
   function helpTap() {
-    openMore(reveal === 0 ? "hint_requested" : "more_help_requested");
+    log("hint_requested", { step_id: step.step_id, help_shown: LEVEL_OF[Math.min(reveal, 2)] });
+    onHelp();
+  }
+
+  // Folded step ("Next: ..."): one tap opens it.
+  function openFolded() {
+    openMore("hint_requested");
   }
 
   function answerOffer(yes) {
@@ -104,9 +119,10 @@ export default function StepScreen({
     setShownSmall(shownSmall + 1);
   }
 
+  // "Read again" is the Repeat button: it reads the step aloud when tapped.
   function repeat() {
     log("repeat_requested", { step_id: step.step_id });
-    if (settings.readAloud) onSpeak(step.text);
+    onSpeak(step.text);
   }
 
   function done() {
@@ -122,17 +138,27 @@ export default function StepScreen({
     onDone();
   }
 
+  const fade = settings.animations === "off" ? "" : "fade-in";
+
   return (
-    <section hidden={paused}>
-      {praiseLine && <p className="muted">{praiseLine}</p>}
+    <section className="has-bottom-actions">
+      {praiseLine && <p className="muted" role="status">{praiseLine}</p>}
       {awayNote && <div className="card status" role="status"><p>{awayNote}</p></div>}
-      <p className="muted" aria-live="polite">Step {step.number} of {step.total}</p>
+      <p className="muted step-count" aria-live="polite">Step {step.number} of {step.total}</p>
 
       {reveal === 0 ? (
-        <div className="card"><p className="next-line">Next: {step.text}</p></div>
+        <button className="card folded" onClick={openFolded}>
+          <span className="next-line">Next: {step.text}</span>
+          <span className="muted">Tap to open</span>
+        </button>
       ) : (
         <div className="card">
-          <h1>{step.text}</h1>
+          <div className="step-title">
+            <h1 className="step-text">{step.text}</h1>
+            <button className="navbtn read-again" onClick={repeat}>
+              <Icon.speaker /> Read again
+            </button>
+          </div>
           {settings.pictures && step.picture && (
             <>
               <img className="step-picture" src={IMG_BASE + step.picture.file} alt={step.picture.alt} />
@@ -161,51 +187,37 @@ export default function StepScreen({
               )}
             </>
           )}
-          {reveal >= 2 && step.tips.length > 0 && (
+          {step.tips.length > 0 && (
             <details>
-              <summary>Tips</summary>
+              <summary><Icon.open /> Tips</summary>
               <ul>{step.tips.map((t, i) => <li key={i}>{t}</li>)}</ul>
             </details>
           )}
         </div>
       )}
 
+      {/* CAUTION always shows, at every help level, even when the step is folded. */}
       {step.safety && (
         <p className="caution"><strong>CAUTION:</strong> {step.safety}</p>
       )}
 
-      {offerShown && (
-        <div className="card offer">
-          <p>Want help with this step?</p>
-          <div className="row">
-            <button className="btn primary" onClick={() => answerOffer(true)}>Yes</button>
-            <button className="btn" onClick={() => answerOffer(false)}>No, I'm OK</button>
+      {/* Fixed to the bottom, same place on every step. The help offer sits just above. */}
+      <div className="bottom-actions">
+        {offerShown && (
+          <div className={`card offer ${fade}`} role="status">
+            <p>Want help with this step?</p>
+            <div className="row">
+              <button className="btn primary" onClick={() => answerOffer(true)}>Yes</button>
+              <button className="btn" onClick={() => answerOffer(false)}>No, I'm OK</button>
+            </div>
           </div>
+        )}
+        <button className="btn primary" onClick={done}>Done</button>
+        <div className="row">
+          <button className="btn" onClick={helpTap}>Help with this step</button>
+          <button className="btn" onClick={onBreak}>Take a break</button>
         </div>
-      )}
-
-      {settings.readAloud && (
-        <button className="btn link" onClick={() => onSpeak(step.text)}>Read aloud</button>
-      )}
-
-      {/* These four buttons are always in this order and this place (rule 1). */}
-      <button className="btn primary" onClick={done}>Done</button>
-      <button className="btn" onClick={helpTap} disabled={reveal >= 2}>Help with this step</button>
-      <button className="btn" onClick={repeat}>Repeat</button>
-      <button className="btn" onClick={onBreak}>Take a break</button>
-
-      <button className="btn link" onClick={onBackStep} disabled={index === 0}>
-        Tapped Done by mistake? Go back
-      </button>
-      <button className="btn link" onClick={onSeeAll}>See all steps</button>
-      <button className="btn link" onClick={() => setAskMessage(true)}>
-        Ask {settings.supportPerson}
-      </button>
-      {askMessage && (
-        <div className="card" role="status">
-          <p>Please ask {settings.supportPerson}.</p>
-        </div>
-      )}
+      </div>
     </section>
   );
 }

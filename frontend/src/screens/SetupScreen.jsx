@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
 import { getSetup } from "../lib/api";
-import { themeName } from "../lib/game";
+import { AnswerIcon } from "../lib/icons";
 
 // First-time setup: one question per screen, Skip uses the defaults.
 // Questions, answers and defaults come from definitions.json (via GET /setup).
 const label = (v) => String(v).replace(/_/g, " ").replace(/^./, (c) => c.toUpperCase());
 
-// Simple pictures for the answers. Every picture sits next to its words, never alone.
-const PIC = {
-  trains: "🚆", space: "🚀", nature: "🌿", animals: "🐾", music: "🎵", cooking: "🍳",
-  games: "🎮", cities: "🏙️", sports: "⚽", art: "🎨",
-  game: "🎮", normal: "📋",
-  off: "🔇", very_soft: "🔈", soft: "🔉", normal_sound: "🔊",
-  right: "✋", left: "🤚", both: "🙌",
-};
-const Pic = ({ id }) => (PIC[id] ? <span className="pic" aria-hidden="true">{PIC[id]}</span> : null);
+// Pictures for the answers: one icon set (Lucide), always next to the words.
+const Pic = ({ id }) => <AnswerIcon id={id} />;
 
 export default function SetupScreen({ update }) {
   const [questions, setQuestions] = useState(null);
@@ -84,25 +77,26 @@ export default function SetupScreen({ update }) {
             <div className="preview-row">
               <div className="card">
                 <h2>Game style</h2>
-                <p>{themeName(picked.interests, questions[0].answers)}: area 1</p>
-                <p className="muted">Next area opens after a few tasks.</p>
+                <p>A sky with floating islands. A new island arrives as you do tasks.</p>
+                <p className="muted">You choose what joins your sky: a bird, a balloon or a kite.</p>
               </div>
               <div className="card">
                 <h2>Normal</h2>
-                <p>Step 4 done.</p>
+                <p>Heat a meal: done</p>
                 <p className="muted">Short and plain. No game.</p>
               </div>
             </div>
           )}
           {q.answers.map((a) => (
-            <button key={a} className="btn primary" onClick={() => next(a)}>
+            <button key={a} className="btn answer-btn" onClick={() => next(a)}>
               <Pic id={q.id === "sound" && a === "normal" ? "normal_sound" : a} />{label(a)}
             </button>
           ))}
         </>
       )}
 
-      <button className="btn link" onClick={() => finish({})}>Skip</button>
+      {/* Skip keeps the answers already given and uses the defaults for the rest. */}
+      <button className="btn link" onClick={() => finish(picked)}>Skip</button>
     </section>
   );
 }

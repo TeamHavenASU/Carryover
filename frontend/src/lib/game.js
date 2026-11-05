@@ -7,6 +7,7 @@ export const AREAS_PER_WORLD = 5;
 const label = (v) => String(v).replace(/_/g, " ").replace(/^./, (c) => c.toUpperCase());
 export { label };
 
+
 // The world's theme comes from the first interest. A typed one (not in the setup list) is "Your town".
 export function themeName(interests, knownInterests) {
   const first = (interests || [])[0];
