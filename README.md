@@ -195,3 +195,17 @@ return later rows, rather than by convention in each caller.
   lower success rate because a step only reaches Most help when someone keeps
   struggling there. That is a selection effect, so the scores are not used to
   choose help.
+
+## Role D: AI helper safety and photo test
+
+The AI helper never decides safety by itself. For photos of high risk items (microwave safety, for example), the code sends the photo three times. It only answers "safe" if all three answers quote a label with a safe phrase and none of them says anything negative. Clear metal, foil or foam gets a fixed warning. Everything else is handed off to a person.
+
+We check this with a photo test of 27 images: 12 free web images with credits in ATTRIBUTION.md, and 15 photos we took ourselves. Each image has a truth value in `backend/tests/ai_images/photo_test/manifest.csv`.
+
+Latest result: 27 photos, 14 answered, 13 handed off, 0 wrong safe answers.
+
+This test is a sanity check, not proof. With 0 wrong answers on 27 images, the true error rate is still only known to be under about 11%. Safety comes from the code rules, not from the test.
+
+Two package photos (the Stasher bag and the If You Care pan box) are marked `safe` because the printed label says microwave safe.
+
+To run it: `cd backend && python tests/run_photo_test.py`
