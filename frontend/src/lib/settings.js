@@ -37,6 +37,7 @@ export const DEFAULTS = {
   // One-time questions already asked
   tipReadAsked: false,
   tipColorAsked: false,
+  feedback: {},         // "Tell us what you think" in Settings: question id -> latest answer (also logged as feedback_answer)
   demoDone: 0,          // testing only: pretend this many extra tasks are done
   demoRewards: 0,       // testing only: pretend this many extra rewards were picked
   gameWorld: "",        // "" until chosen (the sky is shown), then sky | space | animals | fruits

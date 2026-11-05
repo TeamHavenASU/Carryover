@@ -77,9 +77,38 @@ def test_bad_events_are_refused(log_path):
         event_log.log_event(row(event="task_opened", prompted="yes"))
 
 
+def test_feedback_answer_may_have_an_empty_task_id(log_path):
+    # It is about the app, not a task. The session id says "settings" where the task id would go.
+    event_log.log_event(row(event="feedback_answer", task_id="", session_id="p-settings-w01", answer="movement:too_much"))
+    rows = list(csv.DictReader(open(log_path)))
+    assert rows[0]["task_id"] == "" and rows[0]["answer"] == "movement:too_much"
+
+
+@pytest.mark.parametrize("event", ["task_opened", "step_started", "setup_answer", "check_answer"])
+def test_every_other_event_still_needs_a_task_id(log_path, event):
+    with pytest.raises(ValueError, match="task_id is required"):
+        event_log.log_event(row(event=event, task_id=""))
+
+
+def test_feedback_event_is_accepted_by_the_route(log_path):
+    body = row(event="feedback_answer", task_id="", session_id="p-settings-w01", answer="sound:too_loud")
+    assert client.post("/event", json=body).status_code == 200
+    assert client.post("/event", json=row(event="task_opened", task_id="")).status_code == 422
+
+
 def test_setup_questions_come_from_definitions():
     questions = client.get("/setup").json()
     assert [q["id"] for q in questions] == ["interests", "style", "sound", "hand"]
+
+
+def test_feedback_questions_come_from_definitions():
+    feedback = client.get("/feedback").json()
+    assert [q["id"] for q in feedback["questions"]] == ["movement", "sound", "colors", "help"]
+    assert feedback["check_in"]["after_tasks_done"] == 3
+    # The help question is recorded only: no answer may change a setting.
+    help_q = next(q for q in feedback["questions"] if q["id"] == "help")
+    assert all("action" not in a for a in help_q["answers"])
+    assert all(a["note"] for a in help_q["answers"] if a["value"] != "just_right")
 
 
 def test_skill_card_is_served_and_unknown_is_404():

@@ -5,6 +5,8 @@ Rules enforced here:
 - event must be in ALL_EVENTS
 - prompted only on step_done, value "yes" or "no"
 - answer only on the events data_io.py lists as using the answer column
+- person_id, task_id, session_id and week are required. The one exception is
+  task_id on feedback_answer, which may be empty: it is about the app, not a task
 - no other column data (never log what was bought, the cost, or what was eaten)
 """
 from __future__ import annotations
@@ -28,6 +30,7 @@ ANSWER_EVENTS = (
     "skill_check_answer",
     "skill_card_shown",
     "skill_card_not_needed",
+    "feedback_answer",  # Settings feedback: question_id:value
 )
 
 
@@ -45,7 +48,9 @@ def log_event(event: dict, path: str | Path = LIVE_EVENTS_PATH) -> dict:
         raise ValueError('step_done needs prompted = "yes" or "no"')
     if event.get("answer") not in (None, "") and name not in ANSWER_EVENTS:
         raise ValueError(f"answer is only allowed on {', '.join(ANSWER_EVENTS)}")
-    for required in ("person_id", "task_id", "session_id", "week"):
+    # task_id may be empty only on feedback_answer: it is about the app, not a task.
+    needed = ["person_id", "session_id", "week"] + ([] if name == "feedback_answer" else ["task_id"])
+    for required in needed:
         if event.get(required) in (None, ""):
             raise ValueError(f"{required} is required")
 

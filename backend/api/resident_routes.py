@@ -49,6 +49,12 @@ def setup_route():
     return load_definitions()["first_time_setup"]["questions"]
 
 
+@router.get("/feedback")
+def feedback_route():
+    """The "Tell us what you think" questions in Settings, as written in definitions.json."""
+    return load_definitions()["feedback"]
+
+
 @router.get("/skills/{skill_id}")
 def skill_route(skill_id: str):
     """One skill card, as written in backend/data/skills/."""

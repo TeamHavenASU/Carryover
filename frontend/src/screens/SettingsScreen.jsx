@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { get } from "../api";
+import { logEvent, sessionId } from "../lib/api";
+import { AnswerIcon } from "../lib/icons";
 import { PALETTES, deviceVoices } from "../lib/settings";
 import { WORLD_CHOICES } from "../lib/worlds";
 
@@ -8,6 +11,13 @@ import { WORLD_CHOICES } from "../lib/worlds";
 export default function SettingsScreen({ settings, update, onRedoSetup }) {
   const [voices, setVoices] = useState(deviceVoices);
   const [confirm, setConfirm] = useState(null); // "redo" | "sharing"
+  // "Tell us what you think": questions, answers and their actions come from definitions.json (GET /feedback).
+  const [feedback, setFeedback] = useState(null);
+  const [feedbackError, setFeedbackError] = useState("");
+  const [justAnswered, setJustAnswered] = useState({}); // question id -> the answer tapped this visit
+  useEffect(() => {
+    get("/feedback").then(setFeedback).catch(() => setFeedbackError("The questions could not load. Check that the app is connected."));
+  }, []);
 
   // Voices on the device load a moment after the page does.
   useEffect(() => {
@@ -55,6 +65,57 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
     </div>
   );
   const week = Number(settings.week);
+
+  // One tap = one feedback_answer row (answer "question_id:value", like setup_answer). It is about
+  // the app, not a task, so task_id is empty and the session id says "settings" where the task
+  // id would go. Nothing is logged until the person has said who they are.
+  const answerFeedback = (q, a) => {
+    update({ feedback: { ...(settings.feedback || {}), [q.id]: a.value } });
+    setJustAnswered((m) => ({ ...m, [q.id]: a }));
+    if (!settings.personId || !(week >= 1)) return;
+    logEvent({
+      person_id: settings.personId,
+      task_id: "",
+      session_id: sessionId(settings.personId, "settings", week),
+      week,
+      event: "feedback_answer",
+      answer: `${q.id}:${a.value}`,
+    });
+  };
+  // Only the sound choices have a picture in the icon set; it always sits next to its words.
+  const optionIcon = (o) => (o.setting === "sound" ? <AnswerIcon id={o.value === "normal" ? "normal_sound" : o.value} /> : null);
+  const feedbackQuestion = (q) => {
+    const picked = (settings.feedback || {})[q.id];
+    const a = justAnswered[q.id];
+    return (
+      <fieldset key={q.id}>
+        <legend>{q.text}</legend>
+        <div className="segmented">
+          {q.answers.map((ans) => (
+            <label key={ans.value} className={`segment ${picked === ans.value ? "on" : ""}`}>
+              <input type="radio" name={`feedback-${q.id}`} value={ans.value} checked={picked === ans.value} onChange={() => answerFeedback(q, ans)} />
+              {ans.text}
+            </label>
+          ))}
+        </div>
+        {a && (
+          <div role="status">
+            {a.note && <p className="muted">{a.note}</p>}
+            {a.action && <p>{a.action.text}</p>}
+            {a.action && a.action.options.map((o) => {
+              const on = settings[o.setting] === o.value;
+              return (
+                <button key={`${o.setting}-${o.value}`} className="btn answer-btn" aria-pressed={on} onClick={() => update({ [o.setting]: o.value })}>
+                  {optionIcon(o)}{o.text}{on ? " (on now)" : ""}
+                </button>
+              );
+            })}
+            {!a.note && !a.action && <p className="muted">{feedback.thanks}</p>}
+          </div>
+        )}
+      </fieldset>
+    );
+  };
 
   return (
     <section>
@@ -154,6 +215,13 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
         {choice("Which hand do you use most?", "hand", [["right", "Right"], ["left", "Left"], ["both", "Both"]])}
         <button className="btn" onClick={() => setConfirm("redo")}>Redo first-time setup</button>
         {confirm === "redo" && sure("Redo first-time setup? Your answers will be asked again.", "Yes, redo setup", onRedoSetup)}
+      </div>
+
+      <div className="card">
+        <h2>{feedback ? feedback.title : "Tell us what you think"}</h2>
+        {feedbackError && <p className="muted">{feedbackError}</p>}
+        {feedback && <p className="muted">{feedback.intro}</p>}
+        {feedback && feedback.questions.map(feedbackQuestion)}
       </div>
 
       <div className="card">
