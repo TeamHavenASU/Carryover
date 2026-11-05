@@ -41,8 +41,9 @@ export default function ResidentPreview({ view }) {
               </details>
             )}
             <p className="muted small">
-              Offer help after {step.hint_waits.join(", ")} seconds
-              {step.wait ? " (waiting step, no long pause)" : ""}
+              {step.wait
+                ? "Waiting step: no help is offered while it runs"
+                : `Offer help after ${step.hint_waits.join(", ")} seconds`}
             </p>
           </li>
         ))}
