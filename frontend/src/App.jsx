@@ -26,7 +26,7 @@ export default function App() {
       </nav>}
       <main className={onResident ? "" : "page"}>
         <Routes>
-          <Route path="/" element={<Navigate to="/demo" replace />} />
+          <Route path="/" element={<Navigate to="/resident?person=nina&week=3" replace />} />
           <Route path="/resident" element={<Resident />} />
           <Route path="/staff" element={<Staff />} />
           <Route path="/demo" element={<Demo />} />
