@@ -36,8 +36,14 @@ LIVE_EVENTS_PATH = DATA_DIR / "live" / "events.csv"
 # - timestamp is local time, format YYYY-MM-DDTHH:MM:SS (e.g. 2026-11-16T18:02:10).
 # - session_id is <person>-<task>-w<NN>, e.g. jeremiah-heat_meal-w03.
 # - help_shown holds "split", "hint" or "hide" (the help level shown).
-# - answer is used only on check_answer, end_question, refresher_answer,
-#   help_offer_answer (yes/no) and small_step_opened (the substep id, e.g. s4b).
+# - answer is used only on:
+#     check_answer, end_question, refresher_answer   yes / no
+#     help_offer_answer                              yes / no
+#     small_step_opened                              the substep id, e.g. s4b
+#     setup_answer                                   question_id:value
+#     device_check_answer                            yes / no / not_sure
+#     skill_check_answer                             skill_id:yes or skill_id:not_sure
+#     skill_card_shown, skill_card_not_needed        skill_id
 # - prompted is used only on step_done, values "yes" or "no".
 EVENT_COLUMNS = [
     "person_id",
@@ -92,6 +98,12 @@ ALL_EVENTS = [
     "check_answer",
     "end_question",
     "refresher_answer",
+    # first-time setup and skill cards (these use the answer column)
+    "setup_answer",  # question_id:value. Settings only; never used by detect or fade
+    "device_check_answer",  # the task's first_time_question: yes / no / not_sure
+    "skill_check_answer",  # skill_id:yes or skill_id:not_sure
+    "skill_card_shown",  # step_id, answer = skill_id. COUNTS as used help
+    "skill_card_not_needed",  # answer = skill_id
 ]
 
 
