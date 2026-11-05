@@ -1,4 +1,4 @@
-# Partner research and insights: First Place AZ
+# Partner research and Insights: First Place AZ
 
 ## Research goal
 
