@@ -1,0 +1,1574 @@
+{
+  "_everyone": {
+    "hint:s1": {
+      "tried": 197,
+      "worked": 104
+    },
+    "hint:s10": {
+      "tried": 40,
+      "worked": 22
+    },
+    "hint:s2": {
+      "tried": 173,
+      "worked": 108
+    },
+    "hint:s3": {
+      "tried": 192,
+      "worked": 113
+    },
+    "hint:s4": {
+      "tried": 228,
+      "worked": 126
+    },
+    "hint:s5": {
+      "tried": 155,
+      "worked": 102
+    },
+    "hint:s6": {
+      "tried": 105,
+      "worked": 86
+    },
+    "hint:s7": {
+      "tried": 180,
+      "worked": 103
+    },
+    "hint:s8": {
+      "tried": 113,
+      "worked": 56
+    },
+    "hint:s9": {
+      "tried": 116,
+      "worked": 69
+    },
+    "refresher": {
+      "tried": 4,
+      "worked": 2
+    },
+    "show_step:s1": {
+      "tried": 224,
+      "worked": 116
+    },
+    "show_step:s10": {
+      "tried": 60,
+      "worked": 33
+    },
+    "show_step:s2": {
+      "tried": 202,
+      "worked": 117
+    },
+    "show_step:s3": {
+      "tried": 230,
+      "worked": 130
+    },
+    "show_step:s4": {
+      "tried": 252,
+      "worked": 131
+    },
+    "show_step:s5": {
+      "tried": 184,
+      "worked": 117
+    },
+    "show_step:s6": {
+      "tried": 109,
+      "worked": 90
+    },
+    "show_step:s7": {
+      "tried": 248,
+      "worked": 130
+    },
+    "show_step:s8": {
+      "tried": 180,
+      "worked": 70
+    },
+    "show_step:s9": {
+      "tried": 152,
+      "worked": 83
+    },
+    "split_step:s1": {
+      "tried": 27,
+      "worked": 12
+    },
+    "split_step:s10": {
+      "tried": 20,
+      "worked": 11
+    },
+    "split_step:s2": {
+      "tried": 29,
+      "worked": 9
+    },
+    "split_step:s3": {
+      "tried": 38,
+      "worked": 17
+    },
+    "split_step:s4": {
+      "tried": 24,
+      "worked": 5
+    },
+    "split_step:s5": {
+      "tried": 29,
+      "worked": 15
+    },
+    "split_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "split_step:s7": {
+      "tried": 68,
+      "worked": 27
+    },
+    "split_step:s8": {
+      "tried": 67,
+      "worked": 14
+    },
+    "split_step:s9": {
+      "tried": 36,
+      "worked": 14
+    },
+    "start_push": {
+      "tried": 68,
+      "worked": 21
+    }
+  },
+  "ana": {
+    "hint:s1": {
+      "tried": 16,
+      "worked": 10
+    },
+    "hint:s2": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s3": {
+      "tried": 6,
+      "worked": 4
+    },
+    "hint:s4": {
+      "tried": 13,
+      "worked": 11
+    },
+    "hint:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s1": {
+      "tried": 16,
+      "worked": 10
+    },
+    "show_step:s2": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s3": {
+      "tried": 6,
+      "worked": 4
+    },
+    "show_step:s4": {
+      "tried": 13,
+      "worked": 11
+    },
+    "show_step:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 4,
+      "worked": 4
+    }
+  },
+  "ben": {
+    "hint:s1": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s10": {
+      "tried": 14,
+      "worked": 9
+    },
+    "hint:s2": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s3": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s4": {
+      "tried": 15,
+      "worked": 8
+    },
+    "hint:s5": {
+      "tried": 7,
+      "worked": 4
+    },
+    "hint:s6": {
+      "tried": 19,
+      "worked": 11
+    },
+    "hint:s7": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s8": {
+      "tried": 13,
+      "worked": 0
+    },
+    "hint:s9": {
+      "tried": 14,
+      "worked": 8
+    },
+    "show_step:s1": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s10": {
+      "tried": 14,
+      "worked": 9
+    },
+    "show_step:s2": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s3": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s4": {
+      "tried": 15,
+      "worked": 8
+    },
+    "show_step:s5": {
+      "tried": 20,
+      "worked": 11
+    },
+    "show_step:s6": {
+      "tried": 19,
+      "worked": 11
+    },
+    "show_step:s7": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s8": {
+      "tried": 33,
+      "worked": 0
+    },
+    "show_step:s9": {
+      "tried": 14,
+      "worked": 8
+    },
+    "split_step:s5": {
+      "tried": 13,
+      "worked": 7
+    },
+    "split_step:s8": {
+      "tried": 20,
+      "worked": 0
+    }
+  },
+  "carl": {
+    "hint:s1": {
+      "tried": 10,
+      "worked": 5
+    },
+    "hint:s10": {
+      "tried": 6,
+      "worked": 2
+    },
+    "hint:s2": {
+      "tried": 13,
+      "worked": 7
+    },
+    "hint:s3": {
+      "tried": 8,
+      "worked": 4
+    },
+    "hint:s4": {
+      "tried": 8,
+      "worked": 4
+    },
+    "hint:s5": {
+      "tried": 9,
+      "worked": 6
+    },
+    "hint:s6": {
+      "tried": 14,
+      "worked": 6
+    },
+    "hint:s7": {
+      "tried": 21,
+      "worked": 10
+    },
+    "hint:s8": {
+      "tried": 8,
+      "worked": 5
+    },
+    "hint:s9": {
+      "tried": 10,
+      "worked": 7
+    },
+    "refresher": {
+      "tried": 1,
+      "worked": 1
+    },
+    "show_step:s1": {
+      "tried": 10,
+      "worked": 5
+    },
+    "show_step:s10": {
+      "tried": 26,
+      "worked": 13
+    },
+    "show_step:s2": {
+      "tried": 13,
+      "worked": 7
+    },
+    "show_step:s3": {
+      "tried": 8,
+      "worked": 4
+    },
+    "show_step:s4": {
+      "tried": 8,
+      "worked": 4
+    },
+    "show_step:s5": {
+      "tried": 9,
+      "worked": 6
+    },
+    "show_step:s6": {
+      "tried": 14,
+      "worked": 6
+    },
+    "show_step:s7": {
+      "tried": 21,
+      "worked": 10
+    },
+    "show_step:s8": {
+      "tried": 8,
+      "worked": 5
+    },
+    "show_step:s9": {
+      "tried": 10,
+      "worked": 7
+    },
+    "split_step:s10": {
+      "tried": 20,
+      "worked": 11
+    }
+  },
+  "devon": {
+    "hint:s1": {
+      "tried": 18,
+      "worked": 4
+    },
+    "hint:s2": {
+      "tried": 15,
+      "worked": 6
+    },
+    "hint:s3": {
+      "tried": 12,
+      "worked": 10
+    },
+    "hint:s4": {
+      "tried": 15,
+      "worked": 3
+    },
+    "hint:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 12,
+      "worked": 6
+    },
+    "show_step:s1": {
+      "tried": 29,
+      "worked": 5
+    },
+    "show_step:s2": {
+      "tried": 15,
+      "worked": 6
+    },
+    "show_step:s3": {
+      "tried": 12,
+      "worked": 10
+    },
+    "show_step:s4": {
+      "tried": 15,
+      "worked": 3
+    },
+    "show_step:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 12,
+      "worked": 6
+    },
+    "split_step:s1": {
+      "tried": 11,
+      "worked": 1
+    }
+  },
+  "felix": {
+    "hint:s1": {
+      "tried": 6,
+      "worked": 4
+    },
+    "hint:s2": {
+      "tried": 12,
+      "worked": 8
+    },
+    "hint:s3": {
+      "tried": 5,
+      "worked": 1
+    },
+    "hint:s4": {
+      "tried": 14,
+      "worked": 6
+    },
+    "hint:s5": {
+      "tried": 8,
+      "worked": 6
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 12,
+      "worked": 8
+    },
+    "hint:s8": {
+      "tried": 23,
+      "worked": 13
+    },
+    "hint:s9": {
+      "tried": 20,
+      "worked": 12
+    },
+    "show_step:s1": {
+      "tried": 6,
+      "worked": 4
+    },
+    "show_step:s2": {
+      "tried": 12,
+      "worked": 8
+    },
+    "show_step:s3": {
+      "tried": 30,
+      "worked": 8
+    },
+    "show_step:s4": {
+      "tried": 14,
+      "worked": 6
+    },
+    "show_step:s5": {
+      "tried": 8,
+      "worked": 6
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 12,
+      "worked": 8
+    },
+    "show_step:s8": {
+      "tried": 23,
+      "worked": 13
+    },
+    "show_step:s9": {
+      "tried": 24,
+      "worked": 15
+    },
+    "split_step:s3": {
+      "tried": 25,
+      "worked": 7
+    },
+    "split_step:s9": {
+      "tried": 4,
+      "worked": 3
+    }
+  },
+  "grace": {
+    "hint:s1": {
+      "tried": 5,
+      "worked": 3
+    },
+    "hint:s2": {
+      "tried": 5,
+      "worked": 3
+    },
+    "hint:s3": {
+      "tried": 8,
+      "worked": 6
+    },
+    "hint:s4": {
+      "tried": 11,
+      "worked": 8
+    },
+    "hint:s5": {
+      "tried": 9,
+      "worked": 6
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s8": {
+      "tried": 6,
+      "worked": 0
+    },
+    "hint:s9": {
+      "tried": 6,
+      "worked": 4
+    },
+    "show_step:s1": {
+      "tried": 5,
+      "worked": 3
+    },
+    "show_step:s2": {
+      "tried": 5,
+      "worked": 3
+    },
+    "show_step:s3": {
+      "tried": 8,
+      "worked": 6
+    },
+    "show_step:s4": {
+      "tried": 11,
+      "worked": 8
+    },
+    "show_step:s5": {
+      "tried": 9,
+      "worked": 6
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s8": {
+      "tried": 31,
+      "worked": 0
+    },
+    "show_step:s9": {
+      "tried": 6,
+      "worked": 4
+    },
+    "split_step:s8": {
+      "tried": 25,
+      "worked": 0
+    }
+  },
+  "jay": {
+    "hint:s1": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s2": {
+      "tried": 6,
+      "worked": 5
+    },
+    "hint:s3": {
+      "tried": 9,
+      "worked": 6
+    },
+    "hint:s4": {
+      "tried": 8,
+      "worked": 5
+    },
+    "hint:s5": {
+      "tried": 7,
+      "worked": 5
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 7,
+      "worked": 5
+    },
+    "hint:s8": {
+      "tried": 7,
+      "worked": 5
+    },
+    "hint:s9": {
+      "tried": 6,
+      "worked": 4
+    },
+    "show_step:s1": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s2": {
+      "tried": 6,
+      "worked": 5
+    },
+    "show_step:s3": {
+      "tried": 17,
+      "worked": 12
+    },
+    "show_step:s4": {
+      "tried": 8,
+      "worked": 5
+    },
+    "show_step:s5": {
+      "tried": 7,
+      "worked": 5
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 7,
+      "worked": 5
+    },
+    "show_step:s8": {
+      "tried": 7,
+      "worked": 5
+    },
+    "show_step:s9": {
+      "tried": 6,
+      "worked": 4
+    },
+    "split_step:s3": {
+      "tried": 8,
+      "worked": 6
+    }
+  },
+  "jeremiah": {
+    "hint:s1": {
+      "tried": 25,
+      "worked": 8
+    },
+    "hint:s2": {
+      "tried": 17,
+      "worked": 10
+    },
+    "hint:s3": {
+      "tried": 25,
+      "worked": 10
+    },
+    "hint:s4": {
+      "tried": 7,
+      "worked": 3
+    },
+    "hint:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 7,
+      "worked": 3
+    },
+    "refresher": {
+      "tried": 1,
+      "worked": 0
+    },
+    "show_step:s1": {
+      "tried": 25,
+      "worked": 8
+    },
+    "show_step:s2": {
+      "tried": 17,
+      "worked": 10
+    },
+    "show_step:s3": {
+      "tried": 25,
+      "worked": 10
+    },
+    "show_step:s4": {
+      "tried": 25,
+      "worked": 5
+    },
+    "show_step:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 25,
+      "worked": 10
+    },
+    "split_step:s4": {
+      "tried": 18,
+      "worked": 2
+    },
+    "split_step:s7": {
+      "tried": 18,
+      "worked": 7
+    },
+    "start_push": {
+      "tried": 17,
+      "worked": 3
+    }
+  },
+  "kayla": {
+    "hint:s1": {
+      "tried": 6,
+      "worked": 4
+    },
+    "hint:s2": {
+      "tried": 6,
+      "worked": 3
+    },
+    "hint:s3": {
+      "tried": 16,
+      "worked": 11
+    },
+    "hint:s4": {
+      "tried": 17,
+      "worked": 10
+    },
+    "hint:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 9,
+      "worked": 1
+    },
+    "show_step:s1": {
+      "tried": 6,
+      "worked": 4
+    },
+    "show_step:s2": {
+      "tried": 6,
+      "worked": 3
+    },
+    "show_step:s3": {
+      "tried": 16,
+      "worked": 11
+    },
+    "show_step:s4": {
+      "tried": 17,
+      "worked": 10
+    },
+    "show_step:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 29,
+      "worked": 3
+    },
+    "split_step:s7": {
+      "tried": 20,
+      "worked": 2
+    }
+  },
+  "lena": {
+    "hint:s1": {
+      "tried": 17,
+      "worked": 9
+    },
+    "hint:s2": {
+      "tried": 13,
+      "worked": 8
+    },
+    "hint:s3": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s4": {
+      "tried": 9,
+      "worked": 5
+    },
+    "hint:s5": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 6,
+      "worked": 4
+    },
+    "hint:s8": {
+      "tried": 5,
+      "worked": 4
+    },
+    "hint:s9": {
+      "tried": 8,
+      "worked": 5
+    },
+    "show_step:s1": {
+      "tried": 24,
+      "worked": 14
+    },
+    "show_step:s2": {
+      "tried": 19,
+      "worked": 12
+    },
+    "show_step:s3": {
+      "tried": 9,
+      "worked": 8
+    },
+    "show_step:s4": {
+      "tried": 15,
+      "worked": 8
+    },
+    "show_step:s5": {
+      "tried": 20,
+      "worked": 11
+    },
+    "show_step:s6": {
+      "tried": 8,
+      "worked": 8
+    },
+    "show_step:s7": {
+      "tried": 26,
+      "worked": 14
+    },
+    "show_step:s8": {
+      "tried": 16,
+      "worked": 12
+    },
+    "show_step:s9": {
+      "tried": 16,
+      "worked": 11
+    },
+    "split_step:s1": {
+      "tried": 7,
+      "worked": 5
+    },
+    "split_step:s2": {
+      "tried": 6,
+      "worked": 4
+    },
+    "split_step:s3": {
+      "tried": 5,
+      "worked": 4
+    },
+    "split_step:s4": {
+      "tried": 6,
+      "worked": 3
+    },
+    "split_step:s5": {
+      "tried": 16,
+      "worked": 8
+    },
+    "split_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "split_step:s7": {
+      "tried": 20,
+      "worked": 10
+    },
+    "split_step:s8": {
+      "tried": 11,
+      "worked": 8
+    },
+    "split_step:s9": {
+      "tried": 8,
+      "worked": 6
+    }
+  },
+  "luis": {
+    "hint:s1": {
+      "tried": 7,
+      "worked": 4
+    },
+    "hint:s2": {
+      "tried": 10,
+      "worked": 6
+    },
+    "hint:s3": {
+      "tried": 9,
+      "worked": 5
+    },
+    "hint:s4": {
+      "tried": 9,
+      "worked": 7
+    },
+    "hint:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 10,
+      "worked": 7
+    },
+    "refresher": {
+      "tried": 1,
+      "worked": 0
+    },
+    "show_step:s1": {
+      "tried": 7,
+      "worked": 4
+    },
+    "show_step:s2": {
+      "tried": 10,
+      "worked": 6
+    },
+    "show_step:s3": {
+      "tried": 9,
+      "worked": 5
+    },
+    "show_step:s4": {
+      "tried": 9,
+      "worked": 7
+    },
+    "show_step:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 20,
+      "worked": 15
+    },
+    "split_step:s7": {
+      "tried": 10,
+      "worked": 8
+    }
+  },
+  "maria": {
+    "hint:s1": {
+      "tried": 6,
+      "worked": 5
+    },
+    "hint:s2": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s3": {
+      "tried": 14,
+      "worked": 7
+    },
+    "hint:s4": {
+      "tried": 7,
+      "worked": 5
+    },
+    "hint:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s1": {
+      "tried": 6,
+      "worked": 5
+    },
+    "show_step:s2": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s3": {
+      "tried": 14,
+      "worked": 7
+    },
+    "show_step:s4": {
+      "tried": 7,
+      "worked": 5
+    },
+    "show_step:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 4,
+      "worked": 3
+    },
+    "start_push": {
+      "tried": 18,
+      "worked": 9
+    }
+  },
+  "mei": {
+    "hint:s1": {
+      "tried": 19,
+      "worked": 9
+    },
+    "hint:s10": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s2": {
+      "tried": 12,
+      "worked": 8
+    },
+    "hint:s3": {
+      "tried": 7,
+      "worked": 3
+    },
+    "hint:s4": {
+      "tried": 15,
+      "worked": 5
+    },
+    "hint:s5": {
+      "tried": 8,
+      "worked": 5
+    },
+    "hint:s6": {
+      "tried": 5,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s8": {
+      "tried": 7,
+      "worked": 6
+    },
+    "hint:s9": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s1": {
+      "tried": 19,
+      "worked": 9
+    },
+    "show_step:s10": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s2": {
+      "tried": 12,
+      "worked": 8
+    },
+    "show_step:s3": {
+      "tried": 7,
+      "worked": 3
+    },
+    "show_step:s4": {
+      "tried": 15,
+      "worked": 5
+    },
+    "show_step:s5": {
+      "tried": 8,
+      "worked": 5
+    },
+    "show_step:s6": {
+      "tried": 5,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s8": {
+      "tried": 7,
+      "worked": 6
+    },
+    "show_step:s9": {
+      "tried": 4,
+      "worked": 4
+    }
+  },
+  "nina": {
+    "hint:s1": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s2": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s3": {
+      "tried": 14,
+      "worked": 8
+    },
+    "hint:s4": {
+      "tried": 18,
+      "worked": 10
+    },
+    "hint:s5": {
+      "tried": 12,
+      "worked": 5
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 14,
+      "worked": 9
+    },
+    "hint:s8": {
+      "tried": 12,
+      "worked": 7
+    },
+    "hint:s9": {
+      "tried": 22,
+      "worked": 13
+    },
+    "refresher": {
+      "tried": 1,
+      "worked": 1
+    },
+    "show_step:s1": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s2": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s3": {
+      "tried": 14,
+      "worked": 8
+    },
+    "show_step:s4": {
+      "tried": 18,
+      "worked": 10
+    },
+    "show_step:s5": {
+      "tried": 12,
+      "worked": 5
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 14,
+      "worked": 9
+    },
+    "show_step:s8": {
+      "tried": 12,
+      "worked": 7
+    },
+    "show_step:s9": {
+      "tried": 22,
+      "worked": 13
+    }
+  },
+  "omar": {
+    "hint:s1": {
+      "tried": 8,
+      "worked": 6
+    },
+    "hint:s2": {
+      "tried": 11,
+      "worked": 7
+    },
+    "hint:s3": {
+      "tried": 19,
+      "worked": 9
+    },
+    "hint:s4": {
+      "tried": 18,
+      "worked": 7
+    },
+    "hint:s5": {
+      "tried": 11,
+      "worked": 6
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 16,
+      "worked": 9
+    },
+    "hint:s8": {
+      "tried": 10,
+      "worked": 4
+    },
+    "hint:s9": {
+      "tried": 5,
+      "worked": 0
+    },
+    "show_step:s1": {
+      "tried": 8,
+      "worked": 6
+    },
+    "show_step:s2": {
+      "tried": 11,
+      "worked": 7
+    },
+    "show_step:s3": {
+      "tried": 19,
+      "worked": 9
+    },
+    "show_step:s4": {
+      "tried": 18,
+      "worked": 7
+    },
+    "show_step:s5": {
+      "tried": 11,
+      "worked": 6
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 16,
+      "worked": 9
+    },
+    "show_step:s8": {
+      "tried": 10,
+      "worked": 4
+    },
+    "show_step:s9": {
+      "tried": 29,
+      "worked": 5
+    },
+    "split_step:s9": {
+      "tried": 24,
+      "worked": 5
+    }
+  },
+  "priya": {
+    "hint:s1": {
+      "tried": 21,
+      "worked": 10
+    },
+    "hint:s2": {
+      "tried": 7,
+      "worked": 3
+    },
+    "hint:s3": {
+      "tried": 8,
+      "worked": 5
+    },
+    "hint:s4": {
+      "tried": 7,
+      "worked": 5
+    },
+    "hint:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 13,
+      "worked": 8
+    },
+    "show_step:s1": {
+      "tried": 30,
+      "worked": 16
+    },
+    "show_step:s2": {
+      "tried": 30,
+      "worked": 8
+    },
+    "show_step:s3": {
+      "tried": 8,
+      "worked": 5
+    },
+    "show_step:s4": {
+      "tried": 7,
+      "worked": 5
+    },
+    "show_step:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 13,
+      "worked": 8
+    },
+    "split_step:s1": {
+      "tried": 9,
+      "worked": 6
+    },
+    "split_step:s2": {
+      "tried": 23,
+      "worked": 5
+    }
+  },
+  "rosa": {
+    "hint:s1": {
+      "tried": 4,
+      "worked": 3
+    },
+    "hint:s10": {
+      "tried": 16,
+      "worked": 8
+    },
+    "hint:s2": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s3": {
+      "tried": 12,
+      "worked": 7
+    },
+    "hint:s4": {
+      "tried": 13,
+      "worked": 8
+    },
+    "hint:s5": {
+      "tried": 25,
+      "worked": 12
+    },
+    "hint:s6": {
+      "tried": 7,
+      "worked": 5
+    },
+    "hint:s7": {
+      "tried": 20,
+      "worked": 11
+    },
+    "hint:s8": {
+      "tried": 7,
+      "worked": 4
+    },
+    "hint:s9": {
+      "tried": 10,
+      "worked": 6
+    },
+    "show_step:s1": {
+      "tried": 4,
+      "worked": 3
+    },
+    "show_step:s10": {
+      "tried": 16,
+      "worked": 8
+    },
+    "show_step:s2": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s3": {
+      "tried": 12,
+      "worked": 7
+    },
+    "show_step:s4": {
+      "tried": 13,
+      "worked": 8
+    },
+    "show_step:s5": {
+      "tried": 25,
+      "worked": 12
+    },
+    "show_step:s6": {
+      "tried": 7,
+      "worked": 5
+    },
+    "show_step:s7": {
+      "tried": 20,
+      "worked": 11
+    },
+    "show_step:s8": {
+      "tried": 7,
+      "worked": 4
+    },
+    "show_step:s9": {
+      "tried": 10,
+      "worked": 6
+    },
+    "start_push": {
+      "tried": 15,
+      "worked": 3
+    }
+  },
+  "sam": {
+    "hint:s1": {
+      "tried": 12,
+      "worked": 7
+    },
+    "hint:s2": {
+      "tried": 11,
+      "worked": 7
+    },
+    "hint:s3": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s4": {
+      "tried": 15,
+      "worked": 9
+    },
+    "hint:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 8,
+      "worked": 3
+    },
+    "show_step:s1": {
+      "tried": 12,
+      "worked": 7
+    },
+    "show_step:s2": {
+      "tried": 11,
+      "worked": 7
+    },
+    "show_step:s3": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s4": {
+      "tried": 15,
+      "worked": 9
+    },
+    "show_step:s5": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 8,
+      "worked": 3
+    }
+  },
+  "tom": {
+    "hint:s1": {
+      "tried": 5,
+      "worked": 3
+    },
+    "hint:s2": {
+      "tried": 15,
+      "worked": 9
+    },
+    "hint:s3": {
+      "tried": 8,
+      "worked": 6
+    },
+    "hint:s4": {
+      "tried": 9,
+      "worked": 7
+    },
+    "hint:s5": {
+      "tried": 23,
+      "worked": 12
+    },
+    "hint:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "hint:s7": {
+      "tried": 5,
+      "worked": 3
+    },
+    "hint:s8": {
+      "tried": 15,
+      "worked": 8
+    },
+    "hint:s9": {
+      "tried": 11,
+      "worked": 6
+    },
+    "show_step:s1": {
+      "tried": 5,
+      "worked": 3
+    },
+    "show_step:s2": {
+      "tried": 15,
+      "worked": 9
+    },
+    "show_step:s3": {
+      "tried": 8,
+      "worked": 6
+    },
+    "show_step:s4": {
+      "tried": 9,
+      "worked": 7
+    },
+    "show_step:s5": {
+      "tried": 23,
+      "worked": 12
+    },
+    "show_step:s6": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s7": {
+      "tried": 5,
+      "worked": 3
+    },
+    "show_step:s8": {
+      "tried": 26,
+      "worked": 14
+    },
+    "show_step:s9": {
+      "tried": 11,
+      "worked": 6
+    },
+    "split_step:s8": {
+      "tried": 11,
+      "worked": 6
+    },
+    "start_push": {
+      "tried": 18,
+      "worked": 6
+    }
+  }
+}
