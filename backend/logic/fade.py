@@ -353,17 +353,40 @@ def start_push_on(sessions: list[list[dict]], task: dict, defs: dict) -> bool:
     return on
 
 
+# Rule 8's answer to "Do you still want to practice this task?". It is not
+# practice, so a week with only this row still counts as skipped.
+STILL_WANT_EVENT = "still_want_answer"
+
+
 def trailing_skipped_weeks(history: list[dict], week: int) -> int:
     """Weeks in a row, just before this one, with no session for the task."""
-    if not history:
+    seen = {r["week"] for r in history if r["event"] != STILL_WANT_EVENT}
+    if not seen:
         return 0
-    seen = {r["week"] for r in history}
     count = 0
     for w in range(week - 1, 0, -1):
         if w in seen:
             break
         count += 1
     return count
+
+
+def ask_about_skips(history: list[dict], rows_to_now: list[dict], week: int, defs: dict) -> bool:
+    """Rule 8: ask "Do you still want to practice this task?" this week.
+
+    True once the task has been skipped rule_8_skips_before_asking_once weeks
+    in a row, and only once per run of skipped weeks: a still_want_answer row
+    from the first skipped week onward (this week included, so opening the
+    task again the same week doesn't ask twice) means it was already asked.
+    A later, separate run of skipped weeks asks again.
+    """
+    skipped = trailing_skipped_weeks(history, week)
+    if skipped < defs["fading_rules"]["rule_8_skips_before_asking_once"]:
+        return False
+    run_began = week - skipped
+    return not any(
+        r["event"] == STILL_WANT_EVENT and r["week"] >= run_began for r in rows_to_now
+    )
 
 
 def _skill_card(skill_id: str) -> dict | None:
@@ -479,8 +502,9 @@ def build_view(
         "first_time_question": task.get("first_time_question") if not sessions else None,
         "new_device": is_new_device(first_time_answer),
         "break_note": task.get("break_note"),
-        "ask_about_skips": trailing_skipped_weeks(history_rows, week)
-        >= defs["fading_rules"]["rule_8_skips_before_asking_once"],
+        "ask_about_skips": ask_about_skips(
+            history_rows, load_events(events_path, person_id, task_id, up_to_week=week), week, defs
+        ),
         "check_questions": check_questions,
         "skill_cards": skill_cards(history_rows, task),
         "sticking_points": points,

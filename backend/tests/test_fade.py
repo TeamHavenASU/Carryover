@@ -438,6 +438,51 @@ def test_skipped_weeks_are_counted_back_from_this_week():
     assert fade.trailing_skipped_weeks([], 5) == 0
 
 
+def test_a_still_want_answer_alone_is_not_practice():
+    history = [row("task_opened", week=1), row("still_want_answer", week=5, answer="no")]
+    assert fade.trailing_skipped_weeks(history, 6) == 4
+
+
+def _write_weeks(path, weeks):
+    """Write an events file. weeks is {week: rows}; each row gets that week."""
+    rows = []
+    for week, ses in weeks.items():
+        for r in ses:
+            rows.append(dict(r, week=week, session_id=f"p-toast-w{week:02d}"))
+    with open(path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    return path
+
+
+def _still_want(day, answer):
+    return [row("still_want_answer", time=f"2026-09-{day:02d}T09:59:00", answer=answer)]
+
+
+def test_view_asks_after_three_skipped_weeks_in_a_row(tmp_path, monkeypatch):
+    monkeypatch.setattr(fade, "load_task", lambda task_id: TASK)
+    path = _write_weeks(tmp_path / "events.csv", {1: session("alone", day=1)})
+    assert fade.build_view("p", "toast", 4, events_path=path, defs=DEFS)["ask_about_skips"] is False
+    assert fade.build_view("p", "toast", 5, events_path=path, defs=DEFS)["ask_about_skips"] is True
+
+
+def test_view_does_not_ask_again_once_answered(tmp_path, monkeypatch):
+    monkeypatch.setattr(fade, "load_task", lambda task_id: TASK)
+    path = _write_weeks(tmp_path / "events.csv", {1: session("alone", day=1), 5: _still_want(29, "no")})
+    # Opening the task again the same week, and the weeks after while still skipping.
+    for week in (5, 6, 7, 9):
+        assert fade.build_view("p", "toast", week, events_path=path, defs=DEFS)["ask_about_skips"] is False
+
+
+def test_a_later_separate_run_of_skipped_weeks_asks_again(tmp_path, monkeypatch):
+    monkeypatch.setattr(fade, "load_task", lambda task_id: TASK)
+    weeks = {1: session("alone", day=1), 5: _still_want(29, "yes") + session("alone", day=29)}
+    path = _write_weeks(tmp_path / "events.csv", weeks)
+    assert fade.build_view("p", "toast", 8, events_path=path, defs=DEFS)["ask_about_skips"] is False
+    assert fade.build_view("p", "toast", 9, events_path=path, defs=DEFS)["ask_about_skips"] is True
+
+
 # ---- build_view
 
 
