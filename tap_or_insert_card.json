@@ -1,0 +1,34 @@
+{
+  "skill_id": "tap_or_insert_card",
+  "title": "Tap or insert a card",
+  "why": "Step 'Pay with your card' needs you to use the card reader.",
+  "steps": [
+    {
+      "id": "tap_or_insert_card_1",
+      "text": "Look at the reader. It may say \"Tap, insert or swipe\""
+    },
+    {
+      "id": "tap_or_insert_card_2",
+      "text": "Tap: hold your card flat on the reader until it beeps"
+    },
+    {
+      "id": "tap_or_insert_card_3",
+      "text": "Insert: push the chip end in, face up. Leave it in"
+    },
+    {
+      "id": "tap_or_insert_card_4",
+      "text": "Wait for \"Approved\" or \"Remove card\". Then take your card"
+    }
+  ],
+  "tips": [
+    "Tap didn't work? Try insert instead"
+  ],
+  "used_by": [
+    "buy_instore_card:s8"
+  ],
+  "picture": {
+    "file": "buy/card_tap.svg",
+    "alt": "Tap or insert a card"
+  },
+  "video": null
+}

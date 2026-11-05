@@ -1,0 +1,244 @@
+{
+  "task_id": "buy_online",
+  "title": "Buy something (online)",
+  "start_push": "Just check the price. That's all for now.",
+  "start_time_seconds": 60,
+  "long_pause_seconds": 45,
+  "first_time_question": {
+    "id": "used_this_device",
+    "text": "Have you ordered from this app or website before?",
+    "answers": [
+      "Yes",
+      "No",
+      "Not sure"
+    ],
+    "if_no": "start_at_most_help"
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "part": "decide",
+      "text": "Find the price and read it",
+      "base_skills": [
+        "read_price"
+      ],
+      "picture": {
+        "file": "buy/price_tag.svg",
+        "alt": "A price tag on a shelf under an item"
+      },
+      "video": null,
+      "substeps": []
+    },
+    {
+      "step_id": "s2",
+      "part": "decide",
+      "text": "Check you have enough money for this",
+      "base_skills": [],
+      "picture": null,
+      "video": null,
+      "substeps": [
+        {
+          "id": "s2a",
+          "text": "Open your bank app"
+        },
+        {
+          "id": "s2b",
+          "text": "Find your balance"
+        },
+        {
+          "id": "s2c",
+          "text": "Compare it with the price"
+        }
+      ],
+      "check_question": "Did you check your money?"
+    },
+    {
+      "step_id": "s3",
+      "part": "decide",
+      "text": "Ask yourself if you need this right now",
+      "base_skills": [],
+      "picture": null,
+      "video": null,
+      "substeps": [],
+      "long_pause_seconds": 180
+    },
+    {
+      "step_id": "s4",
+      "part": "decide",
+      "text": "Look at one other option, then stop looking",
+      "base_skills": [
+        "compare_two_prices"
+      ],
+      "picture": {
+        "file": "buy/compare.svg",
+        "alt": "Two price tags side by side with the unit price circled"
+      },
+      "video": null,
+      "substeps": [],
+      "long_pause_seconds": 300,
+      "tips": [
+        "Buying your usual item, or already decided (it's on your list)? You can skip this step",
+        "Same item in different sizes? The shelf tag or listing may show price per ounce. Lower is cheaper. You can take a photo and ask"
+      ]
+    },
+    {
+      "step_id": "s5",
+      "part": "decide",
+      "text": "Decide: buy it, or leave it for now",
+      "base_skills": [],
+      "picture": null,
+      "video": null,
+      "substeps": [],
+      "long_pause_seconds": 300,
+      "tips": [
+        "Can't decide? You can choose your usual, or leave it for now and come back later"
+      ]
+    },
+    {
+      "step_id": "s6",
+      "part": "pay",
+      "text": "Add it to your cart",
+      "base_skills": [],
+      "picture": {
+        "file": "buy/add_to_cart.svg",
+        "alt": "A finger tapping an Add to cart button"
+      },
+      "video": null,
+      "substeps": []
+    },
+    {
+      "step_id": "s7",
+      "part": "pay",
+      "text": "Choose delivery or pickup",
+      "base_skills": [],
+      "picture": null,
+      "video": null,
+      "substeps": [
+        {
+          "id": "s7a",
+          "text": "Choose pickup only if you already know how to get there. Not sure? Choose delivery"
+        },
+        {
+          "id": "s7b",
+          "text": "Delivery: check you'll be home when it arrives"
+        },
+        {
+          "id": "s7c",
+          "text": "Pickup: check the store is open when it's ready"
+        },
+        {
+          "id": "s7d",
+          "text": "Choose when: now, or a time later"
+        }
+      ],
+      "tips": [
+        "Priority usually costs more. Standard is fine if you're not in a hurry",
+        "Delivery: you can choose 'Leave at door' in the delivery options",
+        "Pickup: say your name or order number at the store",
+        "Not sure if you can get there? Choose delivery, or ask your support person"
+      ]
+    },
+    {
+      "step_id": "s8",
+      "part": "pay",
+      "text": "Check the total before you pay",
+      "base_skills": [
+        "read_total_on_screen"
+      ],
+      "picture": {
+        "file": "buy/online_total.svg",
+        "alt": "A checkout screen with the total circled"
+      },
+      "video": null,
+      "substeps": [
+        {
+          "id": "s8a",
+          "text": "Look at the item price"
+        },
+        {
+          "id": "s8b",
+          "text": "Look for delivery and service fees"
+        },
+        {
+          "id": "s8c",
+          "text": "Look for tax"
+        },
+        {
+          "id": "s8d",
+          "text": "Look at the tip (delivery only). Choose an amount you're OK with"
+        },
+        {
+          "id": "s8e",
+          "text": "Check the total matches what you expected"
+        }
+      ],
+      "tips": [
+        "Have a promo code? Enter it here. Don't spend long searching for one"
+      ],
+      "check_question": "Did you check the total?"
+    },
+    {
+      "step_id": "s9",
+      "part": "pay",
+      "text": "Check the address, then pay",
+      "safety": "Press Place Order only once. Page stuck? Check your orders or email before trying again. Never give your card number to someone who calls, texts or emails you.",
+      "base_skills": [
+        "type_address"
+      ],
+      "picture": {
+        "file": "buy/place_order.svg",
+        "alt": "A Place Order button on a checkout screen"
+      },
+      "video": null,
+      "substeps": [
+        {
+          "id": "s9a",
+          "text": "Check the delivery address"
+        },
+        {
+          "id": "s9b",
+          "text": "Check the apartment or unit number"
+        },
+        {
+          "id": "s9c",
+          "text": "Check the payment (your saved card or a gift card)"
+        },
+        {
+          "id": "s9d",
+          "text": "Press Place Order"
+        }
+      ],
+      "tips": [
+        "Gift card doesn't cover it all? You'll need another card for the rest",
+        "No card saved yet? That's a separate task: 'Add a card'. You can do it on your own or with your support person"
+      ],
+      "long_pause_seconds": 120
+    },
+    {
+      "step_id": "s10",
+      "part": "pay",
+      "text": "Save the confirmation",
+      "base_skills": [],
+      "picture": null,
+      "video": null,
+      "substeps": [
+        {
+          "id": "s10a",
+          "text": "Find the order number"
+        },
+        {
+          "id": "s10b",
+          "text": "Take a screenshot or star the email"
+        },
+        {
+          "id": "s10c",
+          "text": "Check the amount matches"
+        }
+      ],
+      "check_question": "Did you save the confirmation?"
+    }
+  ],
+  "_levels_note": "No short names (Nov 4). Some help shows the step's full 'text' with no small steps. Most help shows 'text' plus small steps, one at a time.",
+  "_safety_note": "'safety' is shown on the step as a CAUTION line at every help level, even when folded. Always visible (Nov 4).",
+  "_media_note": "picture: simple SVG of the action (ours). Generic readers, phones and screens only: never a real card, card number, bank app or receipt. video: null until a free-license clip is added and credited."
+}
