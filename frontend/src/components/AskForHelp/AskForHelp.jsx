@@ -133,6 +133,7 @@ export default function AskForHelp({
   function closePanel() {
     window.speechSynthesis?.cancel();
     recognitionRef.current?.stop();
+    setListening(false);
     setOpen(false);
     setText("");
     setPhoto(null);
@@ -144,33 +145,54 @@ export default function AskForHelp({
   function toggleMic() {
     if (listening) {
       recognitionRef.current?.stop();
+      setListening(false);
       return;
     }
+    window.speechSynthesis?.cancel();
     const rec = new SpeechRecognition();
-    rec.lang = "en-US";
-    rec.continuous = true;      // keep listening through pauses
+    rec.lang = navigator.language || "en-US";
+    const ua = navigator.userAgent;
+    const isSafari = ua.includes("Safari") && ua.indexOf("Chrome") === -1;
+    rec.continuous = isSafari ? false : true; // Safari returns nothing when continuous is on
     rec.interimResults = true;  // show words while the person talks
     const startText = text ? text + " " : "";
+    rec.onstart = () => console.log("speech: started");
+    rec.onaudiostart = () => console.log("speech: audio started");
+    rec.onspeechstart = () => console.log("speech: heard speech");
     rec.onresult = (e) => {
       let spoken = "";
       for (let i = 0; i < e.results.length; i++) {
         spoken += e.results[i][0].transcript + " ";
       }
+      console.log("speech: result", spoken);
       // Fill the text box. The person checks it, then taps Send.
       setText((startText + spoken).trim());
     };
     rec.onerror = (e) => {
+      console.log("speech: error", e.error);
+      setListening(false);
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
         setNotice("The microphone is blocked. Allow it in the browser, or type instead.");
-      } else if (e.error !== "no-speech" && e.error !== "aborted") {
-        setNotice("I couldn't hear that. You can type instead.");
+      } else if (e.error === "no-speech") {
+        setNotice("I did not hear anything. Try again, or type instead.");
+      } else if (e.error !== "aborted") {
+        setNotice("I couldn't hear that (" + e.error + "). You can type instead.");
       }
     };
-    rec.onend = () => setListening(false);
+    rec.onend = () => {
+      console.log("speech: ended");
+      setListening(false);
+    };
     recognitionRef.current = rec;
     setNotice("");
     setListening(true);
-    rec.start();
+    try {
+      rec.start();
+    } catch (err) {
+      console.log("speech: start failed", err);
+      setListening(false);
+      setNotice("I couldn't start the microphone. You can type instead.");
+    }
   }
 
   async function onPhotoChosen(e) {
