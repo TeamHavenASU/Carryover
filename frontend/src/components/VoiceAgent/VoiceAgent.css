@@ -1,0 +1,45 @@
+/* The voice helper. No transcript and no pop-ups while listening. Nothing flashes or pulses. */
+.resident .mic-bar { display: inline-flex; align-items: center; gap: 0.5rem; }
+.resident .topbar-side.right { gap: 0.35rem; align-items: center; }
+.resident .voice-panel, .resident .voice-confirm {
+  position: fixed; top: 3.75rem; left: var(--gap-s); right: var(--gap-s); z-index: 9;
+  margin: 0; display: flex; flex-direction: column; gap: var(--gap-s);
+  max-height: calc(100vh - 5rem); overflow-y: auto;
+}
+.resident .voice-panel h2 { margin: 0; font-size: 1.1em; }
+.resident .voice-panel p, .resident .voice-confirm p { margin: 0; }
+.resident .voice-examples { margin: 0; padding-left: 1.2rem; }
+.resident .icon-btn.mic.on { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+.resident .topbar .icon-btn { width: 2.5rem; height: 2.5rem; }
+.resident .splash-voice { position: fixed; top: 0.6rem; right: 0.6rem; z-index: 9; }
+
+/* The "i" button: a small true circle, the same color as the microphone */
+.resident .topbar .icon-btn.info-btn, .resident .icon-btn.info-btn {
+  box-sizing: border-box; flex: none; position: relative;
+  width: 1.5rem; height: 1.5rem; min-width: 1.5rem; min-height: 1.5rem; max-width: 1.5rem; max-height: 1.5rem;
+  padding: 0; border: 1.5px solid var(--text); border-radius: 50%; color: var(--text);
+  display: inline-flex; align-items: center; justify-content: center;
+  font: italic 700 0.8rem/1 Georgia, "Times New Roman", serif;
+}
+.resident .icon-btn.info-btn > span { display: block; line-height: 1; transform: translateY(-0.5px); }
+.resident .icon-btn.info-btn::before { content: ""; position: absolute; inset: -0.7rem; }
+.resident .icon-btn.info-btn[aria-expanded="true"] { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+.resident .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* The page name stays exactly in the middle, whatever sits on either side */
+.resident .topbar { display: flex; justify-content: space-between; align-items: center; position: fixed; }
+.resident .topbar-title { position: absolute; left: 50%; transform: translateX(-50%); max-width: calc(100% - 16rem); pointer-events: none; }
+.resident .topbar-side { position: relative; z-index: 1; }
+
+/* Info panel: normal size, the text scrolls inside, Close stays visible */
+.resident .voice-panel { left: 50%; right: auto; transform: translateX(-50%); width: min(24rem, calc(100vw - 2rem)); max-height: min(22rem, 60vh); overflow: hidden; }
+.resident .voice-scroll { overflow-y: auto; min-height: 0; flex: 1 1 auto; display: flex; flex-direction: column; gap: var(--gap-s); padding-right: 0.25rem; -webkit-overflow-scrolling: touch; }
+.resident .voice-panel > .btn { flex: none; }
+
+/* Microphone: a perfect circle with the icon centered inside */
+.resident .topbar .icon-btn.mic, .resident .icon-btn.mic, .resident .splash-voice.icon-btn {
+  box-sizing: border-box; flex: none; padding: 0; border-radius: 50%;
+  width: 2.5rem; height: 2.5rem; min-width: 2.5rem; min-height: 2.5rem; max-width: 2.5rem; max-height: 2.5rem;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.resident .icon-btn.mic svg { width: 1.25rem; height: 1.25rem; display: block; margin: 0; }

@@ -743,3 +743,6 @@
 .resident .splash-inner { gap: 0; }
 .resident .splash-name { margin: var(--gap-m) 0 8px; }
 .resident .splash-line { margin: var(--gap-l) 0; }
+
+/* Voice helper buttons sit close together in the top bar */
+.resident .topbar { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
