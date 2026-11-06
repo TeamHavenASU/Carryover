@@ -12,10 +12,13 @@ The code is a React front end and a FastAPI back end. All data is in plain files
 | `backend/logic/` | `data_io.py` (reading and writing files), `detect.py` (where someone gets stuck), `fade.py` (help levels and the daily view) |
 | `backend/ai/` | The "I'm stuck" help and AI step splitting |
 | `backend/sim/` | Makes the fake event history the demo runs on |
-| `backend/data/` | Task files, `definitions.json`, the event log, the AI steps waiting for review |
+| `backend/data/` | Task files, `definitions.json`, skill cards (`skills/`), the event log, the AI steps waiting for review |
+| `backend/prompts/` | The prompts sent to the AI model |
 | `backend/tests/` | Tests |
-| `frontend/src/` | The React app: pages, the demo chart, the "I'm stuck" button |
+| `frontend/src/` | The React app: `screens/` (the resident app), `lib/` (its settings and helpers), `pages/` (Staff, Demo, Review), the demo chart, the "I'm stuck" panel on the Help screen |
+| `tools/` | Scripts that draw the step pictures and the game art |
 | `docs/` | Research notes, safety rules, UI rules, the architecture diagram |
+| `ATTRIBUTION.md` | Libraries, images, sources and how AI tools were used, by role |
 
 See [docs/architecture.md](docs/architecture.md) for how the parts fit together.
 
@@ -57,14 +60,14 @@ Front end (from `frontend/`):
 npm run dev
 ```
 
-Then open http://localhost:5173. The pages are:
+Then open http://localhost:5173. The plain address opens the resident app. To open a simulated resident at a given week, add the person and week, for example http://localhost:5173/resident?person=ana&week=5. On Windows PowerShell use `npm.cmd` instead of `npm`. The pages are:
 
 | Page | What it is |
 | --- | --- |
 | `/resident` | The resident screen |
 | `/staff` | The staff screen |
-| `/demo` | The demo: pick a resident, move the week, see the help change and the help chart |
-| `/review` | Approve or edit AI suggested small steps before residents see them |
+| `/demo` | The demo: pick a resident, move the week, see the real app in a phone frame, "Why this changed", the help chart and a "Help over time" grid |
+| `/review` | Approve or edit AI suggested small steps and skill cards before residents see them |
 
 The API docs are at http://localhost:8000/docs.
 
@@ -89,7 +92,7 @@ The tests don't need an API key.
 
 ## Keys and secrets
 
-API keys go in `backend/.env` only. Never put them in code, and never commit `.env`. Only `.env.example` (with blank values) is committed.
+API keys go in `backend/.env` only. Never put them in code, and never commit `.env`. Only `.env.example` (no secrets) is committed.
 
 ## More
 
@@ -97,6 +100,12 @@ API keys go in `backend/.env` only. Never put them in code, and never commit `.e
 - [docs/safety.md](docs/safety.md): safety rules
 - [docs/ui_guidelines.md](docs/ui_guidelines.md): rules for every resident screen
 - [docs/sticking_points.md](docs/sticking_points.md) and [docs/sources.md](docs/sources.md): the research
+- [docs/lit_review.md](docs/lit_review.md): the literature review
+- [docs/partner_research.md](docs/partner_research.md): what First Place AZ staff told us
+- [docs/responsible_ai.md](docs/responsible_ai.md): how the AI is kept safe
+- [docs/future_directions.md](docs/future_directions.md): what comes next
+- [docs/architecture.md](docs/architecture.md): how the parts fit together
+- [ATTRIBUTION.md](ATTRIBUTION.md): libraries, images, sources and how AI tools were used
 
 ## Role A: tasks, detection and research
 
@@ -105,7 +114,7 @@ API keys go in `backend/.env` only. Never put them in code, and never commit `.e
 | --- | --- |
 | `backend/data/tasks/*.json` | The 4 tasks: Heat a meal, and Buy something (in store with card, in store with phone, online). Each step has its text, small steps, tips, CAUTION line, picture, base skills and timing |
 | `backend/data/skills/*.json` | 10 skill cards: one base skill each (like reading the cooking time), 2–4 small steps |
-| `backend/data/definitions.json` | Every rule and number the app uses: help levels, fading rules 1–9, check questions, skill cards, first-time setup, Game mode |
+| `backend/data/definitions.json` | Every rule and number the app uses: help levels, fading rules 2–9, check questions, skill cards, first-time setup, Game mode |
 | `backend/logic/detect.py` | Finds where someone gets stuck, from the event log |
 | `docs/` | Sticking points, safety rules, UI rules, sources, partner research |
 
@@ -120,7 +129,7 @@ It reads one person's events for one task, splits them into sessions, and looks 
 | `rusty_after_gap` | Coming back after a break more than 2× their usual (and at least 14 days) |
 | `none` | Nothing found |
 
-It also has `skill_cards_to_show()` (which skill cards to show before which steps) and `steps_with_breaks()` (a flag for staff).
+It also has `skill_cards_to_show()` (which skill cards to show before which steps) and `steps_with_breaks()` (a flag for staff: computed, not shown on the Staff page yet).
 
 ### Adding a new task
 Write a new JSON file in `backend/data/tasks/` with the same fields. No code changes needed: detect, fade and the screens read everything from the file.
@@ -190,7 +199,8 @@ return later rows, rather than by convention in each caller.
   the set someone opens is always a run from the start. It learns how far
   into a step a person needs it broken down, not which individual small steps
   they use. It is implemented and tested but does not trigger on the current
-  data.
+  data. Rule 3's trim question is computed in the backend; the Done screen
+  does not ask it yet.
 - The scores in learn.py are descriptive, not causal. Heavier help shows a
   lower success rate because a step only reaches Most help when someone keeps
   struggling there. That is a selection effect, so the scores are not used to
@@ -198,7 +208,7 @@ return later rows, rather than by convention in each caller.
 
 ## Role D: AI helper safety and photo test
 
-The AI helper never decides safety by itself. For photos of high risk items (microwave safety, for example), the code sends the photo three times. It only answers "safe" if all three answers quote a label with a safe phrase and none of them says anything negative. Clear metal, foil or foam gets a fixed warning. Everything else is handed off to a person.
+The AI helper never decides safety by itself. For photos of high risk items (microwave safety, for example), the code sends the photo three times. It only answers "safe" if all three answers quote a label with a safe phrase and none of them says anything negative. Clear metal, foil or foam gets a fixed warning when all three reads agree. Everything else is handed off to a person.
 
 We check this with a photo test of 27 images: 12 free web images with credits in ATTRIBUTION.md, and 15 photos we took ourselves. Each image has a truth value in `backend/tests/ai_images/photo_test/manifest.csv`.
 
@@ -206,8 +216,20 @@ Latest result: 27 photos, 14 answered, 13 handed off, 0 wrong safe answers.
 
 This test is a sanity check, not proof. With 0 wrong answers on 27 images, the true error rate is still only known to be under about 11%. Safety comes from the code rules, not from the test.
 
-Two package photos (the Stasher bag and the If You Care pan box) are marked `safe` because the printed label says microwave safe.
+Two package photos (a silicone bag package and a paper baking pan box) are marked `safe` because the printed label says microwave safe.
 
 To run it: `cd backend && python tests/run_photo_test.py`
 
 AI tools helped build parts of this section. See "How AI tools were used (Role D)" in ATTRIBUTION.md for which files and what I did myself.
+
+## Role E: the staff, demo and review pages
+
+The pages the team and staff use, outside the resident's phone:
+
+| Page | What it does | Where |
+| --- | --- | --- |
+| `/staff` | Where each simulated resident gets stuck, from `GET /staff/sticking_points`, with a button to ask the AI for more detail on a step (`POST /split`) | `frontend/src/pages/Staff.jsx`, `backend/api/staff_routes.py` |
+| `/demo` | Pick a resident and a week: the real resident app in a phone frame, "Why this changed" (the sticking points behind that week), the help chart and the "Help over time" grid, all from `GET /demo/...` | `frontend/src/pages/Demo.jsx`, `backend/api/demo_routes.py` |
+| `/review` | Approve, edit or reject AI-suggested small steps and skill cards before any resident sees them | `frontend/src/pages/Review.jsx`, `backend/api/review_routes.py`, `skill_routes.py` |
+
+`backend/api/main.py` wires every router together. The fading rules in `backend/logic/fade.py` are shared with Role B (see above).

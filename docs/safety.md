@@ -4,7 +4,7 @@ These rules apply to every task. The AI rules are written into the prompts and c
 
 ## 1. Microwave: never put these in
 
-Shown on step 1 of "Heat a meal" and as a caution card the first time someone opens the task. From USDA and FDA guidance.
+Shown once, as its own card before the first step, the first time someone opens "Heat a meal"; it can't be reopened. From USDA and FDA guidance.
 
 The plain-words version the app shows is in heat_meal.json -> safety_card_content.
 
@@ -27,7 +27,7 @@ Also (FDA):
 
 ### Caution on steps (always shown)
 
-Some steps have a `safety` sentence. The screen always shows it as a **CAUTION** line on that step, at every help level, even when the step is folded. No tap needed (First Place asked for this on Nov 4). Someone who does a step on their own still sees it. (Jones et al. 1997: adults learned safety facts placed inside the instructions.)
+Some steps have a `safety` sentence. The screen always shows it as a **CAUTION** line on that step, at every help level, even when the step is folded. No tap needed (First Place asked for this on Nov 4). Someone who does a step on their own still sees it. (Jones & Collins 1997: adults learned safety facts placed inside the instructions.)
 
 | Task | Step | Caution |
 | --- | --- | --- |
@@ -71,7 +71,7 @@ The AI's own "I'm 90% sure" can't be trusted: AI models are overconfident when t
 3. **Never "safe" from looks.** The AI may say "don't use it" if it clearly sees metal, foil or foam. It never says "safe" just from how a dish looks.
 4. **Otherwise hand off.** "I'm not sure. Please ask [support person], or use a plate you know is safe." (Abstain when unsure: Geifman & El-Yaniv 2017.)
 
-The support person is the support specialist, or someone the resident chose at setup (like a family member or guardian).
+The support person is the support specialist, or someone the resident chose in Settings (like a family member or guardian).
 
 ### Photo test
 

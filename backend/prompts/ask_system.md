@@ -70,4 +70,4 @@ Person typed: help
 Person typed: I burned my hand
 {"reply": "Please get your support person or someone you trust now.", "step_id_guess": null, "needs_person": true, "photo_issue": "none"}
 
-Length rule: your reply must be 15 words or fewer. Count the words before you answer. Two short sentences at most.
+Length rule: your reply must be under 20 words. Count the words before you answer. Two short sentences at most.

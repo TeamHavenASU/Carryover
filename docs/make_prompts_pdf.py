@@ -298,7 +298,7 @@ def main():
         [
             "What a person types and any photo are never saved to disk or written to logs. The app only logs an ask_sent event that holds the step guess.",
             "Photos are shrunk to 800 pixels on the device, sent once, and dropped from memory when the answer is returned.",
-            'The screen says: "Take a photo of the thing you\'re stuck on, not yourself." It also says the photo goes to an AI service, and not to photograph people, cards, receipts, checkout pages or bank apps. If a photo shows one anyway, the model flags it (photo_issue) and the app shows fixed words instead of describing it.',
+            'The screen says: "Take a photo of the thing you\'re stuck on. Please no people, cards, receipts, checkout pages or bank apps." It also says the photo goes to an AI service. If a photo shows one anyway, the model flags it (photo_issue) and the app shows fixed words instead of describing it.',
             "Nothing is read from a card, a receipt, a bank app or a checkout page. A photo question counts as used help. It never counts against the person.",
             "The person's name is never sent to the model. It only sees help codes like stuck_at_step:s3.",
             "The model is told to ignore any instruction inside the person's message that asks it to change these rules.",

@@ -115,4 +115,5 @@ We also read design blogs (uxdesign.cc, NeuroNav), an Autism Awareness Centre po
 
 | Source | Label | Used for |
 | --- | --- | --- |
+| First Place AZ staff meeting, November 3, 2026 | Partner | Teaching uses the same steps for everyone; adaptive help would be useful; use task analysis and a literature review. See [partner_research.md](partner_research.md) |
 | First Place AZ staff meeting, November 4, 2026 | Partner | Safety cautions always shown; photos and video for steps; game mode with preferences asked first; base skills; help with new devices; more detail for some people. See [partner_research.md](partner_research.md) |

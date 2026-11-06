@@ -26,7 +26,7 @@ app.include_router(demo_router)
 app.include_router(review_router)
 app.include_router(skill_router)
 app.include_router(staff_router)
-app.include_router(resident_router)  # GET /tasks, GET /today, POST /event
+app.include_router(resident_router)  # GET /tasks, /setup, /feedback, /skills/{id}, /game, /today; POST /event
 
 
 @app.get("/health")

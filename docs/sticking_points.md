@@ -38,12 +38,12 @@ Executive function differences are broad and fairly stable in autism (Demetriou 
 | Pausing | Our microwave has no Stop button; opening the door pauses it | 5 | "Open the door. It pauses the microwave" |
 | Door | Pull handle vs door button | 3 | "Pull the handle or press the door button" |
 | Repeating beeps | Some microwaves keep beeping until the door is opened | 6 | Tip: "It may keep beeping until you open the door. That's OK" |
-| Steam and hot spots | Steam under the cover; hot dish; food hotter in some spots | 5–7 | CAUTION line on steps 5–7, always shown at every help level, no tap needed (Jones et al. 1997) |
+| Steam and hot spots | Steam under the cover; hot dish; food hotter in some spots | 5–7 | CAUTION line on steps 5–7, always shown at every help level, no tap needed (Jones & Collins 1997) |
 | Not hot in the middle | Food not done needs more time (Smith) | 7 | Tip: +30 Sec and check again; 165°F (USDA) |
 | Food already inside | Listed as a possible error by Smith | 3 | "Check nothing else is inside" |
 | How much fits | Dish too big to turn | 2 | Tip: one dish that fits and can turn freely |
 | Needs a break | Not everyone wants to do a task in one go | Any | "Take a break" button: clock stops, place is saved, never counts as struggling. After 2+ hours, a food safety note (USDA 2-hour rule) |
-| Missing a base skill | First Place (Nov 4): clear steps don't help if someone can't yet do what a step assumes (read "2 min 30 sec", find a button by its name, open a package) | 1, 2, 4, 5, 6 | `base_skills` per step; "Can you do these?" the first time; skill card before the step if "Not sure" or stuck at Most help 2 sessions |
+| Missing a base skill | First Place (Nov 4): clear steps don't help if someone can't yet do what a step assumes (read "2 min 30 sec", find a button by its name, open a package) | 1, 2, 4, 5, 6 | `base_skills` per step; "Can you do these?" the first time; skill card before the step if "Not sure" (the stuck-at-Most-help trigger is not built yet) |
 | A new or different microwave | First Place (Nov 4): residents struggle with a device they haven't used, or one that differs from the one they learned on | All | `first_time_question`: "Is this a microwave you've used before?" No: start at Most help. Roadmap: photos of their own microwave |
 | Starting at all (opening the fridge, packages) | General skills; differ by home | Start | Start push only. Roadmap: ask why they're stuck and link to a short task for that skill |
 

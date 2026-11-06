@@ -4,7 +4,7 @@ Where Carryover goes after the hackathon, and why. Full references for every sou
 
 ## Where we are now
 
-The demo has two tasks: heat a meal (microwave) and buy something (in store with a card, in store with a phone, and online). It runs the fading rules, finds where each person gets stuck, and applies our safety rules. It also has an AI helper for open-ended questions, AI-written extra detail that a person approves before anyone sees it, and an optional Game mode. Everything runs on simulated residents. There is no real resident, card or bank data.
+The demo has two tasks in four versions: heat a meal (microwave) and buy something (in store with a card, in store with a phone, and online). It runs the fading rules, finds where each person gets stuck, and applies our safety rules. It also has an AI helper for open-ended questions, AI-written extra detail that a person approves before anyone sees it, and an optional Game mode. Everything runs on simulated residents. There is no real resident, card or bank data.
 
 Our research so far is from published studies and three sessions with First Place AZ staff (see [partner_research.md](partner_research.md)). We have not yet heard from residents themselves.
 
@@ -33,7 +33,7 @@ The phases are in order: each one builds on what the one before it shows.
 | A small pilot with residents who choose to join, and their support staff | Our rules and numbers need real use to check them | Prompt fading works when trainers do it (MacDuff et al. 2001); accessibility guidance says to test with users (W3C COGA; Hassell Inclusion & NAS) | We only had staff access. A pilot needs consent and review, which takes longer than a hackathon |
 | Co-design with autistic adults: they help shape the screens, words and settings, and are paid for their time | Tools for autistic adults should be shaped by autistic adults | AASPIRE guidelines for including autistic adults in research (Nicolaidis et al. 2019); a co-designed site that 170 autistic users found easy to use (Raymaker et al. 2019) | Same: no resident access yet |
 | Ask residents whether the app feels like help or like being watched | Carryover should support choice, not monitoring | Self-determination research (Wehmeyer & Abery 2013) | Needs residents |
-| Use residents' feedback from the app: one-tap answers in Settings on movement, sound, colors and amount of help, then follow-up conversations | We need residents' views, not only staff's. One-tap answers tell us that something bothers someone, but not which thing ("too much movement" doesn't say which animation), so the pilot follows up in person | Self-determination: the person can tell the system it isn't right for them (Wehmeyer & Abery 2013); test with users (W3C COGA) | Needs residents |
+| Use residents' feedback from the app: one-tap answers in Settings on movement, sound, colors and amount of help, then follow-up conversations | We need residents' views, not only staff's. One-tap answers tell us that something bothers someone, but not which thing ("too much movement" doesn't say which animation), so the pilot follows up in person | Self-determination: the person can tell the system it isn't right for them (Wehmeyer & Abery 2013); test with users (W3C COGA) | The Settings section is built; the follow-up conversations need residents |
 
 **What we would measure:** help used per step over the weeks, steps done alone, whether skills last after a break, whether staff agree with what the app chose, and what residents say. We would not give anyone less help on purpose just to test it.
 

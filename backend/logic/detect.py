@@ -17,8 +17,8 @@ Codes (the only five):
 
 Why these codes (research, see docs/sticking_points.md):
     cant_start      -> trouble starting tasks (Buckle et al. 2021; Carmo et al. 2015)
-    missing_step    -> remembering steps (Buckle et al. 2021; Hill 2004)
-    stuck_at_step   -> switching when things look different (Hill 2004)
+    missing_step    -> remembering steps (Buckle et al. 2021; Hill 2004a)
+    stuck_at_step   -> switching when things look different (Hill 2004a)
     rusty_after_gap -> skills can fade after a break (Richling et al. 2019)
 
 Rules that apply to every code except rusty_after_gap:
@@ -290,7 +290,8 @@ def steps_with_breaks(events, definitions):
     This is a flag for staff (Take a break rule), NOT one of the five detect
     codes, so it never changes the help the app shows. A break is never
     counted as struggling. A step that keeps needing breaks may be too long or
-    tiring, so staff may want to look at it. E's staff screen calls this.
+    tiring, so staff may want to look at it. Computed here; not shown on the
+    Staff page yet.
 
     The number 3 comes from definitions.json:
     take_a_break.breaks_on_same_step_to_flag_for_staff. It counts every session

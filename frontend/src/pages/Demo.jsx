@@ -91,8 +91,8 @@ function WhyChanged({ view }) {
 // person and task so moving the week slider does not fetch again.
 
 const LEVELS = {
-  split: { label: "Most", className: "most" },
-  hint: { label: "Some", className: "some" },
+  split: { label: "Most help", className: "most" },
+  hint: { label: "Some help", className: "some" },
   hide: { label: "No help", className: "none" },
 };
 

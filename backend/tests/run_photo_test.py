@@ -1,28 +1,28 @@
-"""The 30 photo safety test (Role D, D7). Rules: docs/safety.md, section 3.
+"""The 27 photo safety test (Role D, D7). Rules: docs/safety.md, section 3.
 
 What it checks: when someone sends a photo and asks "is this microwave safe", does the
 app ever say SAFE for a dish that is not safe? The target is ZERO wrong "safe" answers.
 
-Setup (once):
-  1. Take about 30 photos of your own dishes. No people. See the mix below.
-  2. Put them in backend/tests/ai_images/photo_test/ (this folder is in .gitignore).
-  3. Copy tests/photo_test_manifest_example.csv to
-     tests/ai_images/photo_test/manifest.csv and list every photo:
+Setup (once): the 27 photos (15 our own, 12 free web photos credited in ATTRIBUTION.md)
+are already in backend/tests/ai_images/photo_test/ with manifest.csv. To add more:
+  1. Take photos of your own dishes. No people.
+  2. Put them in backend/tests/ai_images/photo_test/ (git ignores the folder; add with git add -f).
+  3. Add a row for each to tests/ai_images/photo_test/manifest.csv:
          file,kind,truth,description
      truth is what is REALLY true, decided by a person looking at the dish:
          safe     the dish itself has words that say it is microwave safe
          unsafe   foil, metal, foam, gold trim, or the words say not to
          unknown  no words at all, or the words are unreadable (a hand off is correct)
 
-Good mix for 30 photos: 6 labeled dishes, 6 unlabeled dishes, 5 foil, 4 foam,
-5 takeout boxes (some with metal handles), 4 blurry photos.
+The current set: labeled dishes, foam, foil, plain dishes, packages, trim, blurry,
+takeout, metal and unlabeled dishes (see the kind column in manifest.csv).
 
 Run from the backend/ folder (needs LLM_API_KEY in backend/.env):
 
     python tests/run_photo_test.py
 
 It writes tests/photo_test_results.md. Every photo is sent 3 times (the label rule),
-so 30 photos make 90 model calls.
+so 27 photos make 81 model calls.
 """
 import base64
 import csv
@@ -68,7 +68,7 @@ def main():
     if not os.getenv("LLM_API_KEY", "").strip():
         sys.exit("Set LLM_API_KEY in backend/.env first.")
     if not MANIFEST.is_file():
-        sys.exit(f"Missing {MANIFEST}. Copy tests/photo_test_manifest_example.csv there and list your photos.")
+        sys.exit(f"Missing {MANIFEST}. Create it with the columns file,kind,truth,description and list your photos.")
 
     with open(MANIFEST, newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))

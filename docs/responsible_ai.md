@@ -16,7 +16,7 @@ Most of Carryover is plain rules, not an AI model. Rules are explainable, safe, 
 | "I'm stuck" helper (type, speak or take a photo) | AI model, with safety rules before and after | Yes |
 | Extra detail for a small step (which hand, which way) | AI model; a person approves it before anyone sees it | Yes |
 | AI-written skill cards and small steps | AI model; a person approves them before anyone sees them | Yes |
-| Game mode worlds and art | A list of themes, free art and our own animation code | No |
+| Game mode worlds and art | Three worlds (Sky, Space, Animals), our own art and animation code (tools/make_game_art.py) | No |
 
 ## Privacy
 
@@ -24,10 +24,10 @@ Most of Carryover is plain rules, not an AI model. Rules are explainable, safe, 
 - **No people in photos.** Never photos of a bank app, card, receipt or checkout page.
 - **We say when data leaves the app.** Users are told that a photo is sent to an AI service to get the answer.
 - **Typed questions are not saved.**
-- **Feedback answers are taps only,** with no typed text, and are shared only if sharing is on.
+- **Feedback answers are taps only,** with no typed text. They are logged; the resident can turn sharing on or off in Settings (off by default), and the Staff page does not check it yet.
 - **The log records only that a step was done.** Never what was bought, what it cost, or what was eaten.
 - **No money data.** Carryover never reads a balance, connects to a bank, or asks for or stores a card number or PIN.
-- **Sharing is off by default.** Staff see a person's sticking points only if that person chooses to share.
+- **Sharing is off by default.** The resident can turn sharing on or off in Settings; the Staff page does not check it yet, so the demo shows all simulated residents.
 - **No real data in the demo.** Every resident is simulated. No real resident, card or bank data.
 - **No secrets in the repo.** API keys live in `.env`, which git ignores.
 
@@ -53,7 +53,7 @@ AI models are overconfident when they say how sure they are (Xiong et al. 2024),
 
 ### Testing the AI
 
-A 30-photo test (labeled and unlabeled dishes, foil, foam, takeout boxes, blurry photos) with a target of zero wrong "safe" answers. If there is one, that kind of question always hands off. Zero errors in 30 photos only shows the error rate is probably under about 10% (rule of three, 3 ÷ 30; Hanley & Lippman-Hand 1983). That is why the quote-the-label rule matters more than the test score.
+A 27-photo test (labeled and unlabeled dishes, foil, foam, takeout boxes, blurry photos) with a target of zero wrong "safe" answers. If there is one, that kind of question always hands off. Zero errors in 27 photos only shows the error rate is probably under about 11% (rule of three, 3 / 27; Hanley & Lippman-Hand 1983). That is why the quote-the-label rule matters more than the test score.
 
 **Next:** test on more photos (different lighting, labels and languages) before any real use, and track errors during a pilot.
 
@@ -95,7 +95,7 @@ First Place staff told us a formal app may not get used, so Game mode exists, bu
 ## Human oversight
 
 - **A person approves AI-written content** (extra detail, small steps, skill cards) before anyone sees it.
-- **Staff see flags, the app doesn't decide for them,** for example a step where someone often takes breaks.
+- **Staff see flags, the app doesn't decide for them,** for example where someone gets stuck. (A step where someone often takes breaks is computed by detect.py but not shown on the Staff page yet.)
 - **Staff can change every rule's number** in `definitions.json`.
 - **The "what worked" scores explain choices; they don't make them.** The fading rules decide the help (see Limits).
 
@@ -122,7 +122,7 @@ First Place staff told us a formal app may not get used, so Game mode exists, bu
 
 - **Reading our own data carefully.** Carryover scores how often each kind of help works. In our simulated data, the most help (the step plus small steps) has a lower success rate than lighter help. That isn't evidence that more help is worse: a step only gets the most help because the person was already struggling with it, so those attempts start out harder. Data collected this way can't tell us which help works better. So we don't let these scores choose the help; the fading rules do that. The scores only explain choices and give a starting guess for someone new. To learn what really works, we would run a pilot with consent. We would not give anyone less help on purpose to test it.
 - **Check questions stop themselves.** Check questions only cover steps with no help. Two "no" answers bring the help back, so the question stops there. A step missed after help returns is caught by the other signals (stuck, or started but never finished).
-- **A small photo test.** 30 photos can only show the error rate is probably under about 10%.
+- **A small photo test.** 27 photos can only show the error rate is probably under about 11% (3 / 27).
 - **Simulated data.** Every result in the demo comes from simulated residents. The app never reads the simulator's patterns; it works them out from taps alone, as it would with real people.
 - **Staff only.** Our partner research was with First Place staff. We haven't heard from residents yet.
 - **Starting numbers.** Our rule numbers are starting points backed by research on the idea, not tested values, and much of that research is with children or people with intellectual disability.

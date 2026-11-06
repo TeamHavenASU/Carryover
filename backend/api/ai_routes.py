@@ -1,11 +1,6 @@
 """The routes Role D owns: POST /ask, POST /split, POST /draft_skill. The skill card review routes are in api/skill_routes.py.
 
-E creates api/main.py. Add these two lines to it:
-
-    from api.ai_routes import router as ai_router
-    app.include_router(ai_router)
-
-Run the backend from the backend/ folder:  uvicorn api.main:app --reload
+api/main.py includes this router. Run the backend from the backend/ folder:  uvicorn api.main:app --reload
 """
 from __future__ import annotations
 
