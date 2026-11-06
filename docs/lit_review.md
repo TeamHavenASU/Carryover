@@ -90,7 +90,7 @@ Self-management, in which people track and guide their own behaviour, is one of 
 
 Rewards need care. A meta-analysis of 128 studies found that expected, tangible rewards lowered people's own interest in an activity, while positive feedback raised it (Deci et al., 1999). The studies were mostly with children and college students, not autistic adults. Praise style also varies by person: three adults with autism and intellectual disability learned slightly faster with enthusiastic praise, but only one preferred it, while the other two showed no clear preference (Weyman & Sy, 2018). These findings support short, factual feedback, and letting the person choose how praise sounds.
 
-Interests offer a different kind of motivation. About two-thirds of autistic adults in one study had a special interest, and most had more than one; stronger motivation for the interest went with higher wellbeing, while very intense engagement went with lower wellbeing (Grove et al., 2018). Autistic adults also endorse using a person's interests to teach skills (Baiden et al., 2025). In a small trial with 24 autistic adults over five weeks, a gamified physical activity app was used longer than a standard app, though other results were mixed (Lee et al., 2022), and its authors note that rigorous studies of gamification with autistic people are few (Lee et al., 2025). The evidence for games is thin and points both ways. This is why Carryover's Game mode is optional, built around the person's interests, and never rewards using less help.
+Interests offer a different kind of motivation. About two-thirds of autistic adults in one study had a special interest, and most had more than one; stronger motivation for the interest went with higher wellbeing, while very intense engagement went with lower wellbeing (Grove et al., 2018). Autistic adults also endorse using a person's interests to teach skills (Baiden et al., 2025). In a small trial with 24 autistic adults over five weeks, a gamified physical activity app was used longer than a standard app, though other results were mixed (Lee et al., 2022), and its authors note that rigorous studies of gamification with autistic people are few (Lee et al., 2025). The evidence for games is thin and points both ways. This is why Carryover's Game mode is optional, lets the person choose their world (sky, animals or space), and never rewards using less help.
 
 ## 6. Screen design for autistic users
 
@@ -98,7 +98,7 @@ Accessibility guidance for people with cognitive disabilities recommends clear s
 
 ## 7. Reliability of AI
 
-Carryover uses an AI model only for open-ended questions, such as asking for help with a photo, and research shows why the model's own confidence cannot be trusted. Language models are overconfident when asked how sure they are, and checking whether repeated answers agree works better (Xiong et al., 2024); vision-language models can name objects that are not in an image (Li et al., 2023); and declining to answer when unsure keeps errors low (Geifman & El-Yaniv, 2017). This is why Carryover's AI must quote the label it reads, asks three times, and hands off to a person when unsure. The full rules and our test results are in `docs/responsible_ai.md`.
+Carryover uses an AI model in two places: open-ended questions from residents, such as asking for help with a photo, and drafting more detailed steps and skill cards, which a person approves before any resident sees them. Research shows why the model's own confidence cannot be trusted. Language models are overconfident when asked how sure they are, and checking whether repeated answers agree works better (Xiong et al., 2024); vision-language models can name objects that are not in an image (Li et al., 2023); and declining to answer when unsure keeps errors low (Geifman & El-Yaniv, 2017). This is why risky questions are caught by rules in code before the AI answers, and why, for a photo safety question, the AI must quote the label it reads, is asked three times, and hands off to a person when unsure. The full rules and our test results are in `docs/responsible_ai.md`.
 
 ## 8. Gaps in the research
 
@@ -131,8 +131,8 @@ These gaps are the reason our next step is a pilot with First Place residents wh
 | Pictures now, short step-by-step video planned | Aljehany & Bennett (2019); Wertalik et al. (2025); Cannella-Malone et al. (2006) |
 | The person decides when help is reduced; picks their support person; sharing off by default | Wehmeyer & Abery (2013); Shogren et al. (2015) |
 | No points in Normal mode; short, factual praise with a style setting | Deci et al. (1999); Weyman & Sy (2018) |
-| Optional Game mode built on interests, never rewarding less help | Grove et al. (2018); Lee et al. (2022); Baiden et al. (2025) |
-| One step per screen, plain words, calm colours, nothing plays by itself | W3C COGA; Hassell Inclusion & NAS (2026); WCAG 2.2; Grynszpan et al. (2008) |
+| Optional Game mode; the person chooses a world; never rewards using less help | Grove et al. (2018); Lee et al. (2022); Baiden et al. (2025) |
+| One step per screen, plain words, calm colours; nothing moves in Normal mode, and Game mode movement can be turned off | W3C COGA; Hassell Inclusion & NAS (2026); WCAG 2.2; Grynszpan et al. (2008) |
 | AI quotes the label, asks three times, hands off when unsure | Xiong et al. (2024); Li et al. (2023); Geifman & El-Yaniv (2017) |
 
 ## 10. Conclusion
