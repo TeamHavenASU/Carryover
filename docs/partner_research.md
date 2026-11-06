@@ -83,7 +83,7 @@ Other changes. The last column shows which session each one came from:
 | Use task analysis and a lit review | Every task is a task analysis in our own words (no AFLS text). Our design choices are backed by research | Nov 3 |
 | Progress without much staff help | The resident uses the app on their own. Sharing a summary with staff is the resident's choice and off by default (the demo's Staff page shows all simulated residents) | Oct 27 |
 | Show cautions without tapping | Caution lines always show, at every help level | Nov 4 |
-| A different microwave is hard | The first time, the app asks "Is this a microwave you've used before?" If not, it starts with the most help | Nov 4 |
+| A different microwave is hard | The first time, the app asks "Is this a microwave you've used before?" and records the answer. The rule to start at the most help when the answer is no is written and tested, but not yet connected in the app | Nov 4 |
 | Missing basic skills | Each step lists the skills it needs. If someone isn't sure, a short skill card shows first | Nov 4 |
 | Much more detail for some people | On the Staff page, "Ask AI for more detail" breaks a step down further (which hand, which way). A person approves the new steps before anyone sees them | Nov 4 |
 | Pictures and video | Each step has a picture. Videos are planned | Nov 4 |
