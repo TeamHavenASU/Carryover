@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Camera, Mic, Volume2 } from "lucide-react";
 import "./AskForHelp.css";
 
 /**
@@ -11,6 +12,7 @@ import "./AskForHelp.css";
  *     week={3}
  *     sessionId="jeremiah-heat_meal-w03"
  *     autoRead={false}       // optional, from C's settings: read replies aloud
+ *     supportName="staff"    // optional, who to ask when the AI is not sure (from C's settings)
  *   />
  *
  * What it does:
@@ -70,6 +72,7 @@ export default function AskForHelp({
   week = 1,
   sessionId = "",
   autoRead = false,
+  supportName = "staff",
   apiBase = API,
 }) {
   const [open, setOpen] = useState(false);
@@ -221,7 +224,7 @@ export default function AskForHelp({
       if (autoRead) speak(data.reply);
     } catch {
       setReply({
-        reply: "I'm not sure. Please ask someone you trust.",
+        reply: `Something went wrong on my side. Please try again, or ask ${supportName}.`,
         step_id_guess: null,
         needs_person: false,
       });
@@ -270,11 +273,11 @@ export default function AskForHelp({
             <div className="ask-row">
               {SpeechRecognition && (
                 <button className="ask-small" onClick={toggleMic} aria-pressed={listening}>
-                  {listening ? "Stop listening" : "🎤 Speak"}
+                  {listening ? "Stop listening" : (<><Mic className="ask-ico" aria-hidden="true" focusable="false" /> Speak</>)}
                 </button>
               )}
               <button className="ask-small" onClick={() => fileRef.current?.click()}>
-                📷 Take a photo
+                <Camera className="ask-ico" aria-hidden="true" focusable="false" /> Take a photo
               </button>
               <input
                 ref={fileRef}
@@ -312,7 +315,7 @@ export default function AskForHelp({
             </p>
             <div className="ask-row">
               <button className="ask-small" onClick={() => speak(reply.reply)}>
-                🔊 Read aloud
+                <Volume2 className="ask-ico" aria-hidden="true" focusable="false" /> Read aloud
               </button>
             </div>
 
@@ -324,7 +327,7 @@ export default function AskForHelp({
               </div>
             ) : stillStuck ? (
               <>
-                <p className="ask-reply">Please ask someone you trust to help you.</p>
+                <p className="ask-reply">Please ask {supportName} to help you.</p>
                 <div className="ask-row">
                   <button className="ask-main" onClick={closePanel}>
                     Close

@@ -138,3 +138,15 @@
 }
 .no-motion .ask-panel { animation: none; }
 .no-motion .ask button { transition: none; }
+
+.ask-small {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.ask-ico {
+  width: 1.25em;
+  height: 1.25em;
+  flex: none;
+}
