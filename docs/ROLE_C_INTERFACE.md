@@ -1,3 +1,5 @@
+Historical note: this was the Role C handoff written on Nov 4, while the screens were being built. For how the resident app works now, see the Role C (Krutika) section of README.md.
+
 # Role C interface and design notes
 
 Role C reads `fade.build_view()` (Role B) through `logic/today.py`, which adds the task file fields the view leaves out. Screens never decide a help level and never hold step text.

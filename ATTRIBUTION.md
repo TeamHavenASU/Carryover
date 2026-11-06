@@ -72,9 +72,8 @@ line, and can explain the logic and the design decisions in each file.
 - lottie-react (MIT, uses lottie-web, MIT): the Game mode animations.
 - lucide-react (ISC): the one icon set used on every resident screen.
 Browser features: localStorage for settings, sessionStorage for the logo
-screen, speechSynthesis for read-aloud, SpeechRecognition for the voice helper
-(in Chrome the speech service is Google's, in Safari Apple's; Carryover keeps
-no audio) and Web Audio for Game mode sounds (made in code, no sound files).
+screen, speechSynthesis for read-aloud and Web Audio for Game mode sounds (made
+in code, no sound files).
 Backend: Python standard library, plus FastAPI and pytest, which were already
 in the project.
 
@@ -101,12 +100,11 @@ product.
 resident page is mounted in Role E's pages/Resident.jsx and uses Role E's
 src/api.js. today.py wraps fade.build_view (Vaishnavi and Mrudula). My parts
 are today.py, event_log.py, resident_routes.py, test_resident.py,
-frontend/src/screens/, frontend/src/lib/ (including voiceCommands.js and
-voiceDom.js) and frontend/src/components/VoiceAgent/.
+frontend/src/screens/ and frontend/src/lib/ (except the voice helper files,
+see the Role D section).
 
 **AI assistance:** Claude (Anthropic) helped write the resident screens in
-frontend/src/screens/ and frontend/src/lib/ (including voiceCommands.js and
-voiceDom.js), frontend/src/components/VoiceAgent/, today.py, and the drawing scripts
+frontend/src/screens/ and frontend/src/lib/, today.py, and the drawing scripts
 tools/make_detailed_pictures.py and tools/make_game_art.py. The screen design
 follows docs/ui_guidelines.md and the team's decisions. The code was reviewed
 and tested before it was committed: backend tests, and 71 click-through checks
@@ -163,6 +161,13 @@ Claude helped with these specific parts:
 I wrote the earlier Role D files (`safety.py`, `high_risk.py`, the prompts, `ai_routes.py` and the tests) myself. Claude reviewed the code and suggested fixes, which I tested and applied.
 
 I reproduced the bugs, tested in Safari and Chrome, re ran the AI cases against the live model, read every reply, and checked every number against the results.
+
+### Voice helper
+**Files:** frontend/src/components/VoiceAgent/ (VoiceAgent.jsx and VoiceAgent.css), frontend/src/lib/voiceCommands.js, frontend/src/lib/voiceDom.js, docs/voice_helper.md, the voice listener in frontend/src/screens/StepScreen.jsx, and the runCommand function in frontend/src/screens/ResidentApp.jsx.
+
+**Libraries:** none. It uses the browser's built-in Web Speech API for speech to text. In Chrome that service is run by Google, and in Safari by Apple. The command matching is plain code with a fixed list of commands. No language model is used.
+
+**AI assistance:** I wrote the voice helper with Claude as a coding assistant. I decided how it should behave: the microphone is off until the person turns it on, the browser asks permission first, it turns itself off after 3 minutes, it never marks a step Done without asking "Did you finish this step?" and waiting for a yes, and the app says plainly that the browser's speech service receives the audio. Claude helped write the code, and I tested each change in the browser, checked the commands by speaking them, and can explain how every part works.
 
 ## Vaishnavi
 

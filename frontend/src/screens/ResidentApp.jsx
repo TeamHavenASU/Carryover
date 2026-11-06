@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import AskForHelp from "../components/AskForHelp/AskForHelp";
 import "./resident.css";
-import { getSetup, getTasks, getToday, logEvent, sessionId } from "../lib/api";
+import { getTasks, getToday, logEvent, sessionId } from "../lib/api";
 import { BottomNav, TopBar } from "./NavBars";
 import { Icon } from "../lib/icons";
 import { clearSession, loadSession, saveSession } from "../lib/session";
@@ -56,14 +56,8 @@ export default function ResidentApp() {
   const [pendingCards, setPendingCards] = useState([]); // skill cards to show before the next step
   const shownCards = useRef(new Set());
   const [donePromise, setDonePromise] = useState(null); // resolves when task_done is saved
-  const [knownInterests, setKnownInterests] = useState([]); // from definitions.json, for Game mode
   const [splitToken, setSplitToken] = useState(0); // "Show the small steps" from the Help screen
   const [tasksLoaded, setTasksLoaded] = useState(false);
-  useEffect(() => {
-    getSetup()
-      .then((qs) => setKnownInterests((qs.find((q) => q.id === "interests") || { answers: [] }).answers))
-      .catch(() => {});
-  }, []);
 
   const personId = s.personId;
   const ready = Boolean(personId);

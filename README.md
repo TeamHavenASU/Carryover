@@ -133,7 +133,7 @@ API keys go in `backend/.env` only. Never put them in code, and never commit `.e
 - [ATTRIBUTION.md](ATTRIBUTION.md): libraries, images, sources and how AI tools were used
 - Limits: the "Limits" section of [docs/responsible_ai.md](docs/responsible_ai.md) and "What research doesn't answer yet" in [docs/future_directions.md](docs/future_directions.md)
 
-## Role A: tasks, detection and research
+## Role A (Hima): tasks, detection and research
 
 ### What the files are
 | File | What it holds |
@@ -165,7 +165,7 @@ Write a new JSON file in `backend/data/tasks/` with the same fields. No code cha
 - Check questions only cover steps with no help. Two "no"s give the help back, so the question stops there. A step missed after help returns is caught by the other signals.
 - The task steps were checked with First Place staff, but not yet tested with residents.
 
-## Role B: data, fading and learning
+## Role B (Mrudula): data, fading and learning
 
 ### What the modules do
 
@@ -232,7 +232,7 @@ return later rows, rather than by convention in each caller.
   struggling there. That is a selection effect, so the scores are not used to
   choose help.
 
-## Role C: the resident app
+## Role C (Krutika): the resident app
 
 The phone-sized app a resident uses, in `frontend/src/screens/` and `frontend/src/lib/`, with its backend routes in `backend/api/resident_routes.py`, `backend/logic/today.py` and `backend/logic/event_log.py`.
 
@@ -244,12 +244,12 @@ The phone-sized app a resident uses, in `frontend/src/screens/` and `frontend/sr
 | Help screen | Small steps, the AI "I'm stuck" panel (Role D), and the support person's name and how to reach them |
 | Done screen | Check questions, and "Want to try with less help next time?" when the rules say so |
 | Settings | Support person, colors and text size, sound and animations, praise style, reading voice and speed (with previews), sharing with staff, and "Tell us what you think" |
-| Voice helper | Optional microphone in the top bar: spoken commands press the same buttons the person could tap, it confirms "Did you finish this step?" before Done, and never presses buttons that erase things. Chrome or Safari. See [docs/voice_helper.md](docs/voice_helper.md) |
+| Voice helper (written by Manaswi, Role D) | Optional microphone in the top bar: spoken commands press the same buttons the person could tap, it confirms "Did you finish this step?" before Done, and never presses buttons that erase things. Chrome or Safari. See [docs/voice_helper.md](docs/voice_helper.md) |
 | Game mode (optional) | A world the person chooses, rewards they pick after each task, new areas as they go. Rewards never depend on using less help |
 
 The screens never choose a help level: they show what `GET /today` returns and log every tap with `POST /event`. They follow [docs/ui_guidelines.md](docs/ui_guidelines.md).
 
-## Role D: AI help and safety guardrails
+## Role D (Manaswi): AI help and safety guardrails
 
 ### What the files are
 
@@ -312,7 +312,7 @@ python tests/run_photo_test.py       # the 27 photo test (needs a key)
 
 AI tools helped build parts of this section. See "How AI tools were used (Role D)" in ATTRIBUTION.md for which files and what was done by hand.
 
-## Role E: the staff, demo and review pages
+## Role E (Vaishnavi): the staff, demo and review pages
 
 The pages the team and staff use, outside the resident's phone:
 

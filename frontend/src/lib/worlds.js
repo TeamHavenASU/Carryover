@@ -4,8 +4,8 @@
 // Pictures and animations for the rewards are in frontend/public/game/ and public/animations/
 // (made by tools/make_game_art.py).
 //
-// A typed interest (setup "What do you love?" > "other") will get its own world, with the plan
-// written by the AI. TODO(Role D, Manaswi): add that AI call; the four worlds below are fixed.
+// The three worlds (Sky, Animals, Space) are fixed. Worlds built by the AI for a typed interest are
+// on the roadmap (docs/future_directions.md).
 
 // attach: where the item sits on the companion animal (mouth, front or collar).
 const item = (name, animation, attach) => ({ name, animation: animation || null, attach: attach || null });

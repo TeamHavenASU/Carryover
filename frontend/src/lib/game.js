@@ -8,13 +8,6 @@ const label = (v) => String(v).replace(/_/g, " ").replace(/^./, (c) => c.toUpper
 export { label };
 
 
-// The world's theme comes from the first interest. A typed one (not in the setup list) is "Your town".
-export function themeName(interests, knownInterests) {
-  const first = (interests || [])[0];
-  if (!first) return "Your world";
-  return knownInterests.includes(first) ? label(first) : "Your town";
-}
-
 // Areas open as tasks are done. The next one opens after `every` more tasks. Never taken away.
 export function worldState(tasksDone, every) {
   const unlocked = Math.min(AREAS_PER_WORLD, 1 + Math.floor(tasksDone / every));
