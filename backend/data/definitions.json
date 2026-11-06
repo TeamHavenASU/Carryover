@@ -228,7 +228,8 @@
         "normal"
       ]
     },
-    "where": "Settings, not first-time setup (setup stays at 4 questions). The voice and speed pickers are always in Settings. 'Read answers aloud' reads AI replies; 'Read again' reads the step when tapped."
+    "where": "On the step: Read aloud and Replay, with the spoken word highlighted, pause and play, tap a word to read from there. In Settings (not first-time setup, which stays at 4 questions): the voice and speed, each with a preview.",
+    "_voice_helper_note": "A separate, optional voice helper (microphone in the top bar) runs the same buttons by spoken command; it is off until tapped and confirms before Done. See docs/voice_helper.md."
   },
   "feedback": {
     "_status": "decided Nov 5",

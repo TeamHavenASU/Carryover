@@ -24,6 +24,7 @@ Most of Carryover is plain rules, not an AI model. Rules are explainable, safe, 
 - **No people in photos.** Never photos of a bank app, card, receipt or checkout page.
 - **We say when data leaves the app.** Users are told that a photo is sent to an AI service to get the answer.
 - **Typed questions are not saved.**
+- **The voice helper keeps no audio.** While the microphone is on, the browser turns speech into words (Google's service in Chrome, Apple's in Safari). Carryover does not record or keep the audio, shows when the microphone is on, and turns it off after 3 minutes of silence.
 - **Feedback answers are taps only,** with no typed text. They are logged; the resident can turn sharing on or off in Settings (off by default), and the Staff page does not check it yet.
 - **The log records only that a step was done.** Never what was bought, what it cost, or what was eaten.
 - **No money data.** Carryover never reads a balance, connects to a bank, or asks for or stores a card number or PIN.
@@ -76,6 +77,7 @@ Self-determination research puts choice and control at the center (Wehmeyer & Ab
 - **They choose their support person.** It can be a staff member, a family member or someone else they pick.
 - **They choose whether to share** their progress with staff. Off by default.
 - **They can take a break any time.** Break time never counts as being stuck.
+- **Voice never acts for them.** The voice helper never marks a step done without a yes ("Did you finish this step?"), and never presses buttons that change or erase things.
 - **Preferences are asked, not assumed.** A short first-time setup (with Skip) asks about interests, Game or Normal mode, sound and which hand. Other questions come up only when they matter.
 - **No pressure to perform.** No points, streaks or badges in Normal mode. Praise is short and factual ("Step 4 done"), with a Calm, Cheerful or Off setting. Rewards can lower interest (Deci, Koestner & Ryan 1999).
 
@@ -105,6 +107,7 @@ First Place staff told us a formal app may not get used, so Game mode exists, bu
 
 - Plain, literal words, one step per screen, the same layout every time (W3C COGA; Hassell Inclusion & National Autistic Society).
 - Settings for colors, light or dark, text, pictures, reading voice, sound and animation.
+- Read aloud with the spoken word highlighted, and optional voice control of the same buttons (docs/voice_helper.md).
 - WCAG 2.2 contrast and tap size. Nothing flashes or plays by itself, and motion follows the device's reduced-motion setting.
 - Carryover adapts to each person instead of assuming everyone has the same difficulties.
 

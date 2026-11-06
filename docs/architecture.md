@@ -5,7 +5,7 @@ Carryover is a React app (port 5173) talking to a FastAPI backend (port 8000). T
 ```mermaid
 flowchart TD
   subgraph Browser["React app (frontend/)"]
-    Resident["Resident screens<br/>I'm stuck panel on the Help screen"]
+    Resident["Resident screens<br/>I'm stuck panel on the Help screen,<br/>voice helper"]
     Staff["Staff screen"]
     Demo["Demo screen<br/>week slider, the real app in a phone frame,<br/>Why this changed, help chart, Help over time grid"]
     Review["Review page<br/>AI small steps and skill cards"]
@@ -31,6 +31,7 @@ flowchart TD
     Events[("live/events.csv")]
     Defs[("definitions.json")]
     Pending[("splits_pending.json<br/>skill_cards_pending.json")]
+    Skills[("skills/*.json<br/>skill cards")]
   end
 
   Model["AI model<br/>(backend/ai/llm.py)"]
@@ -57,6 +58,7 @@ flowchart TD
   AskSplit -->|"suggested small steps and skill cards<br/>approved: false"| Pending
   ReviewRoutes --> Pending
   ReviewRoutes -->|"after a person approves"| Tasks
+  ReviewRoutes -->|"after a person approves"| Skills
 ```
 
 `GET /health` is a plain liveness check.
@@ -79,4 +81,4 @@ In the demo, the week slider sets the week. Only events from earlier weeks are u
 2. The answer is checked in code, then saved to `splits_pending.json` with `approved: false`.
 3. A person opens the Review page, edits the words if they want, and approves.
 4. Only then are the small steps written into the task file. Until that point no resident sees them.
-5. AI-drafted skill cards take the same path: `POST /draft_skill` saves to `skill_cards_pending.json`, and the Review page approves them into `backend/data/skills/`.
+5. AI-drafted skill cards take the same path: `POST /draft_skill` saves to `skill_cards_pending.json`, and the Review page approves them into `backend/data/skills/`. No button in the app calls `/draft_skill` yet; it is called through the API (see http://localhost:8000/docs).

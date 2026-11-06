@@ -1,6 +1,6 @@
 # Attribution
 
-## Role A
+## Hima 
 
 **Libraries:** none beyond the Python standard library (statistics, datetime,
 json, pathlib). Tests use pytest, which is already in requirements.txt.
@@ -34,7 +34,13 @@ test_detect.py and make_pictures.py (the first placeholder pictures, since remov
 and the detection logic, reviewed every line, and can explain what each
 file does and why.
 
-## Role B
+How I used AI, with the main requests (lightly edited for typos):
+- Research and sources: "Check the citations in the lit review and sources.md against these abstracts I pasted. Tell me if any claim doesn't match the paper." "Write a literature review following the Purdue OWL guide, in plain English but research-based."
+- Docs: "Draft future_directions.md and responsible_ai.md, and explain how the design accounts for privacy, safety and autonomy." "Review the Business Model Canvas: fix claims that don't match what First Place staff said."
+- Checks: "Write a Claude Code prompt to audit every button in the resident app against our UI guidelines. Report only." "Go through the repo and find where the docs don't match what the app does."
+- Code, with Claude Code: the help offer timing change in definitions.json; the Demo page phone frame, "Why this changed" and "Help over time" grid (Demo.jsx, Demo.css); the "Ask AI for more detail on this step" button and demo note on the Staff page (Staff.jsx, Staff.css); the plain-address redirect in App.jsx; the resident feedback section (with Role C's agreement). I checked every diff, ran the backend tests and the frontend build, and checked the pages in the browser.
+
+## Mrudula
 
 **Libraries:** none beyond the Python standard library (csv, json, pathlib,
 random, statistics). No third-party dependencies were added for the
@@ -57,16 +63,18 @@ fade.py, and their tests were written with the help of an AI coding
 assistant. I specified the behaviour and the data formats, reviewed every
 line, and can explain the logic and the design decisions in each file.
 
-## Role C
+## Krutika
 
 **Libraries:** the resident screens use React and the existing frontend setup
 (Vite, React Router) from Role E's package.json. Added by Role C:
-- framer-motion (MIT): Game mode only, an island sliding in and the reward
-  appearing.
-- lottie-react (MIT, uses lottie-web, MIT): Game mode only, the bird, balloon
-  and kite animations.
+- framer-motion (MIT): the logo screen when the app opens, and in Game mode an
+  island sliding in and the reward appearing.
+- lottie-react (MIT, uses lottie-web, MIT): the Game mode animations.
 - lucide-react (ISC): the one icon set used on every resident screen.
-Browser features: localStorage for settings and speechSynthesis for read-aloud.
+Browser features: localStorage for settings, sessionStorage for the logo
+screen, speechSynthesis for read-aloud, SpeechRecognition for the voice helper
+(in Chrome the speech service is Google's, in Safari Apple's; Carryover keeps
+no audio) and Web Audio for Game mode sounds (made in code, no sound files).
 Backend: Python standard library, plus FastAPI and pytest, which were already
 in the project.
 
@@ -74,9 +82,11 @@ in the project.
 the skill card picture were redrawn in more detail by
 tools/make_detailed_pictures.py, a script written with AI help (Claude).
 Plain shapes only: no brands, no people (hands only), no card numbers. The
-Lottie files in frontend/public/animations/ (bird, balloon, kite) are our
-own, also written with AI help; no LottieFiles downloads, so no outside
-licence applies.
+16 Lottie animations in frontend/public/animations/, the 21 game drawings in
+frontend/public/game/ and the Carryover logo (an inline SVG in
+SplashScreen.jsx) are our own, made with tools/make_game_art.py and
+other AI-assisted code. No LottieFiles or Kenney downloads, so no outside licence
+applies.
 
 **Prior work this builds on:** the screens follow docs/ui_guidelines.md (the
 UI Guide) and the sources listed there. The colour choices follow the AASPIRE
@@ -90,14 +100,19 @@ product.
 **Other people's code:** AskForHelp (Role D) is used as it was written. The
 resident page is mounted in Role E's pages/Resident.jsx and uses Role E's
 src/api.js. today.py wraps fade.build_view (Vaishnavi and Mrudula). My parts
-are today.py, event_log.py, resident_routes.py, test_resident.py and
-frontend/src/screens/ and frontend/src/lib/.
+are today.py, event_log.py, resident_routes.py, test_resident.py,
+frontend/src/screens/, frontend/src/lib/ (including voiceCommands.js and
+voiceDom.js) and frontend/src/components/VoiceAgent/.
 
-**AI assistance:** [Krutika: list the files written with Claude's help and
-write the sentence confirming you reviewed every line and can explain the
-logic. Only keep it if it is true.]
+**AI assistance:** Claude (Anthropic) helped write the resident screens in
+frontend/src/screens/ and frontend/src/lib/ (including voiceCommands.js and
+voiceDom.js), frontend/src/components/VoiceAgent/, today.py, and the drawing scripts
+tools/make_detailed_pictures.py and tools/make_game_art.py. The screen design
+follows docs/ui_guidelines.md and the team's decisions. The code was reviewed
+and tested before it was committed: backend tests, and 71 click-through checks
+at phone size.
 
-## Role D: AI help, guardrails and photo test
+## Manaswi: AI help, guardrails and photo test
 
 ### Libraries
 FastAPI (MIT), Uvicorn (BSD-3), httpx (BSD-3), python-dotenv (BSD-3), pytest (MIT), ReportLab (BSD-3) and pydantic (MIT, comes with FastAPI). See requirements.txt.
@@ -141,7 +156,7 @@ Claude helped with these specific parts:
 
 - `AskForHelp.jsx`: the `toggleMic` function (the Safari speech fix and resetting the button after an error) and the `sendEvent` function (sending `null` instead of empty text for `seconds` and `days_since_last`, so the server stops rejecting the log).
 - `run_ai_cases.py`: the image paths for the dish, foil, blurry and package time cases, the change that lets the blurry case accept either safe reply, and the photo table text. `ai_cases.md` is generated by this script.
-- `README_D.md` and `make_prompts_pdf.py`: the photo test section and the paragraph in the PDF, updated to 27 photos and under about 11%.
+- the Role D README section (formerly docs/README_D.md) and `make_prompts_pdf.py`: the photo test section and the paragraph in the PDF, updated to 27 photos and under about 11%.
 - `manifest.csv` and the credits in `ATTRIBUTION.md`: Claude wrote the scripts that built the manifest and appended the credit lines (one-off scripts, not committed), from the truth values and licence details I gave it.
 - The Role D sections of `README.md` and `ATTRIBUTION.md`: Claude drafted the text and I checked every claim.
 
@@ -149,7 +164,7 @@ I wrote the earlier Role D files (`safety.py`, `high_risk.py`, the prompts, `ai_
 
 I reproduced the bugs, tested in Safari and Chrome, re ran the AI cases against the live model, read every reply, and checked every number against the results.
 
-## Role E
+## Vaishnavi
 
 **Files:** `backend/api/main.py`; the demo, staff, review and skill routes
 (`backend/api/demo_routes.py`, `staff_routes.py`, `review_routes.py`,
@@ -168,4 +183,12 @@ the Demo page is plain SVG, no chart library.
 McClannahan (2001), as in the Role B section; the pages follow
 docs/ui_guidelines.md. No code was taken from any existing product.
 
-**AI assistance:** [Vaishnavi to confirm]
+**Added by Role A, agreed with Role E:** the phone frame with the real
+resident app, "Why this changed" and the "Help over time" grid in Demo.jsx and
+Demo.css; the "Ask AI for more detail on this step" button and demo note in
+Staff.jsx and Staff.css; the plain-address redirect in App.jsx. These were
+written with Claude Code (see the Role A section).
+
+**AI assistance:** where AI coding assistants were used for Role E, the code
+was reviewed and tested by the team before it was committed (backend tests and
+the frontend build), and the team can explain how each page and route works.
