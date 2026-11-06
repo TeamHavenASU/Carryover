@@ -1,6 +1,6 @@
-// Game mode worlds. For the prototype there are four: Sky, Space, Animals and Fruits.
-// Animals and Fruits ask one more question (which animal, which fruit), and the background and
-// the rewards follow that choice. Backgrounds exist for light and dark mode (screens/Backdrops.jsx).
+// Game mode worlds. For the prototype there are three: Sky, Space and Animals.
+// Animals asks one more question (which animal), and the background and the rewards follow
+// that choice. Backgrounds exist for light and dark mode (screens/Backdrops.jsx).
 // Pictures and animations for the rewards are in frontend/public/game/ and public/animations/
 // (made by tools/make_game_art.py).
 //
@@ -45,46 +45,34 @@ const ANIMALS = {
   },
 };
 
-const FRUITS = {
-  apple: {
-    family: "fruits", key: "fruits:apple", name: "Apples", variant: "apple",
-    areaWord: "row", shape: "crate", area: (n) => `Orchard row ${n}`,
-    rewardQuestion: "You finished a task. Pick something for your orchard.",
-    items: { apple: item("An apple", "apple"), "apple-leaf": item("A leaf", "apple-leaf"), blossom: item("A blossom", "blossom"),
-      "apple-basket": item("A basket of apples", "apple-basket"), "apple-pie": item("An apple pie", "apple-pie") },
-  },
-  strawberry: {
-    family: "fruits", key: "fruits:strawberry", name: "Strawberries", variant: "strawberry",
-    areaWord: "patch", shape: "crate", area: (n) => `Berry patch ${n}`,
-    rewardQuestion: "You finished a task. Pick something for your berry patch.",
-    items: { strawberry: item("A strawberry", "strawberry"), daisy: item("A daisy", "daisy"), jar: item("A jar of jam", "jar"),
-      "berry-basket": item("A basket of berries", "berry-basket"), shortcake: item("A strawberry shortcake", "shortcake") },
-  },
-  mango: {
-    family: "fruits", key: "fruits:mango", name: "Mangoes", variant: "mango",
-    areaWord: "grove", shape: "crate", area: (n) => `Mango grove ${n}`,
-    rewardQuestion: "You finished a task. Pick something for your mango grove.",
-    items: { mango: item("A mango", "mango"), "mango-slice": item("A mango slice", "mango-slice"), "mango-leaf": item("A leaf", "mango-leaf"),
-      "mango-glass": item("A mango smoothie", "mango-glass"), "mango-bowl": item("A bowl of mango", "mango-bowl") },
-  },
-};
-
 // What the person can choose in "Choose your game world" and in Settings.
 export const WORLD_CHOICES = [
   { id: "sky", name: "Sky", blurb: "Clouds, a sun and a moon" },
   { id: "space", name: "Space", blurb: "Planets and stars" },
   { id: "animals", name: "Animals", blurb: "Pick a cat, a dog or a fox", sub: "animalChoice",
     options: [["cat", "Cat"], ["dog", "Dog"], ["fox", "Fox"]] },
-  { id: "fruits", name: "Fruits", blurb: "Pick an apple, a strawberry or a mango", sub: "fruitChoice",
-    options: [["apple", "Apple"], ["strawberry", "Strawberry"], ["mango", "Mango"]] },
 ];
+
+// A plain-words description of a world: what it looks like, what finishing a task gives, and how
+// it grows. Used on the setup preview, so it always matches the world they picked.
+const INTRO = {
+  sky: "The whole app sits in a sky with floating cloud islands.",
+  space: "The whole app sits in space, with planets and stars.",
+  animals: null, // the animal itself is the world
+};
+export function describeWorld(world, every = 2) {
+  const rewards = Object.values(world.items).map((i) => i.name.toLowerCase()).join(", ");
+  if (world.companion) {
+    return `Your ${world.animal} stays with you. Finish a task and pick a gift for it: ${rewards}. It keeps every gift you pick.`;
+  }
+  return `${INTRO[world.family]} Finish a task and pick a reward: ${rewards}. Every ${every} tasks a new ${world.areaWord} opens.`;
+}
 
 // The world this person plays in, from their settings. Sky until they choose.
 export function resolveWorld(settings) {
   switch (settings.gameWorld) {
     case "space": return SPACE;
     case "animals": return ANIMALS[settings.animalChoice] || ANIMALS.cat;
-    case "fruits": return FRUITS[settings.fruitChoice] || FRUITS.apple;
     default: return SKY;
   }
 }

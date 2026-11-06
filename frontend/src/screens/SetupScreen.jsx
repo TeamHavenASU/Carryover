@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getSetup } from "../lib/api";
 import { AnswerIcon } from "../lib/icons";
+import { describeWorld, resolveWorld } from "../lib/worlds";
 
 // First-time setup: one question per screen, Skip uses the defaults.
 // Questions, answers and defaults come from definitions.json (via GET /setup).
@@ -9,23 +10,65 @@ const label = (v) => String(v).replace(/_/g, " ").replace(/^./, (c) => c.toUpper
 // Pictures for the answers: one icon set (Lucide), always next to the words.
 const Pic = ({ id }) => <AnswerIcon id={id} />;
 
-export default function SetupScreen({ update }) {
+// The worlds the first question offers (prototype). The first one picked becomes their game world.
+const WORLD_ANSWERS = ["sky", "animals", "space"];
+const ANIMALS = [["cat", "Cat"], ["dog", "Dog"], ["fox", "Fox"]];
+
+export default function SetupScreen({ update, setBack }) {
   const [questions, setQuestions] = useState(null);
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState({}); // question id -> answer
   const [typed, setTyped] = useState("");
   const [error, setError] = useState("");
+  const [animal, setAnimal] = useState("cat");
+  const [allSet, setAllSet] = useState(null); // the answers, once every question is done
 
   useEffect(() => {
-    getSetup().then(setQuestions).catch((e) => setError(e.message));
+    // Prototype: the first question offers only the three worlds we have drawn (Sky, Animals,
+    // Space), instead of the full interest list in definitions.json.
+    getSetup()
+      .then((qs) => setQuestions(qs.map((q) => (q.id === "interests" ? { ...q, text: "What do you love? Pick one", answers: ["sky", "animals", "space"], single: true, pick_up_to: 0 } : q))))
+      .catch((e) => setError(e.message));
   }, []);
+
+  // Back goes to the previous question (the top bar's Back). Each new question starts at the top.
+  useEffect(() => {
+    // setBack is a state setter, so a function must be wrapped or React would call it right away
+    setBack(allSet ? () => () => setAllSet(null) : i > 0 ? () => () => setI((n) => n - 1) : null);
+    return () => setBack(null);
+  }, [i, allSet]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const root = document.querySelector(".resident");
+    if (root) root.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }, [i, allSet]);
 
   if (error) return <div className="card status" role="alert">{error}</div>;
   if (!questions) return <p className="muted">Loading…</p>;
 
   const defaults = Object.fromEntries(questions.map((q) => [q.id, q.default]));
-  const finish = (answers) => update({ ...defaults, ...answers, setupDone: true });
+  // The first world they picked is their game world. Animals also keeps which animal.
+  // Every answer is saved together on the last page ("All set").
+  const save = (answers) => {
+    const loves = answers.interests || [];
+    const world = WORLD_ANSWERS.find((w) => loves.includes(w));
+    update({ ...defaults, ...answers, setupDone: true, ...(world ? { gameWorld: world, animalChoice: animal } : {}) });
+  };
+  const finish = (answers) => setAllSet(answers);
   const q = questions[i];
+
+  // The last page: one calm note about Settings, instead of pop-ups later in the app.
+  if (allSet) {
+    return (
+      <section className="all-set">
+        <div className="card status">
+          <h1>You are all set</h1>
+          <p>You can change any of these choices later. Open <strong>Settings</strong> at the bottom of the screen for more changes, like text size, colours, reading aloud and sounds.</p>
+        </div>
+        <button className="btn primary" onClick={() => save(allSet)}>Go to my tasks</button>
+      </section>
+    );
+  }
 
   function next(answer) {
     const answers = { ...picked, [q.id]: answer };
@@ -43,32 +86,30 @@ export default function SetupScreen({ update }) {
       <p className="muted" aria-live="polite">Question {i + 1} of {questions.length}</p>
       <h1>{q.text}</h1>
 
-      {multi ? (
+      {q.single ? (
         <>
-          <p className="muted">Pick up to {q.pick_up_to}</p>
-          {q.answers.map((a) => {
-            const typedOne = a.startsWith("other");
-            const on = chosen.includes(a);
-            return typedOne ? (
-              <div key={a}>
-                <label htmlFor="other">{label(a)}</label>
-                <input id="other" type="text" value={typed} onChange={(e) => setTyped(e.target.value)} />
-              </div>
-            ) : (
-              <label key={a} className="check">
-                <input
-                  type="checkbox"
-                  checked={on}
-                  disabled={!on && chosen.length >= q.pick_up_to}
-                  onChange={() => setPicked({ ...picked, [q.id]: on ? chosen.filter((x) => x !== a) : [...chosen, a] })}
-                />
+          <fieldset>
+            <legend className="visually-hidden">{q.text}</legend>
+            {q.answers.map((a) => (
+              <label key={a} className={`check choice ${chosen[0] === a ? "on" : ""}`}>
+                <input type="radio" name="world" value={a} checked={chosen[0] === a} onChange={() => setPicked({ ...picked, [q.id]: [a] })} />
                 <Pic id={a} />{label(a)}
               </label>
-            );
-          })}
-          <button className="btn primary" onClick={() => next(typed.trim() ? [...chosen, typed.trim()].slice(0, q.pick_up_to) : chosen)}>
-            Next
-          </button>
+            ))}
+          </fieldset>
+          {chosen[0] === "animals" && (
+            <fieldset>
+              <legend>Which animal?</legend>
+              <div className="segmented">
+                {ANIMALS.map(([v, t]) => (
+                  <label key={v} className={`segment ${animal === v ? "on" : ""}`}>
+                    <input type="radio" name="animal" value={v} checked={animal === v} onChange={() => setAnimal(v)} />{t}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+          <button className="btn primary" onClick={() => next(chosen)}>Next</button>
         </>
       ) : (
         <>
@@ -77,7 +118,7 @@ export default function SetupScreen({ update }) {
             <div className="preview-row">
               <div className="card">
                 <h2>Game style</h2>
-                <p>The whole app sits in a sky. Finish a task and pick something for your sky: a bird, a balloon, a kite or a rainbow. Every 2 tasks a new cloud island arrives.</p>
+                <p>{describeWorld(resolveWorld({ gameWorld: WORLD_ANSWERS.find((w) => (picked.interests || []).includes(w)) || "sky", animalChoice: animal }))}</p>
                 <p className="muted">Asking for help never changes it. Nothing is taken away.</p>
               </div>
               <div className="card">

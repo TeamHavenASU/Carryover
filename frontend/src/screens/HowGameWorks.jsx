@@ -4,7 +4,7 @@ export default function HowGameWorks({ world, every, open = false }) {
   const rewards = Object.values(world.items).map((i) => i.name.toLowerCase()).join(", ");
   return (
     <details className="card how-game" open={open}>
-      <summary>How Game mode works</summary>
+      <summary>How Game mode works?</summary>
       <ul>
         <li><strong>Finish a task:</strong> you pick one reward for your world: {rewards}.</li>
         {world.companion

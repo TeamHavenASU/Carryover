@@ -36,16 +36,6 @@ function Shape({ kind, outline }) {
       </svg>
     );
   }
-  if (kind === "crate") {
-    // A wooden crate for fruit worlds: planks, with the chosen fruit sitting on top.
-    return (
-      <svg viewBox="0 0 200 80" className="island-shape" aria-hidden="true">
-        <rect x="24" y="30" width="152" height="44" rx="6" fill={outline ? "none" : "#d6a96c"} stroke={outline ? "currentColor" : "#8a5a34"} strokeWidth="3" strokeDasharray={dash} />
-        {!outline && <path d="M24 46 H176 M24 60 H176" stroke="#8a5a34" strokeWidth="2.5" fill="none" />}
-        {!outline && <path d="M60 30 V74 M140 30 V74" stroke="#b8864f" strokeWidth="2" fill="none" />}
-      </svg>
-    );
-  }
   if (kind === "platform") {
     return (
       <svg viewBox="0 0 200 80" className="island-shape" aria-hidden="true">

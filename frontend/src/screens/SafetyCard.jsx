@@ -12,9 +12,11 @@ export default function SafetyCard({ content, onContinue }) {
         <ul>{content.ok.map((t) => <li key={t}>{t}</li>)}</ul>
       </div>
       {content.also && content.also.length > 0 && (
-        <div className="card"><ul>{content.also.map((t) => <li key={t}>{t}</li>)}</ul></div>
+        <div className="card">
+          <h2>{content.also_title || "Also remember"}</h2>
+          <ul>{content.also.map((t) => <li key={t}>{t}</li>)}</ul>
+        </div>
       )}
-      {content.source && <p className="muted">{content.source}</p>}
       <button className="btn primary" onClick={onContinue}>Continue</button>
     </section>
   );
