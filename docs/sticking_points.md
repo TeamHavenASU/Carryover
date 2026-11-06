@@ -38,7 +38,7 @@ Executive function differences are broad and fairly stable in autism (Demetriou 
 | Pausing | Our microwave has no Stop button; opening the door pauses it | 5 | "Open the door. It pauses the microwave" |
 | Door | Pull handle vs door button | 3 | "Pull the handle or press the door button" |
 | Repeating beeps | Some microwaves keep beeping until the door is opened | 6 | Tip: "It may keep beeping until you open the door. That's OK" |
-| Steam and hot spots | Steam under the cover; hot dish; food hotter in some spots | 5–7 | Caution button on steps 5–7, at every help level (Jones et al. 1997) |
+| Steam and hot spots | Steam under the cover; hot dish; food hotter in some spots | 5–7 | CAUTION line on steps 5–7, always shown at every help level, no tap needed (Jones et al. 1997) |
 | Not hot in the middle | Food not done needs more time (Smith) | 7 | Tip: +30 Sec and check again; 165°F (USDA) |
 | Food already inside | Listed as a possible error by Smith | 3 | "Check nothing else is inside" |
 | How much fits | Dish too big to turn | 2 | Tip: one dish that fits and can turn freely |
@@ -81,7 +81,7 @@ Executive function differences are broad and fairly stable in autism (Demetriou 
 | No card saved | Adding a card means typing card numbers; risk of scams | 9 (online) | Separate "Add a card" task (roadmap), on their own or with their support person. The app never sees or stores card numbers |
 | Finding the item in a store | Aisles, signs, items moved | Before step 1 (in store) | Tip on step 1: look at the aisle signs or ask a store worker. Roadmap: linked task "Find an item in a store" |
 | Waiting in line | Line can be long; cashier may be busy | 6 (in store) | Marked as a waiting step, so long waits never count as struggling. Tip for self-checkout |
-| Finding things in the app | Every app is different (restaurant, menu, buttons) | — | Out of scope for these steps: Ask for help now; roadmap: linked tasks for common apps |
+| Finding things in the app | Every app is different (restaurant, menu, buttons) | — | Out of scope for these steps: the "I'm stuck" helper (type, speak or photo) can help; roadmap: linked tasks for common apps |
 | Rides (cab stops) | A transit task | — | Out of scope |
 | Can't decide | Choosing can take hours when unsure | 5 | Tip: choose your usual, or leave it for now. Long pause 300 s online so thinking isn't counted as struggling |
 | Address details | Apartment or unit number missing or old | 9 (online) | Small step: check the apartment or unit number |
@@ -90,4 +90,4 @@ Executive function differences are broad and fairly stable in autism (Demetriou 
 | Card declined or reader error | Payment doesn't go through | 8 (in store) | Tip: try once more, or ask the cashier |
 | Missing a base skill (buying) | Reading a price, comparing prices, reading the total, tapping or inserting a card, paying with a phone, typing an address | 1, 4, 7–9 | Skill cards: read_price, compare_two_prices, read_total_on_screen, tap_or_insert_card, pay_with_phone, type_address |
 | New card reader or app | Readers and apps all look different | Pay steps | `first_time_question` per buying task; No: start at Most help |
-| Pictures that don't match | A picture of a different device or a different color can confuse someone who reads it literally | All | Roadmap: photos of the person's own microwave, taken once at setup (no people). Until then, pictures show the action, not a specific device. Plain adult style, nothing childish |
+| Pictures that don't match | A picture of a different device or a different color can confuse someone who reads it literally | All | Roadmap: photos of the person's own microwave, taken once at setup (no people). Until then, pictures show the action, with a note "Your microwave may look different" on device pictures. Plain adult style, nothing childish |
