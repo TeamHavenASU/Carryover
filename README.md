@@ -240,10 +240,11 @@ The phone-sized app a resident uses, in `frontend/src/screens/` and `frontend/sr
 | --- | --- |
 | First-time setup | A few short questions (skippable), then everything can be changed in Settings |
 | Task list and start | Pick a task; a short start push, a refresher after a long break, and a first-time safety card for Heat a meal |
-| Step screen | One step at a time at the help level the backend chose. Done, Help with this step and Take a break stay in the same place; CAUTION lines always show; a calm "Want help with this step?" offer appears after a pause (never on waiting steps) |
+| Step screen | One step at a time at the help level the backend chose. Done, Help with this step and Take a break stay in the same place; Read aloud and Replay with the spoken word highlighted; CAUTION lines always show; a calm "Want help with this step?" offer appears after a pause (never on waiting steps) |
 | Help screen | Small steps, the AI "I'm stuck" panel (Role D), and the support person's name and how to reach them |
 | Done screen | Check questions, and "Want to try with less help next time?" when the rules say so |
-| Settings | Support person, colors and text size, sound and animations, praise style, read aloud, sharing with staff, and "Tell us what you think" |
+| Settings | Support person, colors and text size, sound and animations, praise style, reading voice and speed (with previews), sharing with staff, and "Tell us what you think" |
+| Voice helper | Optional microphone in the top bar: spoken commands press the same buttons the person could tap, it confirms "Did you finish this step?" before Done, and never presses buttons that erase things. Chrome or Safari. See [docs/voice_helper.md](docs/voice_helper.md) |
 | Game mode (optional) | A world the person chooses, rewards they pick after each task, new areas as they go. Rewards never depend on using less help |
 
 The screens never choose a help level: they show what `GET /today` returns and log every tap with `POST /event`. They follow [docs/ui_guidelines.md](docs/ui_guidelines.md).

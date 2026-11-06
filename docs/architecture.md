@@ -5,7 +5,7 @@ Carryover is a React app (port 5173) talking to a FastAPI backend (port 8000). T
 ```mermaid
 flowchart TD
   subgraph Browser["React app (frontend/)"]
-    Resident["Resident screens<br/>I'm stuck panel on the Help screen"]
+    Resident["Resident screens<br/>I'm stuck panel on the Help screen,<br/>voice helper"]
     Staff["Staff screen"]
     Demo["Demo screen<br/>week slider, the real app in a phone frame,<br/>Why this changed, help chart, Help over time grid"]
     Review["Review page<br/>AI small steps and skill cards"]

@@ -12,20 +12,20 @@ All step text comes from `backend/data/tasks/*.json`. The help level for each st
 
 | # | Rule | On screen | Why (source) |
 | --- | --- | --- | --- |
-| 1 | One step at a time, same layout every time | One step per screen. Done, Help with this step and Take a break always in the same place at the bottom; Read again sits next to the step title | COGA; Hassell; Home Office |
+| 1 | One step at a time, same layout every time | One step per screen. Done, Help with this step and Take a break always in the same place at the bottom; Read aloud and Replay sit on the step itself | COGA; Hassell; Home Office |
 | 2 | Show only what's needed | The full step sentence (no short names: they can lose meaning, like "Stir halfway" losing "if the package says so"). Small steps and tips only when opened or when today's level says so. "All steps" one tap away | COGA; Hassell; Research: Grynszpan et al. 2008 |
 | 3 | Plain, literal words | Short sentences, no idioms, about 7th-grade reading level. Use task file text as is | Hassell; Home Office; Research: Barnard-Brak et al. 2023 |
 | 4 | Buttons say what they do, with text | Every icon has a text label. Large tap targets | Home Office; Hassell; WCAG 2.2 |
 | 5 | Familiar patterns | Normal controls, no new gestures | COGA |
 | 6 | Calm colors, readable text | Soft background, no bright or clashing colors, WCAG AA contrast, never color alone | Hassell; Home Office; WCAG 2.2 |
 | 7 | The person can change how it looks | Text size, font, colors, dark mode, pictures on/off | Hassell; COGA |
-| 8 | Nothing moves or plays by itself | No autoplay, flashing, bouncing or confetti. Automatic read-aloud only if turned on (Read again speaks when tapped) | Hassell |
+| 8 | Nothing moves or plays by itself | No autoplay, flashing, bouncing or confetti. Nothing is read aloud until the person taps Read aloud (then pause, play, Replay, or tap a word to read from there) | Hassell |
 | 9 | Pictures and video only when they help | Each step's `picture` (our own SVGs in `frontend/public/img/`) shows the action. Under device pictures: "Your microwave may look different." `video` is roadmap (every task's video is null today): a short point-of-view clip, free license, to be credited in ATTRIBUTION.md, playing only when tapped. Follows the pictures on/off setting. No decorative or childish images | Hassell; Research: Aljehany & Bennett 2019; 2022 review of video on handheld devices; point-of-view video review; Ours: a different microwave can confuse (Smith 1995) |
 | 10 | No time pressure | No countdowns or timeouts. Help offered after a wait, never forced. Breaks save the place | Hassell; COGA; Ours |
 | 11 | Don't make people remember | "Step 3 of 7"; "You were on: …" after a break. Start screen always has "Quick look at all steps" next to Start. If rusty, ask first: "It's been a while since you did this. Want a quick look at all the steps first?" ("Yes" / "No, start"); log `refresher_answer` | COGA; Research: Buckle et al. 2021; Fuller & Fienup 2018 (skills can fade); Wehmeyer & Abery 2013 (the person chooses) |
 | 12 | Easy to fix mistakes | The Back button on step 2 and later undoes the last Done (logged as `step_done_undone`) | COGA |
 | 13 | Help comes to the person | After a wait the app asks "Want help with this step?" (fading rules). Never on waiting steps (`wait: true`). At Most help, small steps show one at a time; the person taps 'Show next small step'. Asking is always one tap ("Help with this step") | Research: Grynszpan et al. 2008; MacDuff et al. 2001 |
-| 14 | Human help is easy to reach | "Still stuck? Ask [support person]" on the Help screen and on Take a break, one tap from every step; AI hands off when unsure | COGA; safety.md |
+| 14 | Human help is easy to reach | "Still stuck?" on the Help screen (one tap from every step) opens an "Ask [name]" card with how to reach them; AI hands off when unsure | COGA; safety.md |
 | 15 | The person decides | Ask before less help; person picks support person, sharing and breaks. Sharing is off by default and can be turned on or off in Settings; the Staff page does not check it yet | Research: Wehmeyer & Abery 2013; Wehmeyer 1999; Shogren et al. 2015; Wehmeyer 2020 |
 | 16 | Asking for help is never bad | No red, no "wrong," no score drop | Ours |
 | 17 | Test with autistic users | Pilot (roadmap) | COGA; Hassell; Research: Nicolaidis et al. 2019; Raymaker et al. 2019 |
@@ -33,8 +33,9 @@ All step text comes from `backend/data/tasks/*.json`. The help level for each st
 | 19 | Teach the base skill when needed | If a step needs a base skill the person said "Not sure" about, show that skill card before the step. Not built yet: the "stuck at Most help 2 sessions" trigger, card fading, and "stop showing this" | First Place (Nov 4); definitions.json `skill_cards` |
 | 20 | Game mode is the person's choice | Normal mode: no points, stars or game. Game mode (opt-in, switch any time): a world they pick (Sky, Space or Animals) that opens as they learn, next area outlined ahead of time, milestones, unlockables, and a star every 10 rewards on the profile (that number lives in the frontend, frontend/src/lib/rewards.js). Rewards never depend on using less help; interest content is never taken away. Sound: Off / Very soft / Soft / Normal; animations: Off / Calm / Lively. No milestone for doing a step "on your own" (it could make someone avoid asking for help) | First Place (Nov 4); Research: Grove et al. 2018 (special interests); Lee et al. 2022 (gamified app, autistic adults); Deci, Koestner & Ryan 1999 (why it's opt-in and never tied to less help) |
 
-| 21 | The person picks the reading voice | The voice (from the voices already on the device, free, offline) and speed (Slow / Normal) pickers are always in Settings. "Read again" reads the step when tapped; "Read answers aloud" reads AI replies. Paid voices (e.g. ElevenLabs) are roadmap only | Hassell; Ours: privacy and cost |
+| 21 | The person picks the reading voice | On the step: Read aloud and Replay, with the spoken word highlighted; pause and play; tap a word to read from there. In Settings: the voice (from the voices already on the device, free, offline) and speed (Slow / Normal), each with a preview. Paid voices (e.g. ElevenLabs) are roadmap only | Hassell; Ours: privacy and cost |
 | 22 | Feedback is optional | A 'Tell us what you think' section in Settings: taps only, each answer tied to a setting the person can change; the help answer explains how help works and never changes the help level. Answers are logged; the resident can turn sharing on or off in Settings (off by default) and the Staff page does not check it yet | Research: Wehmeyer & Abery 2013; COGA (test with users) |
+| 23 | Voice is optional | The voice helper (microphone in the top bar) is off until the microphone is tapped. Spoken commands press the same buttons; it asks "Did you finish this step?" before Done, and never presses buttons that erase or reset things. See docs/voice_helper.md | Ours; docs/voice_helper.md |
 
 ## Game mode (prototype)
 
@@ -77,7 +78,7 @@ Log events only, by the names in `backend/logic/data_io.py` ALL_EVENTS: task_ope
 | Caution | If a step has a `safety` field, always show it as a **CAUTION** line on that step at every help level, even when folded. No tap needed. heat_meal s5–s7 (oven mitts, steam, hot spots: "may be hot"); buying: PIN, passcode, Place Order once | First Place (Nov 4); Research: Jones & Collins 1997 |
 | Photo question | Camera only when tapped; say it goes to an AI service; delete after; no people | Ours; safety.md |
 | Never photograph | Bank app, card, receipt, checkout page | Ours |
-| AI not sure | "I'm not sure. Please ask someone you trust." (microwave photo hand-off: "please ask your support person"); "Still stuck? Ask [name]" is one tap away on the Help screen | Research: Xiong et al. 2024; Li et al. 2023; Geifman & El-Yaniv 2017 |
+| AI not sure | "Please ask [support person's name]" (microwave photo hand-off: "please ask your support person"); "Still stuck?" is one tap away on the Help screen | Research: Xiong et al. 2024; Li et al. 2023; Geifman & El-Yaniv 2017 |
 | Money screens | No balance, no card number or PIN, no advice on what to buy. Pictures show generic readers and screens only | Ours |
 | New device | First time a task opens, ask its `first_time_question` ("Is this a microwave you've used before?"). Asked and logged; starting at Most help after No is in the rules but not yet connected in the app | First Place (Nov 4); Smith 1995 |
 
