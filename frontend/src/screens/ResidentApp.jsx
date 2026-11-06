@@ -5,7 +5,7 @@ import { getSetup, getTasks, getToday, logEvent, sessionId } from "../lib/api";
 import { BottomNav, TopBar } from "./NavBars";
 import { Icon } from "../lib/icons";
 import { clearSession, loadSession, saveSession } from "../lib/session";
-import { PALETTES, askedAboutSkips, firstOpenDone, fromUrl, lookAttributes, markAskedAboutSkips, markFirstOpenDone, speak, useSettings } from "../lib/settings";
+import { PALETTES, askedAboutSkips, firstOpenDone, fromUrl, lookAttributes, markAskedAboutSkips, markFirstOpenDone, speak, supportName, useSettings } from "../lib/settings";
 import TaskList from "./TaskList";
 import StartScreen from "./StartScreen";
 import StepScreen from "./StepScreen";
@@ -380,6 +380,7 @@ export default function ResidentApp() {
               week={today.week}
               sessionId={sessionId(personId, today.task_id, today.week)}
               autoRead={s.readAloud}
+              supportName={supportName(s)}
             />
           }
         />
