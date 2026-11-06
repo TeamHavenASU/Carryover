@@ -1,6 +1,6 @@
 # Attribution
 
-## Role A
+## Hima 
 
 **Libraries:** none beyond the Python standard library (statistics, datetime,
 json, pathlib). Tests use pytest, which is already in requirements.txt.
@@ -40,7 +40,7 @@ How I used AI, with the main requests (lightly edited for typos):
 - Checks: "Write a Claude Code prompt to audit every button in the resident app against our UI guidelines. Report only." "Go through the repo and find where the docs don't match what the app does."
 - Code, with Claude Code: the help offer timing change in definitions.json; the Demo page phone frame, "Why this changed" and "Help over time" grid (Demo.jsx, Demo.css); the "Ask AI for more detail on this step" button and demo note on the Staff page (Staff.jsx, Staff.css); the plain-address redirect in App.jsx; the resident feedback section (with Role C's agreement). I checked every diff, ran the backend tests and the frontend build, and checked the pages in the browser.
 
-## Role B
+## Mrudula
 
 **Libraries:** none beyond the Python standard library (csv, json, pathlib,
 random, statistics). No third-party dependencies were added for the
@@ -63,7 +63,7 @@ fade.py, and their tests were written with the help of an AI coding
 assistant. I specified the behaviour and the data formats, reviewed every
 line, and can explain the logic and the design decisions in each file.
 
-## Role C
+## Krutika
 
 **Libraries:** the resident screens use React and the existing frontend setup
 (Vite, React Router) from Role E's package.json. Added by Role C:
@@ -109,7 +109,7 @@ follows docs/ui_guidelines.md and the team's decisions. The code was reviewed
 and tested before it was committed: backend tests, and 71 click-through checks
 at phone size.
 
-## Role D: AI help, guardrails and photo test
+## Manaswi: AI help, guardrails and photo test
 
 ### Libraries
 FastAPI (MIT), Uvicorn (BSD-3), httpx (BSD-3), python-dotenv (BSD-3), pytest (MIT), ReportLab (BSD-3) and pydantic (MIT, comes with FastAPI). See requirements.txt.
@@ -161,7 +161,7 @@ I wrote the earlier Role D files (`safety.py`, `high_risk.py`, the prompts, `ai_
 
 I reproduced the bugs, tested in Safari and Chrome, re ran the AI cases against the live model, read every reply, and checked every number against the results.
 
-## Role E
+## Vaishnavi
 
 **Files:** `backend/api/main.py`; the demo, staff, review and skill routes
 (`backend/api/demo_routes.py`, `staff_routes.py`, `review_routes.py`,
