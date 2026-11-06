@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { WORLD_CHOICES } from "../lib/worlds";
 
-// "Choose your game world": Sky, Space, Animals or Fruits. Animals and Fruits ask one more
-// question (which animal, which fruit). The background and the rewards follow the choice, and
+// "Choose your game world": Sky, Space or Animals. Animals asks one more
+// question (which animal). The background and the rewards follow the choice, and
 // it can be changed any time in Settings.
 export default function ChooseWorld({ settings, update, onDone }) {
   const [family, setFamily] = useState(null);
@@ -21,7 +21,7 @@ export default function ChooseWorld({ settings, update, onDone }) {
   if (chosen) {
     return (
       <section>
-        <h1>Which {chosen.id === "animals" ? "animal" : "fruit"} do you like?</h1>
+        <h1>Which animal do you like?</h1>
         {chosen.options.map(([value, label]) => (
           <button key={value} className="btn answer-btn" onClick={() => pickOption(chosen, value)}>{label}</button>
         ))}

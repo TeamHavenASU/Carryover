@@ -23,7 +23,7 @@ const videoSource = (v) => {
 const isDevicePicture = (p) => p.device === true || /microwave/i.test(p.alt || "");
 
 export default function StepScreen({
-  step, settings, paused, praiseLine, awayNote, log, onDone, onBreak, onHelp, onSpeak, splitToken,
+  step, settings, paused, praiseLine, awayNote, log, onDone, onBreak, onHelp, onSpeak, splitToken, onSeeAll,
 }) {
   const base = BASE[step.mode] ?? 1;
   const [reveal, setReveal] = useState(base);
@@ -138,13 +138,22 @@ export default function StepScreen({
     onDone();
   }
 
+
   const fade = settings.animations === "off" ? "" : "fade-in";
 
   return (
     <section className="has-bottom-actions">
-      {praiseLine && <p className="muted" role="status">{praiseLine}</p>}
       {awayNote && <div className="card status" role="status"><p>{awayNote}</p></div>}
-      <p className="muted step-count" aria-live="polite">Step {step.number} of {step.total}</p>
+      {/* One line: what was just done (with a check), where they are now, and All steps */}
+      <div className="step-status">
+        <p className="step-status-text" aria-live="polite">
+          {praiseLine && (
+            <span className="done-chip"><span className="done-check"><Icon.check /></span>{praiseLine.replace(/\.$/, "")}</span>
+          )}
+          <span className="step-count">Step {step.number} of {step.total}</span>
+        </p>
+        <button className="navbtn" onClick={onSeeAll}>All steps</button>
+      </div>
 
       {reveal === 0 ? (
         <button className="card folded" onClick={openFolded}>
@@ -159,6 +168,8 @@ export default function StepScreen({
               <Icon.speaker /> Read again
             </button>
           </div>
+          {/* CAUTION always shows, at every help level, right under the step sentence */}
+          {step.safety && <p className="caution"><strong>CAUTION:</strong> {step.safety}</p>}
           {settings.pictures && step.picture && (
             <>
               <img className="step-picture" src={IMG_BASE + step.picture.file} alt={step.picture.alt} />
@@ -196,10 +207,7 @@ export default function StepScreen({
         </div>
       )}
 
-      {/* CAUTION always shows, at every help level, even when the step is folded. */}
-      {step.safety && (
-        <p className="caution"><strong>CAUTION:</strong> {step.safety}</p>
-      )}
+      {reveal === 0 && step.safety && <p className="caution"><strong>CAUTION:</strong> {step.safety}</p>}
 
       {/* Fixed to the bottom, same place on every step. The help offer sits just above. */}
       <div className="bottom-actions">

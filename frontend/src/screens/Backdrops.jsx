@@ -5,7 +5,7 @@ const BASE = import.meta.env.BASE_URL;
 const ANIM_BASE = `${BASE}animations/`;
 const art = (id) => `${BASE}game/${id}.svg`;
 
-// The background of every Game mode screen: one backdrop per world (and per animal or fruit),
+// The background of every Game mode screen: one backdrop per world (and per animal),
 // each with a light and a dark version. Everything people read or tap sits on cards above it,
 // so text stays readable. Motion is slow, off when Animations is Off or motion is reduced, and
 // stars never twinkle.
@@ -20,7 +20,7 @@ function Cloud({ cls }) {
 
 const Stars = () => <span className="stars" />;
 
-// Pictures scattered over the background (paw prints, toys, fruit...). They float gently if
+// Pictures scattered over the background (paw prints, toys...). They float gently if
 // motion is on. Each spot is [picture, x%, y%, size, delay].
 function Scatter({ spots, moving, cls = "" }) {
   return spots.map(([id, x, y, size, delay], i) => {
@@ -50,14 +50,6 @@ const FENCE = "M0 40 H400 M0 62 H400 M20 28 V84 M80 28 V84 M140 28 V84 M200 28 V
 const CAT = [["paw", 8, 30, 36, 0], ["paw", 70, 52, 40, 2], ["yarn", 14, 58, 84, 1], ["fish", 62, 74, 90, 3], ["bell", 80, 28, 70, 2], ["paw", 36, 88, 34, 1]];
 const DOG = [["bone", 8, 22, 90, 0], ["ball", 70, 34, 78, 2], ["paw", 24, 54, 36, 1], ["bone", 64, 62, 84, 3], ["paw", 80, 80, 34, 2]];
 const FOX = [["acorn", 10, 26, 76, 0], ["mushroom", 72, 46, 84, 2], ["acorn", 28, 62, 70, 1], ["leaf", 78, 24, 66, 3]];
-const FRUIT = {
-  apple: ["apple", "apple-leaf", "blossom", "apple-basket"],
-  strawberry: ["strawberry", "daisy", "berry-basket", "shortcake"],
-  mango: ["mango", "mango-leaf", "mango-slice", "mango-glass"],
-};
-// Big and varied: the fruit itself, a leaf or flower, and a treat made from it.
-const FRUIT_SPOTS = [[0, 5, 14, 120, 0], [1, 70, 18, 100, 2], [2, 8, 40, 96, 1], [0, 66, 44, 124, 3], [3, 30, 56, 104, 2],
-                     [1, 4, 70, 100, 1], [0, 70, 76, 116, 2], [2, 38, 84, 96, 3], [3, 84, 62, 88, 1]];
 
 export default function GameBackdrop({ world, dark, animations }) {
   const reduce = useReducedMotion();
@@ -92,8 +84,8 @@ export default function GameBackdrop({ world, dark, animations }) {
         <span className="space-planet" />
         <span className={dark ? "moon" : "space-moon"} />
         {moving && (
-          <motion.div className="bg-flyer" style={{ top: 140 }} initial={{ x: "-25%" }} animate={{ x: "125vw" }}
-            transition={{ duration: lively ? 12 : 22, repeat: Infinity, ease: "linear", repeatDelay: 6 }}>
+          <motion.div className="bg-flyer comet" initial={{ x: "-40%", y: 60 }} animate={{ x: "120vw", y: 520 }}
+            transition={{ duration: lively ? 12 : 20, repeat: Infinity, ease: "linear", repeatDelay: 5 }}>
             <Lottie src={`${ANIM_BASE}comet.json`} loop autoplay speed={speed} />
           </motion.div>
         )}
@@ -133,9 +125,6 @@ export default function GameBackdrop({ world, dark, animations }) {
         <img src={art(`${variant}-face`)} alt="" className="decor-img big-face" />
       </>
     );
-  } else if (family === "fruits") {
-    const ids = FRUIT[variant] || FRUIT.apple;
-    decor = <Scatter spots={FRUIT_SPOTS.map(([k, ...rest]) => [ids[k], ...rest])} moving={moving} cls="fruit-decor" />;
   }
 
   return (

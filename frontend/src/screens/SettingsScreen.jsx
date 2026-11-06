@@ -158,12 +158,12 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
         {settings.style === "game" && (
           <>
             <label htmlFor="gameWorld">Game world</label>
-            <select id="gameWorld" value={settings.gameWorld || "sky"} onChange={(e) => update({ gameWorld: e.target.value })}>
+            <select id="gameWorld" value={WORLD_CHOICES.some((w) => w.id === settings.gameWorld) ? settings.gameWorld : "sky"} onChange={(e) => update({ gameWorld: e.target.value })}>
               {WORLD_CHOICES.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}
             </select>
-            {WORLD_CHOICES.filter((w) => w.sub && w.id === (settings.gameWorld || "sky")).map((w) => (
+            {WORLD_CHOICES.filter((w) => w.sub && w.id === settings.gameWorld).map((w) => (
               <div key={w.id}>
-                <label htmlFor={w.sub}>{w.id === "animals" ? "Which animal" : "Which fruit"}</label>
+                <label htmlFor={w.sub}>Which animal</label>
                 <select id={w.sub} value={settings[w.sub]} onChange={(e) => update({ [w.sub]: e.target.value })}>
                   {w.options.map(([v, t]) => <option key={v} value={v}>{t}</option>)}
                 </select>

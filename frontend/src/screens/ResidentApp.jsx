@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import AskForHelp from "../components/AskForHelp/AskForHelp";
 import "./resident.css";
 import { getSetup, getTasks, getToday, logEvent, sessionId } from "../lib/api";
-import Tip from "./Tip";
 import { BottomNav, TopBar } from "./NavBars";
+import { Icon } from "../lib/icons";
 import { clearSession, loadSession, saveSession } from "../lib/session";
 import { PALETTES, askedAboutSkips, firstOpenDone, fromUrl, lookAttributes, markAskedAboutSkips, markFirstOpenDone, speak, useSettings } from "../lib/settings";
 import TaskList from "./TaskList";
@@ -24,6 +23,7 @@ import { resolveWorld } from "../lib/worlds";
 import GameBackdrop from "./Backdrops";
 import ChooseWorld from "./ChooseWorld";
 import ProfileScreen from "./ProfileScreen";
+import SplashScreen from "./SplashScreen";
 
 // One screen at a time. All step text and help levels come from /today (Format 3).
 export default function ResidentApp() {
@@ -33,6 +33,11 @@ export default function ResidentApp() {
   // Remember the person and week from the address, so the nav's plain /resident link still works.
   useEffect(() => { if (Object.keys(urlPatch).length) update(urlPatch); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const rootRef = useRef(null);
+  const [setupBack, setSetupBack] = useState(null); // Back inside first-time setup (previous question)
+  // The logo screen shows once each time the app is opened.
+  const [splash, setSplash] = useState(() => { try { return sessionStorage.getItem("carryover.splash") !== "1"; } catch { return true; } });
+  const closeSplash = () => { try { sessionStorage.setItem("carryover.splash", "1"); } catch { /* ignore */ } setSplash(false); };
   const [view, setView] = useState("tasks");
   const [taskIds, setTaskIds] = useState([]);
   const [titles, setTitles] = useState({});
@@ -49,7 +54,6 @@ export default function ResidentApp() {
   const shownCards = useRef(new Set());
   const [donePromise, setDonePromise] = useState(null); // resolves when task_done is saved
   const [knownInterests, setKnownInterests] = useState([]); // from definitions.json, for Game mode
-  const [previewTheme, setPreviewTheme] = useState(null); // colour being tried in the popup, not saved yet
   const [splitToken, setSplitToken] = useState(0); // "Show the small steps" from the Help screen
   const [tasksLoaded, setTasksLoaded] = useState(false);
   useEffect(() => {
@@ -232,17 +236,15 @@ export default function ResidentApp() {
 
   const step = today && today.steps[index];
 
-  // One-time questions, each asked once, in the moment.
-  const showReadTip = view === "step" && inTask && !s.tipReadAsked && !s.readAloud;
-  const showColorTip = view === "start" && !s.tipColorAsked;
 
   // Top bar: "← Back" on every screen except My tasks and setup.
   const inSetup = view === "tasks" && ready && !s.setupDone;
   const back = {
+    tasks: inSetup ? setupBack : null,
     world: () => setView("tasks"),
     chooseworld: () => setView("tasks"),
     profile: () => setView("tasks"),
-    settings: () => setView("tasks"),
+    settings: () => setView(returnTo === "step" || inTask ? returnTo : "tasks"),
     start: closeWithoutStart,
     firstopen: closeWithoutStart,
     all: () => setView(inTask ? "step" : "start"),
@@ -255,8 +257,12 @@ export default function ResidentApp() {
   }[view] || null;
   const names = { tasks: inSetup ? "Welcome" : "My tasks", world: "My world", chooseworld: "Choose your world", profile: "Profile", settings: "Settings", help: "Help", all: "All steps", break: "Take a break" };
   const title = names[view] || (today ? today.title : "Carryover");
-  const allStepsLink = view === "step" ? (
-    <button className="navbtn" onClick={() => { log("show_all_pressed", { step_id: step.step_id }); setView("all"); }}>All steps</button>
+  // During a task, Settings is a gear at the top right (the bottom bar is hidden then).
+  const taskViews = ["start", "firstopen", "safety", "skillcard", "step", "help", "all", "break", "done"];
+  const gear = taskViews.includes(view) ? (
+    <button className="icon-btn" onClick={() => { setReturnTo(view); setView("settings"); }} aria-label="Settings" data-tip="Settings">
+      <Icon.settings />
+    </button>
   ) : null;
   // The profile circle sits at the top right of the top-level screens.
   const profileCircle = ["tasks", "world"].includes(view) && ready && s.setupDone ? (
@@ -268,10 +274,24 @@ export default function ResidentApp() {
   const dark = (s.theme === "dark" ? "dark" : s.mode) === "dark";
   const world = resolveWorld(s);
 
+  // Every new page starts at the top, not where the last one was scrolled to.
+  useEffect(() => {
+    if (rootRef.current) rootRef.current.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }, [view]);
+
+  if (splash) {
+    return (
+      <div className="resident splash-page" {...lookAttributes({ ...s, theme: s.theme })}>
+        <SplashScreen onDone={closeSplash} autoAdvance={s.animations !== "off"} />
+      </div>
+    );
+  }
+
   return (
-    <div className={`resident ${showBottomNav ? "has-bottom-nav" : ""} ${s.style === "game" ? "game" : ""}`} {...lookAttributes({ ...s, theme: previewTheme || s.theme })}>
+    <div ref={rootRef} className={`resident ${showBottomNav ? "has-bottom-nav" : ""} ${s.style === "game" ? "game" : ""}`} {...lookAttributes(s)}>
       {s.style === "game" && <GameBackdrop world={world} dark={dark} animations={s.animations} />}
-      <TopBar title={title} onBack={back} right={allStepsLink || profileCircle} />
+      <TopBar title={title} onBack={back} right={gear || profileCircle} />
 
       {error && <div className="card status" role="alert"><p>{error}</p></div>}
 
@@ -280,7 +300,6 @@ export default function ResidentApp() {
           settings={s}
           update={update}
           onRedoSetup={() => { update({ setupDone: false }); setInTask(false); setView("tasks"); }}
-          previewTheme={previewTheme}
         />
       )}
 
@@ -290,7 +309,7 @@ export default function ResidentApp() {
         </div>
       )}
 
-      {view === "tasks" && ready && !s.setupDone && <SetupScreen update={update} />}
+      {view === "tasks" && ready && !s.setupDone && <SetupScreen update={update} setBack={setSetupBack} />}
 
       {view === "firstopen" && today && (
         <FirstOpen
@@ -331,7 +350,7 @@ export default function ResidentApp() {
             key={step.step_id}
             step={step}
             settings={s}
-            paused={view !== "step" || showReadTip}
+            paused={view !== "step"}
             praiseLine={praiseLine}
             awayNote={awayNote}
             log={log}
@@ -340,6 +359,7 @@ export default function ResidentApp() {
             onHelp={() => setView("help")}
             onSpeak={(t) => speak(t, s)}
             splitToken={splitToken}
+            onSeeAll={() => { log("show_all_pressed", { step_id: step.step_id }); setView("all"); }}
           />
         </div>
       )}
@@ -351,16 +371,7 @@ export default function ResidentApp() {
           canShowSmall={step.substeps.length > 0}
           onShowSmall={() => { setSplitToken((n) => n + 1); setView("step"); }}
           onBack={() => setView("step")}
-          stuckPanel={
-            <AskForHelp
-              personId={personId}
-              taskId={today.task_id}
-              stepId={step.step_id}
-              week={today.week}
-              sessionId={sessionId(personId, today.task_id, today.week)}
-              autoRead={s.readAloud}
-            />
-          }
+          onStuck={() => log("stuck_pressed", { step_id: step.step_id })}
         />
       )}
 
@@ -386,43 +397,6 @@ export default function ResidentApp() {
           log={log}
           onContinue={afterSkillCard}
         />
-      )}
-
-      {showReadTip && (
-        <Tip
-          title="Want the steps read to you?"
-          yesLabel="Yes, try it"
-          noLabel="Not now"
-          onYes={() => update({ readAloud: true, tipReadAsked: true })}
-          onNo={() => update({ tipReadAsked: true })}
-        >
-          <p className="muted">You can change this any time in Settings.</p>
-        </Tip>
-      )}
-
-      {showColorTip && (
-        // Tapping a colour only shows it. Nothing is saved until they press "Use this one".
-        <Tip
-          title="Want a different color look?"
-          yesLabel={previewTheme ? "Use this one" : null}
-          onYes={() => { update({ theme: previewTheme, tipColorAsked: true }); setPreviewTheme(null); }}
-          noLabel={previewTheme ? "Keep my old one" : "Keep this one"}
-          onNo={() => { setPreviewTheme(null); update({ tipColorAsked: true }); }}
-        >
-          <p className="muted">Tap one to see how it looks.</p>
-          {PALETTES.map((p) => {
-            const on = (previewTheme || s.theme) === p.id;
-            return (
-              <button key={p.id} className={`btn palette-choice ${on ? "on" : ""}`} aria-pressed={on} onClick={() => setPreviewTheme(p.id)}>
-                <span className="swatch" aria-hidden="true">
-                  <span style={{ background: p.bg }} /><span style={{ background: p.panel }} /><span style={{ background: p.accent }} />
-                </span>
-                {p.name}{on ? " (showing now)" : ""}
-              </button>
-            );
-          })}
-          <p className="muted">You can change this any time in Settings.</p>
-        </Tip>
       )}
 
       {view === "break" && today && (

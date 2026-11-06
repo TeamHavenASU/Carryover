@@ -1,7 +1,7 @@
 // One icon set for the whole resident app (Lucide). Every icon sits next to its words and is
 // hidden from screen readers, so the words are what gets read.
 import {
-  ArrowLeft, Building2, ChevronRight, ChefHat, Cloud, Gamepad2, Hand, Leaf, List, ListChecks, Music, Palette,
+  ArrowLeft, Building2, Check, ChevronRight, Earth, ChefHat, Cloud, Gamepad2, Hand, Leaf, List, ListChecks, Music, Palette,
   PawPrint, Rocket, Settings, TrainFront, Trophy, Volume, Volume1, Volume2, VolumeX,
 } from "lucide-react";
 
@@ -11,7 +11,8 @@ export const Icon = {
   back: () => <ArrowLeft {...props} />,
   speaker: () => <Volume2 {...props} />,
   tasks: () => <ListChecks {...props} />,
-  world: () => <Cloud {...props} />,
+  world: () => <Earth {...props} />,
+  check: () => <Check {...props} strokeWidth={3} />,
   settings: () => <Settings {...props} />,
   open: () => <ChevronRight {...props} className="chevron" />,
 };
@@ -19,6 +20,7 @@ export const Icon = {
 // Pictures for the setup answers (ids come from definitions.json).
 const LEFT = (p) => <Hand {...props} {...p} style={{ transform: "scaleX(-1)" }} />;
 export const ANSWER_ICON = {
+  sky: Cloud,
   trains: TrainFront, space: Rocket, nature: Leaf, animals: PawPrint, music: Music, cooking: ChefHat,
   games: Gamepad2, cities: Building2, sports: Trophy, art: Palette,
   game: Gamepad2, normal: List,
