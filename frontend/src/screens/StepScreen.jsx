@@ -22,15 +22,57 @@ const videoSource = (v) => {
 // description names a microwave.
 const isDevicePicture = (p) => p.device === true || /microwave/i.test(p.alt || "");
 
+// The words of a line, each one tappable: tap a word and reading starts from it. The word being
+// read is highlighted.
+function Spoken({ id, text, hl, onPick }) {
+  const out = [];
+  const re = /\S+/g;
+  let last = 0;
+  let m;
+  while ((m = re.exec(text))) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    const s = m.index;
+    const e = s + m[0].length;
+    const on = hl && hl.key === id && hl.start >= s && hl.start < e;
+    out.push(
+      <span key={s} role="button" tabIndex={0} className={`word${on ? " hl" : ""}`}
+        onClick={() => onPick(id, s)}
+        onKeyDown={(ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); onPick(id, s); } }}>
+        {m[0]}
+      </span>
+    );
+    last = e;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return <>{out}</>;
+}
+
 export default function StepScreen({
   step, settings, paused, praiseLine, awayNote, log, onDone, onBreak, onHelp, onSpeak, splitToken, onSeeAll,
 }) {
   const base = BASE[step.mode] ?? 1;
-  const [reveal, setReveal] = useState(base);
+  // The step is always shown. A step that starts folded (help level 0) now shows its sentence.
+  const [reveal, setReveal] = useState(Math.max(base, 1));
   const [offerStage, setOfferStage] = useState(0);
   const [offerAnswered, setOfferAnswered] = useState(0); // stages already answered
   const [shownSmall, setShownSmall] = useState(1);       // small steps showing at Most help
   const [showVideo, setShowVideo] = useState(false);
+  const [reading, setReading] = useState("idle"); // idle | playing | paused
+  const readingRef = useRef("idle");
+  const segs = useRef([]);      // pieces to read, in order
+  const pos = useRef(0);        // the piece to read next
+  const off = useRef(0);        // the letter in that piece where reading stopped
+  const token = useRef(0);      // changes whenever reading is stopped or restarted
+  const started = useRef(false); // audio was started on this step
+  const [hl, setHl] = useState(null); // the word being read: { key, start }
+  const setR = (v) => { readingRef.current = v; setReading(v); if (v === "idle") setHl(null); };
+  useEffect(() => {
+    token.current += 1;
+    window.speechSynthesis?.cancel();
+    segs.current = []; pos.current = 0; off.current = 0; started.current = false;
+    setR("idle");
+    return () => { token.current += 1; window.speechSynthesis?.cancel(); };
+  }, [step.step_id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // prompted = "yes" only if help came to the person during this step (they said yes to
   // "Want help with this step?"). What the level shows at the start is not a prompt, and
@@ -86,6 +128,7 @@ export default function StepScreen({
     if (next === reveal) return;
     log(eventName, { step_id: step.step_id, help_shown: LEVEL_OF[next] });
     setReveal(next);
+    if (next >= 2 && substeps[0]) queueRead({ key: "small-" + substeps[0].id, text: substeps[0].text });
   }
 
   // "Show the small steps" on the Help screen comes back here as a new splitToken.
@@ -93,6 +136,7 @@ export default function StepScreen({
     if (!splitToken || reveal >= 2) return;
     log(reveal === 0 ? "hint_requested" : "more_help_requested", { step_id: step.step_id, help_shown: "split" });
     setReveal(2);
+    if (substeps[0]) queueRead({ key: "small-" + substeps[0].id, text: substeps[0].text });
   }, [splitToken]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // "Help with this step" counts as used help the moment it is tapped (hint_requested is in
@@ -119,18 +163,95 @@ export default function StepScreen({
     if (!next) return;
     log("small_step_opened", { step_id: step.step_id, answer: next.id });
     setShownSmall(shownSmall + 1);
+    queueRead({ key: "small-" + next.id, text: next.text });
   }
 
-  // "Read again" is the Repeat button. It reads what is on the screen, in order: the step, the
-  // CAUTION (most important for someone who listens instead of reads), the small steps that are
-  // showing, then the tips if they are open. Nothing hidden is read.
+  // The button on the step itself, there from the first moment.
+  function showSmallSteps() {
+    openMore(reveal === 0 ? "hint_requested" : "more_help_requested");
+  }
+
+  // Reading aloud works through a list of pieces: the step, the CAUTION, the small steps showing,
+  // then the tips if they are open. Replay starts from the first piece. Pause stops at the word
+  // it is on and Play carries on from there. Tapping any word starts reading from that word. A
+  // small step that opens later is added to the end, so it is read next.
+  const clean = (x) => x.trim().replace(/[.:]?$/, ".");
+  function buildParts() {
+    const parts = [{ key: "step", text: step.text }];
+    if (step.safety) parts.push({ key: "caution", text: `Caution: ${step.safety}` });
+    if (reveal >= 2) substeps.slice(0, shownSmall).forEach((s) => parts.push({ key: "small-" + s.id, text: s.text }));
+    if (tipsOpen) step.tips.forEach((tip, i) => parts.push({ key: "tip-" + i, text: tip }));
+    return parts;
+  }
+
+  function playFrom() {
+    const my = ++token.current;
+    started.current = true;
+    setR("playing");
+    const next = () => {
+      if (token.current !== my) return;
+      if (pos.current >= segs.current.length) { setR("idle"); return; }
+      const i = pos.current;
+      const part = segs.current[i];
+      const full = clean(part.text);
+      const from = Math.min(off.current, full.length);
+      onSpeak(full.slice(from), {
+        onboundary: (e) => {
+          if (token.current !== my || e.name === "sentence") return;
+          off.current = from + e.charIndex;
+          setHl({ key: part.key, start: from + e.charIndex });
+        },
+        onend: () => { if (token.current !== my) return; pos.current = i + 1; off.current = 0; next(); },
+        onerror: (e) => {
+          if (token.current !== my) return;
+          if (e && (e.error === "canceled" || e.error === "interrupted")) return;
+          setR("idle");
+        },
+      });
+    };
+    next();
+  }
+
   function repeat() {
     log("repeat_requested", { step_id: step.step_id });
-    const parts = [step.text];
-    if (step.safety) parts.push(`Caution: ${step.safety}`);
-    if (reveal >= 2) substeps.slice(0, shownSmall).forEach((s) => parts.push(s.text));
-    if (tipsOpen) step.tips.forEach((t) => parts.push(t));
-    onSpeak(parts.map((t) => t.trim().replace(/[.:]?$/, ".")).join(" "));
+    segs.current = buildParts();
+    pos.current = 0;
+    off.current = 0;
+    window.speechSynthesis?.cancel();
+    playFrom();
+  }
+
+  // Tap a word: read from that word on.
+  function readFrom(key, charStart) {
+    const parts = buildParts();
+    const i = parts.findIndex((x) => x.key === key);
+    if (i < 0) return;
+    log("repeat_requested", { step_id: step.step_id });
+    segs.current = parts;
+    pos.current = i;
+    off.current = charStart;
+    window.speechSynthesis?.cancel();
+    playFrom();
+  }
+
+  function pauseReading() {
+    token.current += 1;
+    window.speechSynthesis?.cancel();
+    setR("paused");
+  }
+
+  function togglePlay() {
+    if (readingRef.current === "playing") pauseReading();
+    else if (readingRef.current === "paused") playFrom();
+    else if (started.current && pos.current < segs.current.length) playFrom();
+    else repeat();
+  }
+
+  // A small step just opened: add it to the reading. If audio was never started, nothing is read.
+  function queueRead(part) {
+    if (!started.current) return;
+    segs.current.push(part);
+    if (readingRef.current === "idle") playFrom(); // it had finished: read the new piece now
   }
 
   function done() {
@@ -163,18 +284,17 @@ export default function StepScreen({
         <button className="navbtn" onClick={onSeeAll}>All steps</button>
       </div>
 
-      {reveal === 0 ? (
-        <button className="card folded" onClick={openFolded}>
-          <span className="next-line">Next: {step.text}</span>
-          <span className="muted">Tap to open</span>
-        </button>
-      ) : (
+      {(
         <div className="card">
           <div className="step-title">
-            <h1 className="step-text">{step.text}</h1>
-            <button className="navbtn read-again" onClick={repeat}>
-              <Icon.speaker /> Read again
-            </button>
+            <h1 className="step-text"><Spoken id="step" text={step.text} hl={hl} onPick={readFrom} /></h1>
+            <div className="read-controls" role="group" aria-label="Read aloud">
+              <button className="icon-btn" onClick={repeat} aria-label="Replay" data-tip="Replay"><Icon.replay /></button>
+              <button className="icon-btn" onClick={togglePlay}
+                aria-label={reading === "playing" ? "Pause" : "Play"} data-tip={reading === "playing" ? "Pause" : "Play"}>
+                {reading === "playing" ? <Icon.pause /> : <Icon.play />}
+              </button>
+            </div>
           </div>
           {/* CAUTION always shows, at every help level, right under the step sentence */}
           {step.safety && <p className="caution"><strong>CAUTION:</strong> {step.safety}</p>}
@@ -194,10 +314,13 @@ export default function StepScreen({
               <button className="btn" onClick={() => setShowVideo(true)}>Watch a short video</button>
             )
           )}
+          {reveal < 2 && substeps.length > 0 && (
+            <button className="btn primary" onClick={showSmallSteps}>Show the small steps</button>
+          )}
           {reveal >= 2 && substeps.length > 0 && (
             <>
               <ol className="small-steps">
-                {substeps.slice(0, shownSmall).map((s) => <li key={s.id}>{s.text}</li>)}
+                {substeps.slice(0, shownSmall).map((s) => <li key={s.id}><Spoken id={"small-" + s.id} text={s.text} hl={hl} onPick={readFrom} /></li>)}
               </ol>
               {shownSmall < substeps.length && (
                 <button className="btn" onClick={showNextSmall}>
@@ -216,13 +339,11 @@ export default function StepScreen({
               }
             }}>
               <summary><Icon.open /> Tips</summary>
-              <ul>{step.tips.map((t, i) => <li key={i}>{t}</li>)}</ul>
+              <ul>{step.tips.map((tip, i) => <li key={i}><Spoken id={"tip-" + i} text={tip} hl={hl} onPick={readFrom} /></li>)}</ul>
             </details>
           )}
         </div>
       )}
-
-      {reveal === 0 && step.safety && <p className="caution"><strong>CAUTION:</strong> {step.safety}</p>}
 
       {/* Fixed to the bottom, same place on every step. The help offer sits just above. */}
       <div className="bottom-actions">

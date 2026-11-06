@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { supportName } from "../lib/settings";
-import { Icon } from "../lib/icons";
 
 // Help screen, opened by "Help with this step". The AI part (type, speak or photo) is Role D's
 // AskForHelp component; it hands off to the support person for risky questions. Below it, the
@@ -21,15 +20,15 @@ export default function HelpScreen({ step, settings, canShowSmall, onShowSmall, 
         {stuckPanel}
       </div>
 
-      <button className="btn" onClick={() => setAsked(true)}>Still stuck? Ask {name}</button>
+      <button className="btn" onClick={() => setAsked(true)}>Still stuck?</button>
       {asked && (
         <div className="card status" role="status">
-          <p>Please ask {name}.</p>
-          {contact && <p>{contact}</p>}
+          <h2>Ask {name}</h2>
+          <p>{contact ? <>How to reach them: <strong>{contact}</strong></> : "You can add how to reach them in Settings."}</p>
+          <p className="muted note">Your place is saved. Come back when you are ready.</p>
         </div>
       )}
 
-      <button className="btn link" onClick={onBack}><Icon.back /> Back to my step</button>
     </section>
   );
 }

@@ -30,7 +30,7 @@ export default function FirstOpen({ today, log, onDone }) {
 
   if (stage === "device") {
     return (
-      <section>
+      <section className="center-page">
         <h1>{today.title}</h1>
         <div className="card"><p>{question.text}</p></div>
         {question.answers.map((a) => (
@@ -42,7 +42,7 @@ export default function FirstOpen({ today, log, onDone }) {
 
   if (stage === "skills") {
     return (
-      <section>
+      <section className="center-page">
         <h1>Can you do these?</h1>
         <div className="card">
           <ul>{(cards.length ? cards.map((c) => c.title) : skillIds).map((t) => <li key={t}>{t}</li>)}</ul>

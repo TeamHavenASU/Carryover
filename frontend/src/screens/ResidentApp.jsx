@@ -38,7 +38,8 @@ export default function ResidentApp() {
   const [setupBack, setSetupBack] = useState(null); // Back inside first-time setup (previous question)
   // The logo screen shows once each time the app is opened.
   const [splash, setSplash] = useState(() => { try { return sessionStorage.getItem("carryover.splash") !== "1"; } catch { return true; } });
-  const closeSplash = () => { try { sessionStorage.setItem("carryover.splash", "1"); } catch { /* ignore */ } setSplash(false); };
+  const [noAuto, setNoAuto] = useState(false);
+  const closeSplash = () => { setNoAuto(false); try { sessionStorage.setItem("carryover.splash", "1"); } catch { /* ignore */ } setSplash(false); };
   const [view, setView] = useState("tasks");
   const [taskIds, setTaskIds] = useState([]);
   const [titles, setTitles] = useState({});
@@ -237,6 +238,17 @@ export default function ResidentApp() {
 
   const step = today && today.steps[index];
 
+  // Home: the Carryover first page. Continue then starts the first-time steps again.
+  function goHome() {
+    window.speechSynthesis?.cancel();
+    setInTask(false);
+    update({ setupDone: false });
+    setView("tasks");
+    setNoAuto(true);
+    try { sessionStorage.removeItem("carryover.splash"); } catch { /* ignore */ }
+    setSplash(true);
+  }
+
 
   // Top bar: "← Back" on every screen except My tasks and setup.
   const inSetup = view === "tasks" && ready && !s.setupDone;
@@ -284,7 +296,7 @@ export default function ResidentApp() {
   if (splash) {
     return (
       <div className="resident splash-page" {...lookAttributes({ ...s, theme: s.theme })}>
-        <SplashScreen onDone={closeSplash} autoAdvance={s.animations !== "off"} />
+        <SplashScreen onDone={closeSplash} autoAdvance={false} />
       </div>
     );
   }
@@ -292,7 +304,7 @@ export default function ResidentApp() {
   return (
     <div ref={rootRef} className={`resident ${showBottomNav ? "has-bottom-nav" : ""} ${s.style === "game" ? "game" : ""}`} {...lookAttributes(s)}>
       {s.style === "game" && <GameBackdrop world={world} dark={dark} animations={s.animations} />}
-      <TopBar title={title} onBack={back} right={gear || profileCircle} />
+      <TopBar title={title} onBack={back} onHome={goHome} right={gear || profileCircle} />
 
       {error && <div className="card status" role="alert"><p>{error}</p></div>}
 
@@ -358,7 +370,7 @@ export default function ResidentApp() {
             onDone={finishStep}
             onBreak={takeBreak}
             onHelp={() => setView("help")}
-            onSpeak={(t) => speak(t, s)}
+            onSpeak={(t, handlers) => speak(t, s, handlers)}
             splitToken={splitToken}
             onSeeAll={() => { log("show_all_pressed", { step_id: step.step_id }); setView("all"); }}
           />

@@ -127,7 +127,7 @@ export function RewardChoice({ world, animations, onPick }) {
   return (
     <Wrap className="card" {...motionProps}>
       <p><strong>{world.rewardQuestion}</strong></p>
-      <p className="muted">It stays in your world. Nothing is ever taken away.</p>
+      <p className="muted note">It stays in your world. Nothing is ever taken away.</p>
       {Object.entries(world.items).map(([id, item]) => (
         <button key={id} className="btn reward-btn" onClick={() => onPick(id)}>
           <span className="reward-art" aria-hidden="true"><img src={`${STILL_BASE}${id}.svg`} alt="" /></span>

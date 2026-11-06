@@ -2,13 +2,16 @@ import { Icon } from "../lib/icons";
 
 // Top bar: "← Back" on the left (every screen except My tasks), the screen's name in the
 // middle, and an optional link on the right (for example "All steps").
-export function TopBar({ title, onBack, right }) {
+export function TopBar({ title, onBack, onHome, right }) {
   return (
     <header className="topbar">
-      <div className="topbar-side">
+      <div className="topbar-side left">
+        {onHome && (
+          <button className="icon-btn" onClick={onHome} aria-label="Home" data-tip="Home"><Icon.home /></button>
+        )}
         {onBack && (
-          <button className="navbtn" onClick={onBack}>
-            <Icon.back /> Back
+          <button className="icon-btn" onClick={onBack} aria-label="Back" data-tip="Back">
+            <Icon.back />
           </button>
         )}
       </div>

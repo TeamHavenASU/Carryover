@@ -9,7 +9,7 @@ export default function StartScreen({ today, onStart, onLook, onRefresherAnswer,
   // Ask once whether they still want this task (the view says when).
   if (!askedSkips) {
     return (
-      <section>
+      <section className="center-page">
         <div className="card">
           <p>Do you still want to practice this task?</p>
           <button className="btn primary" onClick={() => { onSkipAnswer("yes"); setAskedSkips(true); }}>Yes</button>
@@ -22,7 +22,7 @@ export default function StartScreen({ today, onStart, onLook, onRefresherAnswer,
 
   if (!asked) {
     return (
-      <section>
+      <section className="center-page">
         <div className="card">
           <p>It's been a while since you did this. Want a quick look at all the steps first?</p>
           <button className="btn primary" onClick={() => { onRefresherAnswer("yes"); setAsked(true); onLook(); }}>
@@ -37,7 +37,7 @@ export default function StartScreen({ today, onStart, onLook, onRefresherAnswer,
   }
 
   return (
-    <section>
+    <section className="center-page">
       {today.start_push && <div className="card"><p>{today.start_push}</p></div>}
       <button className="btn primary" onClick={onStart}>Start</button>
       <button className="btn" onClick={onLook}>Quick look at all steps</button>
