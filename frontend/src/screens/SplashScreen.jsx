@@ -31,7 +31,7 @@ export default function SplashScreen({ onDone, autoAdvance }) {
       <Wrap className="splash-inner" {...fade}>
         <Logo />
         <h1 className="splash-name">Carryover</h1>
-        <p className="splash-line">Daily tasks, at your pace.</p>
+        <p className="splash-line">The right amount of help, for each person, on each step.</p>
       </Wrap>
       <button className="btn primary splash-btn" onClick={onDone}>Continue</button>
     </section>

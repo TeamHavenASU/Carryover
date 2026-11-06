@@ -126,7 +126,9 @@ export default function AskForHelp({
   function speak(message) {
     if (!("speechSynthesis" in window) || !message) return;
     window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(new SpeechSynthesisUtterance(message));
+    const u = new SpeechSynthesisUtterance(message);
+    u.rate = 0.85; // medium pace
+    window.speechSynthesis.speak(u);
   }
 
   function openPanel() {

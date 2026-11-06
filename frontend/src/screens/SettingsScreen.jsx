@@ -2,14 +2,18 @@ import { useEffect, useState } from "react";
 import { get } from "../api";
 import { logEvent, sessionId } from "../lib/api";
 import { AnswerIcon } from "../lib/icons";
-import { PALETTES, deviceVoices } from "../lib/settings";
+import { PALETTES, niceVoices, speak } from "../lib/settings";
+import { playSound } from "../lib/game";
 import { WORLD_CHOICES } from "../lib/worlds";
 
 // Settings (Carryover decisions): Looks, Reading voice, Game or Normal, Sound, Animations,
 // Support person, Sharing with staff, Phone type, Redo first-time setup. Labels sit above
 // every field. Only destructive actions ask "Are you sure?" (redo setup, turning sharing off).
+// Names shown in the list. The voice itself does not change.
+const VOICE_LABEL = { Moira: "James" };
+
 export default function SettingsScreen({ settings, update, onRedoSetup }) {
-  const [voices, setVoices] = useState(deviceVoices);
+  const [voices, setVoices] = useState(niceVoices);
   const [confirm, setConfirm] = useState(null); // "redo" | "sharing"
   // "Tell us what you think": questions, answers and their actions come from definitions.json (GET /feedback).
   const [feedback, setFeedback] = useState(null);
@@ -22,26 +26,26 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
   // Voices on the device load a moment after the page does.
   useEffect(() => {
     if (!("speechSynthesis" in window)) return undefined;
-    const onChange = () => setVoices(deviceVoices());
+    const onChange = () => setVoices(niceVoices());
     window.speechSynthesis.addEventListener("voiceschanged", onChange);
     return () => window.speechSynthesis.removeEventListener("voiceschanged", onChange);
   }, []);
 
-  const choice = (label, key, options) => (
+  const choice = (label, key, options, preview) => (
     <>
       <label htmlFor={key}>{label}</label>
-      <select id={key} value={settings[key]} onChange={(e) => update({ [key]: e.target.value })}>
+      <select id={key} value={settings[key]} onChange={(e) => { update({ [key]: e.target.value }); if (preview) preview(e.target.value); }}>
         {options.map(([v, t]) => <option key={v} value={v}>{t}</option>)}
       </select>
     </>
   );
-  const radios = (legend, key, options) => (
+  const radios = (legend, key, options, preview) => (
     <fieldset>
       <legend>{legend}</legend>
       <div className="segmented">
         {options.map(([v, t]) => (
           <label key={v} className={`segment ${settings[key] === v ? "on" : ""}`}>
-            <input type="radio" name={key} value={v} checked={settings[key] === v} onChange={() => update({ [key]: v })} />
+            <input type="radio" name={key} value={v} checked={settings[key] === v} onChange={() => update({ [key]: v })} onClick={() => { if (preview) preview(v); }} />
             {t}
           </label>
         ))}
@@ -65,6 +69,10 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
     </div>
   );
   const week = Number(settings.week);
+
+  // Hear it right away, with the choice just made.
+  const sample = (patch) => speak("This is how I will read to you.", { ...settings, ...patch });
+  const PRAISE = { calm: "Well done.", cheerful: "Great job! You did it!", off: "No praise lines." };
 
   // One tap = one feedback_answer row (answer "question_id:value", like setup_answer). It is about
   // the app, not a task, so task_id is empty and the session id says "settings" where the task
@@ -90,7 +98,7 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
     return (
       <fieldset key={q.id}>
         <legend>{q.text}</legend>
-        <div className="segmented">
+        <div className="segmented chips">
           {q.answers.map((ans) => (
             <label key={ans.value} className={`segment ${picked === ans.value ? "on" : ""}`}>
               <input type="radio" name={`feedback-${q.id}`} value={ans.value} checked={picked === ans.value} onChange={() => answerFeedback(q, ans)} />
@@ -105,7 +113,7 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
             {a.action && a.action.options.map((o) => {
               const on = settings[o.setting] === o.value;
               return (
-                <button key={`${o.setting}-${o.value}`} className="btn answer-btn" aria-pressed={on} onClick={() => update({ [o.setting]: o.value })}>
+                <button key={`${o.setting}-${o.value}`} className="btn answer-btn" aria-pressed={on} onClick={() => { update({ [o.setting]: o.value }); if (o.setting === "sound") playSound(o.value, settings.soundType); }}>
                   {optionIcon(o)}{o.text}{on ? " (on now)" : ""}
                 </button>
               );
@@ -142,19 +150,19 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
 
       <div className="card">
         <h2>Reading voice</h2>
-        {toggle("Read answers aloud", "readAloud")}
         <label htmlFor="voiceName">Voice (from your phone)</label>
-        <select id="voiceName" value={settings.voiceName} onChange={(e) => update({ voiceName: e.target.value })}>
-          <option value="">Phone's default voice</option>
-          {voices.map((v) => <option key={v.name} value={v.name}>{v.name}</option>)}
+        <select id="voiceName" value={voices.some((v) => v.name === settings.voiceName) ? settings.voiceName : (voices[0] ? voices[0].name : "")} onChange={(e) => { update({ voiceName: e.target.value }); sample({ voiceName: e.target.value }); }}>
+          {voices.length === 0 && <option value="">Default voice</option>}
+          {voices.map((v) => <option key={v.name} value={v.name}>{VOICE_LABEL[v.name] || v.name}</option>)}
         </select>
-        {radios("Speed", "voiceSpeed", [["slow", "Slow"], ["normal", "Normal"]])}
+        {radios("Speed", "voiceSpeed", [["slow", "Slow"], ["normal", "Normal"]], (v) => sample({ voiceSpeed: v }))}
       </div>
 
       <div className="card">
         <h2>Game or Normal</h2>
         {radios("Style", "style", [["normal", "Normal"], ["game", "Game"]])}
-        <p className="muted">Game: the whole app sits in a world you choose. Finish a task to pick a reward, and a new area opens every 2 tasks. Normal: no game at all.</p>
+        <p className="muted note">Game: the whole app sits in a world you choose. Finish a task to pick a reward, and a new area opens every 2 tasks.</p>
+        <p className="muted note">Normal: no game at all.</p>
         {settings.style === "game" && (
           <>
             <label htmlFor="gameWorld">Game world</label>
@@ -176,10 +184,14 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
 
       <div className="card">
         <h2>Sound and animations</h2>
-        {choice("Sound", "sound", [["off", "Off"], ["very_soft", "Very soft"], ["soft", "Soft"], ["normal", "Normal"]])}
-        {settings.style === "game" && choice("Sound type", "soundType", [["chime", "Chime"], ["nature", "Nature"], ["theme", "Theme"]])}
+        {choice("Sound", "sound", [["off", "Off"], ["very_soft", "Very soft"], ["soft", "Soft"], ["normal", "Normal"]], (v) => playSound(v, settings.soundType))}
+        {settings.style === "game" && choice("Sound type", "soundType", [["chime", "Chime"], ["nature", "Nature"], ["theme", "Theme"]], (v) => playSound(settings.sound, v))}
         {choice("Animations", "animations", [["off", "Off"], ["calm", "Calm"], ["lively", "Lively"]])}
         {radios("Praise style", "praise", [["calm", "Calm"], ["cheerful", "Cheerful"], ["off", "Off"]])}
+        <p className="muted note">Praise example: {PRAISE[settings.praise] || PRAISE.off}</p>
+        <p className="muted note">Animations example:{" "}
+          <span key={settings.animations} className="anim-demo" data-anim={settings.animations} aria-hidden="true" />
+        </p>
       </div>
 
       <div className="card">
@@ -187,18 +199,18 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
         <label htmlFor="support">Name</label>
         <input id="support" type="text" autoComplete="off" value={settings.supportPerson}
           onChange={(e) => update({ supportPerson: e.target.value })} />
-        <p className="muted">If this is empty, buttons say "Ask staff".</p>
+        <p className="muted note">If this is empty, buttons say "Ask staff".</p>
         <label htmlFor="supportContact">How to reach them</label>
         <input id="supportContact" type="text" autoComplete="off" value={settings.supportContact}
           onChange={(e) => update({ supportContact: e.target.value })} />
-        <p className="muted">For example: "Call the front desk" or a phone number.</p>
+        <p className="muted note">For example: "Call the front desk" or a phone number.</p>
       </div>
 
       <div className="card">
         <h2>Sharing with staff</h2>
         {toggle("Share a short summary with staff", "shareWithStaff",
           (on) => (on ? update({ shareWithStaff: true }) : setConfirm("sharing")))}
-        <p className="muted">This is off unless you turn it on.</p>
+        <p className="muted note">This is off unless you turn it on.</p>
         {confirm === "sharing" && sure("Stop sharing your summary with staff?", "Yes, stop sharing", () => update({ shareWithStaff: false }))}
       </div>
 
@@ -233,7 +245,7 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
         {!settings.personId && <p id="person-msg" className="field-error" role="alert">Enter a name or ID to see the tasks.</p>}
         {settings.style === "game" && (
           <>
-            <p className="muted">Try Game mode without finishing real tasks. This only changes this phone, and is not logged.</p>
+            <p className="muted note">Try Game mode without finishing real tasks. This only changes this phone, and is not logged.</p>
             <p>Pretend tasks done: {Number(settings.demoDone) || 0}</p>
             <div className="row">
               <button className="btn" onClick={() => update({ demoDone: (Number(settings.demoDone) || 0) + 1 })}>Pretend I finished a task</button>

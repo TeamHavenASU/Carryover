@@ -598,5 +598,148 @@
 .game-backdrop .bg-flyer.comet { width: 150px; height: 150px; }
 
 /* ---- Setup: the last page ---- */
-.resident .all-set { padding-top: var(--gap-l); }
+.resident .all-set { padding-top: 0; }
 
+
+/* ---- Pages that sit in the middle of the screen (setup, first-open questions, Start) ---- */
+.resident:has(> .center-page) { display: flex; flex-direction: column; }
+.resident > .center-page { margin-block: auto; width: 100%; }
+.resident .center-page > h1, .resident .center-page > .muted { text-align: center; }
+
+/* Radio choices (first question): radio, picture and words line up in three columns */
+.resident .choices { width: fit-content; max-width: 100%; margin: var(--gap-m) auto 0; }
+.resident .choices .choice {
+  display: grid; grid-template-columns: 1.5rem 2rem auto; align-items: center; column-gap: var(--gap-m);
+  white-space: nowrap;
+}
+.resident .choices .choice .pic { margin: 0; justify-content: center; }
+
+/* Answer buttons: the pictures sit in one column and the words start at the same place, on one line */
+.resident .answer-btn {
+  display: grid; grid-template-columns: 4.5rem 7.5rem; justify-content: center; align-items: center;
+  column-gap: var(--gap-s); text-align: left; white-space: nowrap;
+}
+.resident .answer-btn .pic { margin: 0; justify-content: center; width: 4.5rem; }
+.resident .icon-pair { gap: 4px; }
+
+/* Preview cards on the style question: the grey lines are italic */
+.resident .preview-row .muted { font-style: italic; }
+
+/* The overview of Settings on the last setup page, in the accent colour */
+.resident .settings-note { margin-top: var(--gap-m); background: color-mix(in srgb, var(--accent) 9%, var(--panel)); }
+.resident .settings-note h2, .resident .settings-note li { color: var(--accent); }
+.resident .settings-note ul { margin-bottom: 0; }
+
+/* The gear has no circle; the focus ring still shows for keyboard users */
+.resident .icon-btn { border: 0; background: transparent; }
+
+/* Read aloud: Replay and Play/Pause, no circle, with their names on hover or focus */
+.resident .read-controls { display: flex; gap: var(--gap-xs); }
+.resident .read-controls .icon-btn::after { right: auto; left: 0; }
+
+/* Same text size and weight in the step status bar */
+.resident .done-chip, .resident .step-count, .resident .step-status .navbtn { font-size: 0.95em; }
+.resident .done-chip { font-weight: 600; }
+
+/* Bottom buttons: equal height, text centred, even when one wraps to two lines */
+.resident .bottom-actions .row .btn { display: flex; align-items: center; justify-content: center; min-height: 3.5rem; line-height: 1.2; }
+
+
+/* ---- Round 2 ---- */
+/* Top bar: Home on the left beside Back */
+.resident .topbar { grid-template-columns: 8.5rem 1fr 4rem; }
+.resident .topbar-side.left { align-items: center; gap: 2px; }
+.resident .topbar-side.left .navbtn { padding-inline: var(--gap-s); }
+.resident .topbar-side.left .icon-btn::after { left: 0; right: auto; }
+
+/* I'm stuck: the same green as the main buttons */
+.resident .ask-big { background: var(--accent); color: var(--accent-text); font-weight: 600; }
+
+/* Every dropdown: a clear arrow, set in from the edge */
+.resident select {
+  -webkit-appearance: none; appearance: none;
+  padding-right: 3rem;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text) 50%),
+    linear-gradient(135deg, var(--text) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-size: 0.7rem 0.7rem, 0.7rem 0.7rem;
+  background-position: right 1.7rem center, right 1rem center;
+}
+
+/* Even spacing inside Settings boxes */
+.resident legend { padding: 0; margin: 0 0 var(--gap-xs); font-size: 0.95em; }
+.resident fieldset { margin: var(--gap-m) 0 0; min-width: 0; }
+.resident .card > h2 + label, .resident .card > h2 + fieldset, .resident .card > h2 + .check { margin-top: var(--gap-s); }
+.resident .segmented { gap: var(--gap-s); }
+.resident .segment { flex: 1 1 0; min-width: 0; padding-inline: var(--gap-s); gap: var(--gap-xs); }
+.resident .segment input { margin: 0; flex: none; }
+.resident p.note { font-style: italic; margin: var(--gap-s) 0 0; }
+.resident .anim-demo { display: inline-block; width: 0.9rem; height: 0.9rem; border-radius: 50%; background: var(--accent); vertical-align: -0.1em; }
+@keyframes demo-calm { 0%,100% { transform: translateX(0); } 50% { transform: translateX(1.2rem); } }
+@keyframes demo-lively { 0%,100% { transform: translateX(0) scale(1); } 25% { transform: translateX(1.5rem) scale(1.3); } 50% { transform: translateX(0) scale(1); } 75% { transform: translateX(1.5rem) scale(1.3); } }
+.resident .anim-demo[data-anim="calm"] { animation: demo-calm 2.4s ease-in-out 2; }
+.resident .anim-demo[data-anim="lively"] { animation: demo-lively 1.2s ease-in-out 3; }
+.resident .anim-demo[data-anim="off"] { animation: none; }
+
+/* Rewards in the world: a dark edge so they never blend into the shape behind them */
+.resident .sky-item, .resident .reward-art {
+  filter: drop-shadow(0 0 1px #1f2d3a) drop-shadow(0 0 1px #1f2d3a) drop-shadow(0 1px 2px rgba(31, 45, 58, 0.5));
+}
+.resident .sky-item { width: 40px; height: 40px; }
+
+
+/* ---- Round 3 ---- */
+/* The page name is always in the middle, in every theme */
+.resident .topbar { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+.resident .topbar-title { max-width: 10rem; justify-self: center; }
+.resident .topbar-side.left .navbtn { font-size: 0.95em; }
+
+/* The Settings note looks like the "You are all set" box */
+.resident .settings-note { background: var(--panel); }
+.resident .settings-note h1, .resident .settings-note li { color: var(--text); }
+
+
+/* Three choices side by side: room for the longest word */
+.resident .segment { flex: 1 1 auto; white-space: nowrap; padding-inline: 0.5rem; gap: 0.35rem; font-size: 0.95em; }
+.resident .hear-row { margin-top: var(--gap-m); }
+.resident .hear-row .btn { flex: 1; }
+
+
+/* ---- Round 4 ---- */
+/* Tap a word to read from there; the word being read is highlighted */
+.resident .word { cursor: pointer; border-radius: 4px; }
+.resident .word:hover { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.resident .word.hl { background: color-mix(in srgb, var(--accent) 32%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 32%, transparent); }
+.resident .word:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+
+/* "Tell us what you think": three plain choices in a row, no dots, the picked one has a thick edge */
+.resident .segmented.chips .segment { position: relative; flex: 1 1 0; padding-inline: 0.25rem; text-align: center; line-height: 1.2; }
+.resident .segmented.chips .segment input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.resident .segmented.chips .segment:focus-within { outline: 4px solid var(--focus); outline-offset: 2px; }
+
+
+/* ---- Round 5 ---- */
+/* A soft highlight on the word being read: it barely stands out from the page */
+.resident .word.hl { background: color-mix(in srgb, var(--accent) 13%, transparent); box-shadow: none; }
+.resident .word:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.resident .topbar-side.left { gap: 0; }
+
+
+/* ---- Round 8: the longer tagline on the first page ---- */
+.resident .splash { gap: var(--gap-xl, 2.25rem); padding-inline: var(--gap-m); }
+.resident .splash-inner { gap: var(--gap-m); }
+.resident .splash-name { margin: var(--gap-m) 0 0; }
+.resident .splash-line { max-width: 19rem; font-size: 1.1em; line-height: 1.5; text-wrap: balance; }
+.resident .splash-btn { width: 100%; max-width: 16rem; }
+
+
+/* ---- Round 9: the tagline in italic; the first page waits for Continue ---- */
+.resident .splash-line { font-style: italic; }
+
+
+/* ---- Round 10: the same space above and below the tagline ---- */
+.resident .splash { gap: 0; }
+.resident .splash-inner { gap: 0; }
+.resident .splash-name { margin: var(--gap-m) 0 8px; }
+.resident .splash-line { margin: var(--gap-l) 0; }

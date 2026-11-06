@@ -60,12 +60,24 @@ export default function SetupScreen({ update, setBack }) {
   // The last page: one calm note about Settings, instead of pop-ups later in the app.
   if (allSet) {
     return (
-      <section className="all-set">
+      <section className="all-set center-page">
         <div className="card status">
           <h1>You are all set</h1>
           <p>You can change any of these choices later. Open <strong>Settings</strong> at the bottom of the screen for more changes, like text size, colors, reading aloud and sounds.</p>
         </div>
         <button className="btn primary" onClick={() => save(allSet)}>Go to my tasks</button>
+        <div className="card status settings-note">
+          <h1>What you can change in Settings</h1>
+          <ul>
+            <li>Text size, font and colors</li>
+            <li>Pictures on or off</li>
+            <li>Reading aloud: the voice and the speed</li>
+            <li>Sounds and animations</li>
+            <li>Game or Normal style</li>
+            <li>Your support person and how to reach them</li>
+            <li>Sharing with staff, which stays off until you turn it on</li>
+          </ul>
+        </div>
       </section>
     );
   }
@@ -82,17 +94,17 @@ export default function SetupScreen({ update, setBack }) {
   const multi = Boolean(q.pick_up_to);
 
   return (
-    <section>
+    <section className="center-page">
       <p className="muted" aria-live="polite">Question {i + 1} of {questions.length}</p>
       <h1>{q.text}</h1>
 
       {q.single ? (
         <>
-          <fieldset>
+          <fieldset className="choices">
             <legend className="visually-hidden">{q.text}</legend>
             {q.answers.map((a) => (
               <label key={a} className={`check choice ${chosen[0] === a ? "on" : ""}`}>
-                <input type="radio" name="world" value={a} checked={chosen[0] === a} onChange={() => setPicked({ ...picked, [q.id]: [a] })} />
+                <input type="radio" name="world" value={a} checked={chosen[0] === a} onChange={() => { setPicked({ ...picked, [q.id]: [a] }); update({ gameWorld: a }); }} />
                 <Pic id={a} />{label(a)}
               </label>
             ))}
@@ -103,7 +115,7 @@ export default function SetupScreen({ update, setBack }) {
               <div className="segmented">
                 {ANIMALS.map(([v, t]) => (
                   <label key={v} className={`segment ${animal === v ? "on" : ""}`}>
-                    <input type="radio" name="animal" value={v} checked={animal === v} onChange={() => setAnimal(v)} />{t}
+                    <input type="radio" name="animal" value={v} checked={animal === v} onChange={() => { setAnimal(v); update({ animalChoice: v }); }} />{t}
                   </label>
                 ))}
               </div>

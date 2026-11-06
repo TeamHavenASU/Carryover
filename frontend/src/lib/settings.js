@@ -111,7 +111,7 @@ export function fromUrl() {
   return out;
 }
 
-const SPEEDS = { slow: 0.8, normal: 1 };
+const SPEEDS = { slow: 0.7, normal: 0.85 }; // medium pace by default, slower on request
 
 // Voices already on the device that work offline.
 export function deviceVoices() {
@@ -119,12 +119,37 @@ export function deviceVoices() {
   return window.speechSynthesis.getVoices().filter((v) => v.localService);
 }
 
-export function speak(text, settings = {}) {
+// Three clear, gentle voices from the device. Novelty voices are never listed.
+const PREFERRED = ["Samantha", "Ava", "Allison", "Susan", "Karen", "Moira", "Tessa", "Serena", "Daniel", "Alex", "Fiona", "Victoria"];
+const NOVELTY = /whisper|wobble|bubbles|bells|boing|bad news|good news|cellos|organ|zarvox|trinoids|jester|superstar|deranged|hysterical|albert|bahh|fred|junior|kathy|ralph|princess|grandma|grandpa|eddy|flo|reed|rocko|sandy|shelley|xander/i;
+export function niceVoices() {
+  if (!("speechSynthesis" in window)) return [];
+  const all = window.speechSynthesis.getVoices().filter((v) => /^en([-_]|$)/i.test(v.lang));
+  const local = all.filter((v) => v.localService);
+  const pool = local.length ? local : all;
+  const out = [];
+  for (const n of PREFERRED) {
+    const v = pool.find((x) => x.name === n || x.name.startsWith(n + " "));
+    if (v && !out.includes(v)) out.push(v);
+    if (out.length === 3) return out;
+  }
+  for (const v of pool) {
+    if (out.length === 3) break;
+    if (!out.includes(v) && !NOVELTY.test(v.name)) out.push(v);
+  }
+  return out;
+}
+
+export function speak(text, settings = {}, handlers = {}) {
   if (!("speechSynthesis" in window)) return;
   const u = new SpeechSynthesisUtterance(text);
-  const voice = deviceVoices().find((v) => v.name === settings.voiceName);
+  const voice = niceVoices().find((v) => v.name === settings.voiceName) || niceVoices()[0];
   if (voice) u.voice = voice;
-  u.rate = SPEEDS[settings.voiceSpeed] || 1;
+  u.rate = SPEEDS[settings.voiceSpeed] || SPEEDS.normal;
+  if (handlers.onend) u.onend = handlers.onend;
+  if (handlers.onerror) u.onerror = handlers.onerror;
+  if (handlers.onboundary) u.onboundary = handlers.onboundary;
   window.speechSynthesis.cancel();
+  window.speechSynthesis.resume(); // clears a paused state left from before
   window.speechSynthesis.speak(u);
 }
