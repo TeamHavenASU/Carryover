@@ -63,7 +63,7 @@ export default function SetupScreen({ update, setBack }) {
       <section className="all-set">
         <div className="card status">
           <h1>You are all set</h1>
-          <p>You can change any of these choices later. Open <strong>Settings</strong> at the bottom of the screen for more changes, like text size, colours, reading aloud and sounds.</p>
+          <p>You can change any of these choices later. Open <strong>Settings</strong> at the bottom of the screen for more changes, like text size, colors, reading aloud and sounds.</p>
         </div>
         <button className="btn primary" onClick={() => save(allSet)}>Go to my tasks</button>
       </section>

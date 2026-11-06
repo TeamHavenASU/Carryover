@@ -124,7 +124,7 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
         {choice("Text size", "textSize", [["medium", "Medium"], ["large", "Large"], ["larger", "Larger"]])}
         {choice("Font", "font", [["sans", "Plain"], ["serif", "Serif"], ["verdana", "Wide letters"]])}
         <fieldset>
-          <legend>Colours</legend>
+          <legend>Colors</legend>
           {PALETTES.map((p) => (
             <label key={p.id} className="palette">
               <input type="radio" name="theme" value={p.id}
@@ -142,7 +142,7 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
 
       <div className="card">
         <h2>Reading voice</h2>
-        {toggle("Read steps aloud", "readAloud")}
+        {toggle("Read answers aloud", "readAloud")}
         <label htmlFor="voiceName">Voice (from your phone)</label>
         <select id="voiceName" value={settings.voiceName} onChange={(e) => update({ voiceName: e.target.value })}>
           <option value="">Phone's default voice</option>
@@ -179,6 +179,7 @@ export default function SettingsScreen({ settings, update, onRedoSetup }) {
         {choice("Sound", "sound", [["off", "Off"], ["very_soft", "Very soft"], ["soft", "Soft"], ["normal", "Normal"]])}
         {settings.style === "game" && choice("Sound type", "soundType", [["chime", "Chime"], ["nature", "Nature"], ["theme", "Theme"]])}
         {choice("Animations", "animations", [["off", "Off"], ["calm", "Calm"], ["lively", "Lively"]])}
+        {radios("Praise style", "praise", [["calm", "Calm"], ["cheerful", "Cheerful"], ["off", "Off"]])}
       </div>
 
       <div className="card">

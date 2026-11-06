@@ -28,7 +28,7 @@ export const DEFAULTS = {
   // Game mode (names and defaults come from definitions.json game_mode)
   soundType: "chime",
   soundTypeAsked: false,
-  animations: "calm",
+  animations: "calm",   // the person can set it to Off in Settings; asked after the first Game task
   animationsAsked: false,
   surpriseMe: false,
   // Reading voice (a voice already on the device, and a speed)

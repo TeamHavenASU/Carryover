@@ -39,6 +39,8 @@ export default function StepScreen({
   const activeMsRef = useRef(0);          // time on this step, break time excluded
   const runningSinceRef = useRef(null);
   const loggedStart = useRef(false);
+  const tipsLogged = useRef(false);
+  const [tipsOpen, setTipsOpen] = useState(false);
 
   // Log that the step was shown once.
   useEffect(() => {
@@ -119,10 +121,16 @@ export default function StepScreen({
     setShownSmall(shownSmall + 1);
   }
 
-  // "Read again" is the Repeat button: it reads the step aloud when tapped.
+  // "Read again" is the Repeat button. It reads what is on the screen, in order: the step, the
+  // CAUTION (most important for someone who listens instead of reads), the small steps that are
+  // showing, then the tips if they are open. Nothing hidden is read.
   function repeat() {
     log("repeat_requested", { step_id: step.step_id });
-    onSpeak(step.text);
+    const parts = [step.text];
+    if (step.safety) parts.push(`Caution: ${step.safety}`);
+    if (reveal >= 2) substeps.slice(0, shownSmall).forEach((s) => parts.push(s.text));
+    if (tipsOpen) step.tips.forEach((t) => parts.push(t));
+    onSpeak(parts.map((t) => t.trim().replace(/[.:]?$/, ".")).join(" "));
   }
 
   function done() {
@@ -199,7 +207,14 @@ export default function StepScreen({
             </>
           )}
           {step.tips.length > 0 && (
-            <details>
+            <details onToggle={(e) => {
+              setTipsOpen(e.currentTarget.open);
+              // Opening the tips counts as used help (definitions.json), logged once per step.
+              if (e.currentTarget.open && !tipsLogged.current) {
+                tipsLogged.current = true;
+                log("hint_requested", { step_id: step.step_id, help_shown: LEVEL_OF[Math.min(reveal, 2)] });
+              }
+            }}>
               <summary><Icon.open /> Tips</summary>
               <ul>{step.tips.map((t, i) => <li key={i}>{t}</li>)}</ul>
             </details>

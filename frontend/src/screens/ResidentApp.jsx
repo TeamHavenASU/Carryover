@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import AskForHelp from "../components/AskForHelp/AskForHelp";
 import "./resident.css";
 import { getSetup, getTasks, getToday, logEvent, sessionId } from "../lib/api";
 import { BottomNav, TopBar } from "./NavBars";
@@ -335,7 +336,7 @@ export default function ResidentApp() {
           onRefresherAnswer={(a) => log("refresher_answer", { answer: a })}
           onBack={closeWithoutStart}
           askAboutSkips={Boolean(today.ask_about_skips) && !askedAboutSkips(personId, today.task_id)}
-          onSkipAnswer={(a) => { markAskedAboutSkips(personId, today.task_id); log("end_question", { answer: a }); }}
+          onSkipAnswer={(a) => { markAskedAboutSkips(personId, today.task_id); log("still_want_answer", { answer: a }); }}
         />
       )}
 
@@ -371,7 +372,16 @@ export default function ResidentApp() {
           canShowSmall={step.substeps.length > 0}
           onShowSmall={() => { setSplitToken((n) => n + 1); setView("step"); }}
           onBack={() => setView("step")}
-          onStuck={() => log("stuck_pressed", { step_id: step.step_id })}
+          stuckPanel={
+            <AskForHelp
+              personId={personId}
+              taskId={today.task_id}
+              stepId={step.step_id}
+              week={today.week}
+              sessionId={sessionId(personId, today.task_id, today.week)}
+              autoRead={s.readAloud}
+            />
+          }
         />
       )}
 

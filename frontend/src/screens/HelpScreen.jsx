@@ -2,11 +2,11 @@ import { useState } from "react";
 import { supportName } from "../lib/settings";
 import { Icon } from "../lib/icons";
 
-// Help screen, opened by "Help with this step". For the prototype, "I'm stuck" tells the person to
-// ask their support person (name from Settings, "staff" if none). It logs stuck_pressed, which
-// counts as used help, as it did before.
-export default function HelpScreen({ step, settings, canShowSmall, onShowSmall, onStuck, onBack }) {
-  const [stuck, setStuck] = useState(false);
+// Help screen, opened by "Help with this step". The AI part (type, speak or photo) is Role D's
+// AskForHelp component; it hands off to the support person for risky questions. Below it, the
+// person can always ask their support person (name from Settings, "staff" if none).
+export default function HelpScreen({ step, settings, canShowSmall, onShowSmall, stuckPanel, onBack }) {
+  const [asked, setAsked] = useState(false);
   const name = supportName(settings);
   const contact = (settings.supportContact || "").trim();
   return (
@@ -15,8 +15,14 @@ export default function HelpScreen({ step, settings, canShowSmall, onShowSmall, 
 
       {canShowSmall && <button className="btn primary" onClick={onShowSmall}>Show the small steps</button>}
 
-      <button className="btn" onClick={() => { if (!stuck) onStuck(); setStuck(true); }}>I'm stuck</button>
-      {stuck && (
+      <div className="card">
+        <h2>Ask about this step</h2>
+        <p className="muted">Type, speak or take a photo. The answer is one short step.</p>
+        {stuckPanel}
+      </div>
+
+      <button className="btn" onClick={() => setAsked(true)}>Still stuck? Ask {name}</button>
+      {asked && (
         <div className="card status" role="status">
           <p>Please ask {name}.</p>
           {contact && <p>{contact}</p>}
