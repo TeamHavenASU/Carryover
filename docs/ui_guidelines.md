@@ -63,7 +63,7 @@ To be built by C and E (a rough prototype exists as a reference, not in the repo
 | Most help (split) | Step plus small steps, shown one at a time ("Show next small step (2 of 4)"), appearing by themselves | MacDuff et al. 2001; Rule 3 needs one at a time to learn which small steps each person needs |
 | Some help (mode `hint`) | The full step sentence only; small steps one tap away | MacDuff et al. 2001 |
 | No help (hide) | Folded into "Next: …"; one tap to open | MacDuff et al. 2001 |
-| Hint wait | Offer help at 1/4, 1/2, 3/4 of `long_pause_seconds` | MacDuff et al. 2001 (time delay); fractions ours |
+| Hint wait | Offer help at about 15%, 30% and 60% of the long pause (about 7, 14 and 27 seconds on most steps) | MacDuff et al. 2001 (time delay); fractions ours |
 | Phone pay | Only the person's phone type from `substeps_by_phone` | Apple; Google |
 | Tips | Under a "Tips" fold | COGA; Hassell |
 

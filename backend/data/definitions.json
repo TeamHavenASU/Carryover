@@ -21,9 +21,9 @@
     "rule_4_more_help_after_struggled_in_a_row": 2,
     "rule_5_offer_up_front_after_opened_in_a_row": 3,
     "rule_6_hint_wait_fractions_of_long_pause": [
-      0.25,
-      0.5,
-      0.75
+      0.15,
+      0.3,
+      0.6
     ],
     "rule_7_rusty_times_usual_break": 2,
     "rule_7_rusty_min_days": 14,
