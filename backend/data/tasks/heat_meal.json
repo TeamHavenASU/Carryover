@@ -28,7 +28,7 @@
       "Heating plain water? It can boil over all at once. Use the time in the microwave's guide.",
       "Door doesn't close or looks broken? Don't use it. Tell staff."
     ],
-    "source": "USDA and FDA (see docs/safety.md section 1)"
+    "source": "USDA and FDA"
   },
   "break_note": {
     "after_minutes": 120,
@@ -72,7 +72,7 @@
         }
       ],
       "tips": [
-        "No package (leftovers)? Use the time on your meal card, or heat 30 seconds at a time (see the last step)"
+        "No package (leftovers)? Use the time on your meal card, or ask staff."
       ]
     },
     {
@@ -231,7 +231,7 @@
         }
       ],
       "tips": [
-        "It may keep beeping until you open the door. That's OK"
+        "When it's done it beeps. If you don't open the door, it may beep again every so often to remind you. That's OK."
       ]
     },
     {
