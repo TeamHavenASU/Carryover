@@ -24,7 +24,7 @@ All step text comes from `backend/data/tasks/*.json`. The help level for each st
 | 10 | No time pressure | No countdowns or timeouts. Help offered after a wait, never forced. Breaks save the place | Hassell; COGA; Ours |
 | 11 | Don't make people remember | "Step 3 of 7"; "You were on: …" after a break. Start screen always has "Quick look at all steps" next to Start. If rusty, ask first: "It's been a while since you did this. Want a quick look at all the steps first?" (Yes, show me / No, let's start); log `refresher_answer` | COGA; Research: Buckle et al. 2021; Fuller & Fienup 2018 (skills can fade); Wehmeyer & Abery 2013 (the person chooses) |
 | 12 | Easy to fix mistakes | "Tapped Done by mistake? Go back" on every step | COGA |
-| 13 | Help comes to the person | After a wait the app asks "Want help with this step?" (fading rules). Never on waiting steps (`wait: true`). At Most help, small steps appear by themselves. Asking is always one tap ("Help with this step") | Research: Grynszpan et al. 2008; MacDuff et al. 2001 |
+| 13 | Help comes to the person | After a wait the app asks "Want help with this step?" (fading rules). Never on waiting steps (`wait: true`). At Most help, small steps show one at a time; the person taps 'Show next small step'. Asking is always one tap ("Help with this step") | Research: Grynszpan et al. 2008; MacDuff et al. 2001 |
 | 14 | Human help is easy to reach | "Ask [support person]" on every step; AI hands off when unsure | COGA; safety.md |
 | 15 | The person decides | Ask before less help; person picks support person, sharing (off by default) and breaks | Research: Wehmeyer & Abery 2013; Wehmeyer 1999; Shogren et al. 2015; Wehmeyer 2020 |
 | 16 | Asking for help is never bad | No red, no "wrong," no score drop | Ours |
@@ -60,7 +60,7 @@ To be built by C and E (a rough prototype exists as a reference, not in the repo
 | Level | Shows | Source |
 | --- | --- | --- |
 | Skill card | Before the step: a 2–4 step card that teaches the base skill (`backend/data/skills/`) | First Place (Nov 4) |
-| Most help (split) | Step plus small steps, shown one at a time ("Show next small step (2 of 4)"), appearing by themselves | MacDuff et al. 2001; Rule 3 needs one at a time to learn which small steps each person needs |
+| Most help (split) | Step plus small steps, shown one at a time ("Show next small step (2 of 4)") | MacDuff et al. 2001; Rule 3 needs one at a time to learn which small steps each person needs |
 | Some help (mode `hint`) | The full step sentence only; small steps one tap away | MacDuff et al. 2001 |
 | No help (hide) | Folded into "Next: …"; one tap to open | MacDuff et al. 2001 |
 | Hint wait | Offer help at about 15%, 30% and 60% of the long pause (about 7, 14 and 27 seconds on most steps) | MacDuff et al. 2001 (time delay); fractions ours |

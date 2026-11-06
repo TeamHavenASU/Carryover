@@ -1,132 +1,132 @@
 {
   "_everyone": {
     "hint:s1": {
-      "tried": 197,
-      "worked": 104
+      "tried": 178,
+      "worked": 100
     },
     "hint:s10": {
-      "tried": 40,
+      "tried": 34,
       "worked": 22
     },
     "hint:s2": {
-      "tried": 173,
-      "worked": 108
+      "tried": 155,
+      "worked": 95
     },
     "hint:s3": {
-      "tried": 192,
-      "worked": 113
+      "tried": 196,
+      "worked": 119
     },
     "hint:s4": {
-      "tried": 228,
-      "worked": 126
+      "tried": 203,
+      "worked": 123
     },
     "hint:s5": {
-      "tried": 155,
-      "worked": 102
+      "tried": 135,
+      "worked": 91
     },
     "hint:s6": {
-      "tried": 105,
-      "worked": 86
+      "tried": 131,
+      "worked": 99
     },
     "hint:s7": {
-      "tried": 180,
-      "worked": 103
+      "tried": 167,
+      "worked": 99
     },
     "hint:s8": {
-      "tried": 113,
+      "tried": 104,
       "worked": 56
     },
     "hint:s9": {
-      "tried": 116,
-      "worked": 69
+      "tried": 114,
+      "worked": 68
     },
     "refresher": {
       "tried": 4,
-      "worked": 2
+      "worked": 1
     },
     "show_step:s1": {
-      "tried": 224,
-      "worked": 116
+      "tried": 210,
+      "worked": 114
     },
     "show_step:s10": {
-      "tried": 60,
-      "worked": 33
+      "tried": 39,
+      "worked": 26
     },
     "show_step:s2": {
-      "tried": 202,
-      "worked": 117
+      "tried": 192,
+      "worked": 106
     },
     "show_step:s3": {
-      "tried": 230,
-      "worked": 130
+      "tried": 239,
+      "worked": 136
     },
     "show_step:s4": {
-      "tried": 252,
-      "worked": 131
+      "tried": 245,
+      "worked": 143
     },
     "show_step:s5": {
-      "tried": 184,
-      "worked": 117
+      "tried": 148,
+      "worked": 100
     },
     "show_step:s6": {
-      "tried": 109,
-      "worked": 90
+      "tried": 135,
+      "worked": 103
     },
     "show_step:s7": {
-      "tried": 248,
-      "worked": 130
+      "tried": 228,
+      "worked": 121
     },
     "show_step:s8": {
-      "tried": 180,
-      "worked": 70
+      "tried": 169,
+      "worked": 75
     },
     "show_step:s9": {
-      "tried": 152,
-      "worked": 83
+      "tried": 143,
+      "worked": 75
     },
     "split_step:s1": {
-      "tried": 27,
-      "worked": 12
+      "tried": 32,
+      "worked": 14
     },
     "split_step:s10": {
-      "tried": 20,
-      "worked": 11
+      "tried": 5,
+      "worked": 4
     },
     "split_step:s2": {
-      "tried": 29,
-      "worked": 9
+      "tried": 37,
+      "worked": 11
     },
     "split_step:s3": {
-      "tried": 38,
+      "tried": 43,
       "worked": 17
     },
     "split_step:s4": {
-      "tried": 24,
-      "worked": 5
+      "tried": 42,
+      "worked": 20
     },
     "split_step:s5": {
-      "tried": 29,
-      "worked": 15
+      "tried": 13,
+      "worked": 9
     },
     "split_step:s6": {
       "tried": 4,
       "worked": 4
     },
     "split_step:s7": {
-      "tried": 68,
-      "worked": 27
+      "tried": 61,
+      "worked": 22
     },
     "split_step:s8": {
-      "tried": 67,
-      "worked": 14
+      "tried": 65,
+      "worked": 19
     },
     "split_step:s9": {
-      "tried": 36,
-      "worked": 14
+      "tried": 29,
+      "worked": 7
     },
     "start_push": {
-      "tried": 68,
-      "worked": 21
+      "tried": 66,
+      "worked": 19
     }
   },
   "ana": {
@@ -189,182 +189,178 @@
   },
   "ben": {
     "hint:s1": {
-      "tried": 4,
-      "worked": 3
+      "tried": 9,
+      "worked": 7
     },
     "hint:s10": {
-      "tried": 14,
-      "worked": 9
+      "tried": 4,
+      "worked": 4
     },
     "hint:s2": {
       "tried": 4,
       "worked": 4
     },
     "hint:s3": {
-      "tried": 4,
-      "worked": 3
+      "tried": 19,
+      "worked": 10
     },
     "hint:s4": {
-      "tried": 15,
-      "worked": 8
+      "tried": 12,
+      "worked": 7
     },
     "hint:s5": {
-      "tried": 7,
+      "tried": 11,
       "worked": 4
     },
     "hint:s6": {
-      "tried": 19,
-      "worked": 11
+      "tried": 17,
+      "worked": 9
     },
     "hint:s7": {
-      "tried": 4,
-      "worked": 3
+      "tried": 19,
+      "worked": 12
     },
     "hint:s8": {
-      "tried": 13,
+      "tried": 14,
       "worked": 0
     },
     "hint:s9": {
-      "tried": 14,
-      "worked": 8
+      "tried": 10,
+      "worked": 6
     },
     "show_step:s1": {
-      "tried": 4,
-      "worked": 3
+      "tried": 9,
+      "worked": 7
     },
     "show_step:s10": {
-      "tried": 14,
-      "worked": 9
+      "tried": 4,
+      "worked": 4
     },
     "show_step:s2": {
       "tried": 4,
       "worked": 4
     },
     "show_step:s3": {
-      "tried": 4,
-      "worked": 3
+      "tried": 19,
+      "worked": 10
     },
     "show_step:s4": {
-      "tried": 15,
-      "worked": 8
+      "tried": 12,
+      "worked": 7
     },
     "show_step:s5": {
-      "tried": 20,
-      "worked": 11
+      "tried": 11,
+      "worked": 4
     },
     "show_step:s6": {
-      "tried": 19,
-      "worked": 11
+      "tried": 17,
+      "worked": 9
     },
     "show_step:s7": {
-      "tried": 4,
-      "worked": 3
+      "tried": 19,
+      "worked": 12
     },
     "show_step:s8": {
       "tried": 33,
       "worked": 0
     },
     "show_step:s9": {
-      "tried": 14,
-      "worked": 8
-    },
-    "split_step:s5": {
-      "tried": 13,
-      "worked": 7
+      "tried": 10,
+      "worked": 6
     },
     "split_step:s8": {
-      "tried": 20,
+      "tried": 19,
       "worked": 0
     }
   },
   "carl": {
     "hint:s1": {
-      "tried": 10,
-      "worked": 5
-    },
-    "hint:s10": {
-      "tried": 6,
-      "worked": 2
-    },
-    "hint:s2": {
-      "tried": 13,
-      "worked": 7
-    },
-    "hint:s3": {
-      "tried": 8,
+      "tried": 4,
       "worked": 4
     },
-    "hint:s4": {
+    "hint:s10": {
+      "tried": 20,
+      "worked": 11
+    },
+    "hint:s2": {
       "tried": 8,
+      "worked": 5
+    },
+    "hint:s3": {
+      "tried": 16,
+      "worked": 9
+    },
+    "hint:s4": {
+      "tried": 7,
       "worked": 4
     },
     "hint:s5": {
-      "tried": 9,
-      "worked": 6
+      "tried": 4,
+      "worked": 3
     },
     "hint:s6": {
-      "tried": 14,
-      "worked": 6
+      "tried": 18,
+      "worked": 11
     },
     "hint:s7": {
-      "tried": 21,
-      "worked": 10
-    },
-    "hint:s8": {
       "tried": 8,
       "worked": 5
     },
+    "hint:s8": {
+      "tried": 13,
+      "worked": 8
+    },
     "hint:s9": {
-      "tried": 10,
-      "worked": 7
+      "tried": 16,
+      "worked": 9
     },
     "refresher": {
       "tried": 1,
-      "worked": 1
+      "worked": 0
     },
     "show_step:s1": {
-      "tried": 10,
-      "worked": 5
-    },
-    "show_step:s10": {
-      "tried": 26,
-      "worked": 13
-    },
-    "show_step:s2": {
-      "tried": 13,
-      "worked": 7
-    },
-    "show_step:s3": {
-      "tried": 8,
+      "tried": 4,
       "worked": 4
     },
-    "show_step:s4": {
+    "show_step:s10": {
+      "tried": 25,
+      "worked": 15
+    },
+    "show_step:s2": {
       "tried": 8,
+      "worked": 5
+    },
+    "show_step:s3": {
+      "tried": 16,
+      "worked": 9
+    },
+    "show_step:s4": {
+      "tried": 7,
       "worked": 4
     },
     "show_step:s5": {
-      "tried": 9,
-      "worked": 6
+      "tried": 4,
+      "worked": 3
     },
     "show_step:s6": {
-      "tried": 14,
-      "worked": 6
+      "tried": 18,
+      "worked": 11
     },
     "show_step:s7": {
-      "tried": 21,
-      "worked": 10
-    },
-    "show_step:s8": {
       "tried": 8,
       "worked": 5
     },
+    "show_step:s8": {
+      "tried": 13,
+      "worked": 8
+    },
     "show_step:s9": {
-      "tried": 10,
-      "worked": 7
+      "tried": 16,
+      "worked": 9
     },
     "split_step:s10": {
-      "tried": 20,
-      "worked": 11
+      "tried": 5,
+      "worked": 4
     }
   },
   "devon": {
@@ -431,84 +427,80 @@
   },
   "felix": {
     "hint:s1": {
-      "tried": 6,
-      "worked": 4
+      "tried": 10,
+      "worked": 5
     },
     "hint:s2": {
-      "tried": 12,
-      "worked": 8
+      "tried": 11,
+      "worked": 7
     },
     "hint:s3": {
-      "tried": 5,
-      "worked": 1
+      "tried": 2,
+      "worked": 0
     },
     "hint:s4": {
-      "tried": 14,
+      "tried": 12,
       "worked": 6
     },
     "hint:s5": {
-      "tried": 8,
-      "worked": 6
+      "tried": 16,
+      "worked": 8
     },
     "hint:s6": {
       "tried": 4,
       "worked": 4
     },
     "hint:s7": {
-      "tried": 12,
-      "worked": 8
-    },
-    "hint:s8": {
-      "tried": 23,
-      "worked": 13
-    },
-    "hint:s9": {
-      "tried": 20,
-      "worked": 12
-    },
-    "show_step:s1": {
-      "tried": 6,
+      "tried": 4,
       "worked": 4
     },
+    "hint:s8": {
+      "tried": 7,
+      "worked": 5
+    },
+    "hint:s9": {
+      "tried": 10,
+      "worked": 7
+    },
+    "show_step:s1": {
+      "tried": 10,
+      "worked": 5
+    },
     "show_step:s2": {
-      "tried": 12,
-      "worked": 8
+      "tried": 11,
+      "worked": 7
     },
     "show_step:s3": {
-      "tried": 30,
-      "worked": 8
+      "tried": 28,
+      "worked": 6
     },
     "show_step:s4": {
-      "tried": 14,
+      "tried": 12,
       "worked": 6
     },
     "show_step:s5": {
-      "tried": 8,
-      "worked": 6
+      "tried": 16,
+      "worked": 8
     },
     "show_step:s6": {
       "tried": 4,
       "worked": 4
     },
     "show_step:s7": {
-      "tried": 12,
-      "worked": 8
+      "tried": 4,
+      "worked": 4
     },
     "show_step:s8": {
-      "tried": 23,
-      "worked": 13
+      "tried": 7,
+      "worked": 5
     },
     "show_step:s9": {
-      "tried": 24,
-      "worked": 15
-    },
-    "split_step:s3": {
-      "tried": 25,
+      "tried": 10,
       "worked": 7
     },
-    "split_step:s9": {
-      "tried": 4,
-      "worked": 3
+    "split_step:s3": {
+      "tried": 26,
+      "worked": 6
     }
   },
   "grace": {
@@ -521,12 +513,12 @@
       "worked": 3
     },
     "hint:s3": {
-      "tried": 8,
-      "worked": 6
+      "tried": 15,
+      "worked": 9
     },
     "hint:s4": {
-      "tried": 11,
-      "worked": 8
+      "tried": 8,
+      "worked": 6
     },
     "hint:s5": {
       "tried": 9,
@@ -541,12 +533,12 @@
       "worked": 3
     },
     "hint:s8": {
-      "tried": 6,
-      "worked": 0
+      "tried": 10,
+      "worked": 1
     },
     "hint:s9": {
       "tried": 6,
-      "worked": 4
+      "worked": 5
     },
     "show_step:s1": {
       "tried": 5,
@@ -557,12 +549,12 @@
       "worked": 3
     },
     "show_step:s3": {
-      "tried": 8,
-      "worked": 6
+      "tried": 15,
+      "worked": 9
     },
     "show_step:s4": {
-      "tried": 11,
-      "worked": 8
+      "tried": 8,
+      "worked": 6
     },
     "show_step:s5": {
       "tried": 9,
@@ -577,16 +569,16 @@
       "worked": 3
     },
     "show_step:s8": {
-      "tried": 31,
-      "worked": 0
+      "tried": 29,
+      "worked": 6
     },
     "show_step:s9": {
       "tried": 6,
-      "worked": 4
+      "worked": 5
     },
     "split_step:s8": {
-      "tried": 25,
-      "worked": 0
+      "tried": 19,
+      "worked": 5
     }
   },
   "jay": {
@@ -595,35 +587,35 @@
       "worked": 4
     },
     "hint:s2": {
-      "tried": 6,
-      "worked": 5
+      "tried": 4,
+      "worked": 3
     },
     "hint:s3": {
       "tried": 9,
       "worked": 6
     },
     "hint:s4": {
-      "tried": 8,
-      "worked": 5
+      "tried": 15,
+      "worked": 9
     },
     "hint:s5": {
-      "tried": 7,
-      "worked": 5
+      "tried": 4,
+      "worked": 3
     },
     "hint:s6": {
       "tried": 4,
       "worked": 4
     },
     "hint:s7": {
-      "tried": 7,
-      "worked": 5
+      "tried": 4,
+      "worked": 4
     },
     "hint:s8": {
-      "tried": 7,
-      "worked": 5
+      "tried": 4,
+      "worked": 4
     },
     "hint:s9": {
-      "tried": 6,
+      "tried": 4,
       "worked": 4
     },
     "show_step:s1": {
@@ -631,40 +623,40 @@
       "worked": 4
     },
     "show_step:s2": {
-      "tried": 6,
-      "worked": 5
+      "tried": 4,
+      "worked": 3
     },
     "show_step:s3": {
-      "tried": 17,
-      "worked": 12
+      "tried": 9,
+      "worked": 6
     },
     "show_step:s4": {
-      "tried": 8,
-      "worked": 5
+      "tried": 19,
+      "worked": 13
     },
     "show_step:s5": {
-      "tried": 7,
-      "worked": 5
+      "tried": 4,
+      "worked": 3
     },
     "show_step:s6": {
       "tried": 4,
       "worked": 4
     },
     "show_step:s7": {
-      "tried": 7,
-      "worked": 5
-    },
-    "show_step:s8": {
-      "tried": 7,
-      "worked": 5
-    },
-    "show_step:s9": {
-      "tried": 6,
+      "tried": 4,
       "worked": 4
     },
-    "split_step:s3": {
-      "tried": 8,
-      "worked": 6
+    "show_step:s8": {
+      "tried": 4,
+      "worked": 4
+    },
+    "show_step:s9": {
+      "tried": 4,
+      "worked": 4
+    },
+    "split_step:s4": {
+      "tried": 4,
+      "worked": 4
     }
   },
   "jeremiah": {
@@ -805,23 +797,23 @@
   },
   "lena": {
     "hint:s1": {
-      "tried": 17,
-      "worked": 9
+      "tried": 8,
+      "worked": 6
     },
     "hint:s2": {
-      "tried": 13,
-      "worked": 8
+      "tried": 6,
+      "worked": 5
     },
     "hint:s3": {
       "tried": 4,
       "worked": 4
     },
     "hint:s4": {
-      "tried": 9,
+      "tried": 6,
       "worked": 5
     },
     "hint:s5": {
-      "tried": 4,
+      "tried": 7,
       "worked": 3
     },
     "hint:s6": {
@@ -829,88 +821,88 @@
       "worked": 4
     },
     "hint:s7": {
-      "tried": 6,
-      "worked": 4
+      "tried": 5,
+      "worked": 3
     },
     "hint:s8": {
       "tried": 5,
       "worked": 4
     },
     "hint:s9": {
-      "tried": 8,
-      "worked": 5
+      "tried": 6,
+      "worked": 4
     },
     "show_step:s1": {
-      "tried": 24,
-      "worked": 14
+      "tried": 20,
+      "worked": 13
     },
     "show_step:s2": {
-      "tried": 19,
-      "worked": 12
+      "tried": 20,
+      "worked": 11
     },
     "show_step:s3": {
-      "tried": 9,
-      "worked": 8
+      "tried": 21,
+      "worked": 15
     },
     "show_step:s4": {
-      "tried": 15,
-      "worked": 8
+      "tried": 22,
+      "worked": 15
     },
     "show_step:s5": {
       "tried": 20,
-      "worked": 11
+      "worked": 12
     },
     "show_step:s6": {
       "tried": 8,
       "worked": 8
     },
     "show_step:s7": {
-      "tried": 26,
-      "worked": 14
+      "tried": 18,
+      "worked": 8
     },
     "show_step:s8": {
       "tried": 16,
-      "worked": 12
+      "worked": 9
     },
     "show_step:s9": {
-      "tried": 16,
-      "worked": 11
+      "tried": 12,
+      "worked": 8
     },
     "split_step:s1": {
-      "tried": 7,
-      "worked": 5
+      "tried": 12,
+      "worked": 7
     },
     "split_step:s2": {
-      "tried": 6,
-      "worked": 4
+      "tried": 14,
+      "worked": 6
     },
     "split_step:s3": {
-      "tried": 5,
-      "worked": 4
+      "tried": 17,
+      "worked": 11
     },
     "split_step:s4": {
-      "tried": 6,
-      "worked": 3
+      "tried": 16,
+      "worked": 10
     },
     "split_step:s5": {
-      "tried": 16,
-      "worked": 8
+      "tried": 13,
+      "worked": 9
     },
     "split_step:s6": {
       "tried": 4,
       "worked": 4
     },
     "split_step:s7": {
-      "tried": 20,
-      "worked": 10
+      "tried": 13,
+      "worked": 5
     },
     "split_step:s8": {
       "tried": 11,
-      "worked": 8
+      "worked": 5
     },
     "split_step:s9": {
-      "tried": 8,
-      "worked": 6
+      "tried": 6,
+      "worked": 4
     }
   },
   "luis": {
@@ -1043,105 +1035,105 @@
   },
   "mei": {
     "hint:s1": {
-      "tried": 19,
-      "worked": 9
+      "tried": 4,
+      "worked": 4
     },
     "hint:s10": {
-      "tried": 4,
+      "tried": 5,
       "worked": 3
     },
     "hint:s2": {
-      "tried": 12,
-      "worked": 8
+      "tried": 6,
+      "worked": 5
     },
     "hint:s3": {
-      "tried": 7,
-      "worked": 3
+      "tried": 6,
+      "worked": 5
     },
     "hint:s4": {
-      "tried": 15,
-      "worked": 5
-    },
-    "hint:s5": {
-      "tried": 8,
-      "worked": 5
-    },
-    "hint:s6": {
-      "tried": 5,
-      "worked": 4
-    },
-    "hint:s7": {
-      "tried": 4,
+      "tried": 7,
       "worked": 3
     },
-    "hint:s8": {
-      "tried": 7,
+    "hint:s5": {
+      "tried": 10,
       "worked": 6
     },
-    "hint:s9": {
+    "hint:s6": {
+      "tried": 18,
+      "worked": 11
+    },
+    "hint:s7": {
+      "tried": 18,
+      "worked": 10
+    },
+    "hint:s8": {
       "tried": 4,
       "worked": 4
     },
+    "hint:s9": {
+      "tried": 11,
+      "worked": 7
+    },
     "show_step:s1": {
-      "tried": 19,
-      "worked": 9
+      "tried": 4,
+      "worked": 4
     },
     "show_step:s10": {
-      "tried": 4,
+      "tried": 5,
       "worked": 3
     },
     "show_step:s2": {
-      "tried": 12,
-      "worked": 8
+      "tried": 6,
+      "worked": 5
     },
     "show_step:s3": {
-      "tried": 7,
-      "worked": 3
+      "tried": 6,
+      "worked": 5
     },
     "show_step:s4": {
-      "tried": 15,
-      "worked": 5
-    },
-    "show_step:s5": {
-      "tried": 8,
-      "worked": 5
-    },
-    "show_step:s6": {
-      "tried": 5,
-      "worked": 4
-    },
-    "show_step:s7": {
-      "tried": 4,
+      "tried": 7,
       "worked": 3
     },
-    "show_step:s8": {
-      "tried": 7,
+    "show_step:s5": {
+      "tried": 10,
       "worked": 6
     },
-    "show_step:s9": {
+    "show_step:s6": {
+      "tried": 18,
+      "worked": 11
+    },
+    "show_step:s7": {
+      "tried": 18,
+      "worked": 10
+    },
+    "show_step:s8": {
       "tried": 4,
       "worked": 4
+    },
+    "show_step:s9": {
+      "tried": 11,
+      "worked": 7
     }
   },
   "nina": {
     "hint:s1": {
       "tried": 4,
-      "worked": 3
+      "worked": 4
     },
     "hint:s2": {
       "tried": 4,
-      "worked": 3
+      "worked": 4
     },
     "hint:s3": {
-      "tried": 14,
-      "worked": 8
+      "tried": 4,
+      "worked": 4
     },
     "hint:s4": {
-      "tried": 18,
+      "tried": 19,
       "worked": 10
     },
     "hint:s5": {
-      "tried": 12,
+      "tried": 6,
       "worked": 5
     },
     "hint:s6": {
@@ -1149,16 +1141,16 @@
       "worked": 4
     },
     "hint:s7": {
-      "tried": 14,
-      "worked": 9
+      "tried": 21,
+      "worked": 12
     },
     "hint:s8": {
-      "tried": 12,
-      "worked": 7
+      "tried": 8,
+      "worked": 6
     },
     "hint:s9": {
-      "tried": 22,
-      "worked": 13
+      "tried": 13,
+      "worked": 7
     },
     "refresher": {
       "tried": 1,
@@ -1166,22 +1158,22 @@
     },
     "show_step:s1": {
       "tried": 4,
-      "worked": 3
+      "worked": 4
     },
     "show_step:s2": {
       "tried": 4,
-      "worked": 3
+      "worked": 4
     },
     "show_step:s3": {
-      "tried": 14,
-      "worked": 8
+      "tried": 4,
+      "worked": 4
     },
     "show_step:s4": {
-      "tried": 18,
-      "worked": 10
+      "tried": 23,
+      "worked": 14
     },
     "show_step:s5": {
-      "tried": 12,
+      "tried": 6,
       "worked": 5
     },
     "show_step:s6": {
@@ -1189,94 +1181,98 @@
       "worked": 4
     },
     "show_step:s7": {
-      "tried": 14,
-      "worked": 9
+      "tried": 21,
+      "worked": 12
     },
     "show_step:s8": {
-      "tried": 12,
-      "worked": 7
+      "tried": 8,
+      "worked": 6
     },
     "show_step:s9": {
-      "tried": 22,
-      "worked": 13
+      "tried": 13,
+      "worked": 7
+    },
+    "split_step:s4": {
+      "tried": 4,
+      "worked": 4
     }
   },
   "omar": {
     "hint:s1": {
-      "tried": 8,
-      "worked": 6
+      "tried": 5,
+      "worked": 3
     },
     "hint:s2": {
-      "tried": 11,
-      "worked": 7
+      "tried": 13,
+      "worked": 6
     },
     "hint:s3": {
-      "tried": 19,
-      "worked": 9
+      "tried": 6,
+      "worked": 5
     },
     "hint:s4": {
-      "tried": 18,
-      "worked": 7
+      "tried": 5,
+      "worked": 4
     },
     "hint:s5": {
-      "tried": 11,
-      "worked": 6
+      "tried": 14,
+      "worked": 9
     },
     "hint:s6": {
       "tried": 4,
       "worked": 4
     },
     "hint:s7": {
-      "tried": 16,
-      "worked": 9
+      "tried": 6,
+      "worked": 4
     },
     "hint:s8": {
-      "tried": 10,
-      "worked": 4
+      "tried": 14,
+      "worked": 8
     },
     "hint:s9": {
       "tried": 5,
-      "worked": 0
+      "worked": 1
     },
     "show_step:s1": {
-      "tried": 8,
-      "worked": 6
+      "tried": 5,
+      "worked": 3
     },
     "show_step:s2": {
-      "tried": 11,
-      "worked": 7
+      "tried": 13,
+      "worked": 6
     },
     "show_step:s3": {
-      "tried": 19,
-      "worked": 9
+      "tried": 6,
+      "worked": 5
     },
     "show_step:s4": {
-      "tried": 18,
-      "worked": 7
+      "tried": 5,
+      "worked": 4
     },
     "show_step:s5": {
-      "tried": 11,
-      "worked": 6
+      "tried": 14,
+      "worked": 9
     },
     "show_step:s6": {
       "tried": 4,
       "worked": 4
     },
     "show_step:s7": {
-      "tried": 16,
-      "worked": 9
-    },
-    "show_step:s8": {
-      "tried": 10,
+      "tried": 6,
       "worked": 4
     },
+    "show_step:s8": {
+      "tried": 14,
+      "worked": 8
+    },
     "show_step:s9": {
-      "tried": 29,
-      "worked": 5
+      "tried": 28,
+      "worked": 4
     },
     "split_step:s9": {
-      "tried": 24,
-      "worked": 5
+      "tried": 23,
+      "worked": 3
     }
   },
   "priya": {
@@ -1347,88 +1343,88 @@
   },
   "rosa": {
     "hint:s1": {
-      "tried": 4,
-      "worked": 3
+      "tried": 9,
+      "worked": 5
     },
     "hint:s10": {
-      "tried": 16,
-      "worked": 8
+      "tried": 5,
+      "worked": 4
     },
     "hint:s2": {
-      "tried": 4,
-      "worked": 4
+      "tried": 11,
+      "worked": 5
     },
     "hint:s3": {
-      "tried": 12,
-      "worked": 7
+      "tried": 13,
+      "worked": 6
     },
     "hint:s4": {
-      "tried": 13,
-      "worked": 8
+      "tried": 7,
+      "worked": 5
     },
     "hint:s5": {
-      "tried": 25,
-      "worked": 12
+      "tried": 6,
+      "worked": 3
     },
     "hint:s6": {
-      "tried": 7,
-      "worked": 5
+      "tried": 18,
+      "worked": 8
     },
     "hint:s7": {
-      "tried": 20,
-      "worked": 11
+      "tried": 6,
+      "worked": 4
     },
     "hint:s8": {
-      "tried": 7,
-      "worked": 4
+      "tried": 12,
+      "worked": 8
     },
     "hint:s9": {
-      "tried": 10,
-      "worked": 6
+      "tried": 21,
+      "worked": 11
     },
     "show_step:s1": {
-      "tried": 4,
-      "worked": 3
+      "tried": 9,
+      "worked": 5
     },
     "show_step:s10": {
-      "tried": 16,
-      "worked": 8
-    },
-    "show_step:s2": {
-      "tried": 4,
+      "tried": 5,
       "worked": 4
     },
+    "show_step:s2": {
+      "tried": 11,
+      "worked": 5
+    },
     "show_step:s3": {
-      "tried": 12,
-      "worked": 7
+      "tried": 13,
+      "worked": 6
     },
     "show_step:s4": {
-      "tried": 13,
-      "worked": 8
-    },
-    "show_step:s5": {
-      "tried": 25,
-      "worked": 12
-    },
-    "show_step:s6": {
       "tried": 7,
       "worked": 5
     },
-    "show_step:s7": {
-      "tried": 20,
-      "worked": 11
+    "show_step:s5": {
+      "tried": 6,
+      "worked": 3
     },
-    "show_step:s8": {
-      "tried": 7,
+    "show_step:s6": {
+      "tried": 18,
+      "worked": 8
+    },
+    "show_step:s7": {
+      "tried": 6,
       "worked": 4
     },
+    "show_step:s8": {
+      "tried": 12,
+      "worked": 8
+    },
     "show_step:s9": {
-      "tried": 10,
-      "worked": 6
+      "tried": 21,
+      "worked": 11
     },
     "start_push": {
-      "tried": 15,
-      "worked": 3
+      "tried": 25,
+      "worked": 7
     }
   },
   "sam": {
@@ -1495,20 +1491,20 @@
       "worked": 3
     },
     "hint:s2": {
-      "tried": 15,
-      "worked": 9
+      "tried": 9,
+      "worked": 6
     },
     "hint:s3": {
       "tried": 8,
-      "worked": 6
+      "worked": 5
     },
     "hint:s4": {
-      "tried": 9,
-      "worked": 7
+      "tried": 15,
+      "worked": 11
     },
     "hint:s5": {
-      "tried": 23,
-      "worked": 12
+      "tried": 16,
+      "worked": 9
     },
     "hint:s6": {
       "tried": 4,
@@ -1519,32 +1515,32 @@
       "worked": 3
     },
     "hint:s8": {
-      "tried": 15,
+      "tried": 13,
       "worked": 8
     },
     "hint:s9": {
-      "tried": 11,
-      "worked": 6
+      "tried": 12,
+      "worked": 7
     },
     "show_step:s1": {
       "tried": 5,
       "worked": 3
     },
     "show_step:s2": {
-      "tried": 15,
-      "worked": 9
+      "tried": 9,
+      "worked": 6
     },
     "show_step:s3": {
       "tried": 8,
-      "worked": 6
+      "worked": 5
     },
     "show_step:s4": {
-      "tried": 9,
-      "worked": 7
+      "tried": 15,
+      "worked": 11
     },
     "show_step:s5": {
-      "tried": 23,
-      "worked": 12
+      "tried": 16,
+      "worked": 9
     },
     "show_step:s6": {
       "tried": 4,
@@ -1555,20 +1551,20 @@
       "worked": 3
     },
     "show_step:s8": {
-      "tried": 26,
-      "worked": 14
+      "tried": 29,
+      "worked": 17
     },
     "show_step:s9": {
-      "tried": 11,
-      "worked": 6
+      "tried": 12,
+      "worked": 7
     },
     "split_step:s8": {
-      "tried": 11,
-      "worked": 6
+      "tried": 16,
+      "worked": 9
     },
     "start_push": {
-      "tried": 18,
-      "worked": 6
+      "tried": 6,
+      "worked": 0
     }
   }
 }

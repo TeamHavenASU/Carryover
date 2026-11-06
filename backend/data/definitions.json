@@ -53,7 +53,7 @@
   ],
   "terms": {
     "step": "One action in a task.",
-    "small_steps": "The hidden steps inside a step. Shown one at a time (so the app learns which ones each person needs). At Most help they appear by themselves; at Some help, when the person taps 'Help with this step' or says yes to 'Want help with this step?'.",
+    "small_steps": "The hidden steps inside a step. Shown one at a time (so the app learns which ones each person needs). At Most help they show one at a time when the person taps 'Show next small step'; at Some help, when the person taps 'Help with this step' or says yes to 'Want help with this step?'.",
     "tips": "'If this happens' fixes under a step (wrong time, locked buttons, a different button name). Shown only when help is opened. Opening tips counts as used help. Not small steps, so Rule 3 ignores them.",
     "folded_step": "A whole step the person already does on their own, so it is not shown up front. Always one tap away under 'See all steps'.",
     "help": "Anything shown beyond the step sentence: small steps, a start push, a refresher.",
