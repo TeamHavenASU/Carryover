@@ -263,7 +263,7 @@ The screens never choose a help level: they show what `GET /today` returns and l
 | `backend/ai/skill_card.py` | AI drafts a skill card, or names the missing base skill (`POST /draft_skill`). Writes only to `data/skill_cards_pending.json` (created on first use) |
 | `backend/ai/common.py` | Small helpers: load a task, read a prompt, clean up JSON |
 | `backend/api/ai_routes.py` | `/ask`, `/split`, `/draft_skill` |
-| `backend/prompts/` | The prompts sent to the model, also collected in `docs/prompts.pdf` (rebuild with `python docs/make_prompts_pdf.py` from the repo root) |
+| `backend/prompts/` | The prompts sent to the model, also collected in `docs/prompts.pdf` |
 | `frontend/src/components/AskForHelp/` | The "I'm stuck" panel on the Help screen: text box, microphone, photo and reply |
 
 ### The safety rules
