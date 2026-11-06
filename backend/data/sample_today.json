@@ -51,9 +51,9 @@
       "wait": false,
       "long_pause_seconds": 90,
       "hint_waits": [
-        22,
-        45,
-        68
+        14,
+        27,
+        54
       ],
       "substeps": [
         {
@@ -92,9 +92,9 @@
       "wait": false,
       "long_pause_seconds": 45,
       "hint_waits": [
-        11,
-        22,
-        34
+        7,
+        14,
+        27
       ],
       "substeps": [
         {
@@ -133,9 +133,9 @@
       "wait": false,
       "long_pause_seconds": 45,
       "hint_waits": [
-        11,
-        22,
-        34
+        7,
+        14,
+        27
       ],
       "substeps": [
         {
@@ -177,9 +177,9 @@
       "wait": false,
       "long_pause_seconds": 45,
       "hint_waits": [
-        11,
-        22,
-        34
+        7,
+        14,
+        27
       ],
       "substeps": [
         {
@@ -294,9 +294,9 @@
       "wait": false,
       "long_pause_seconds": 45,
       "hint_waits": [
-        11,
-        22,
-        34
+        7,
+        14,
+        27
       ],
       "substeps": [
         {

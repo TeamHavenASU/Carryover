@@ -44,3 +44,37 @@
   font-size: 0.85em;
   margin: 2px 0 0;
 }
+
+.staff-demo-note {
+  margin: 0 0 8px;
+  padding: 8px 12px;
+  border-left: 4px solid var(--calm-accent);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.ask-more {
+  margin-top: 8px;
+}
+
+.ask-more-hands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.ask-more button.link,
+.ask-more-result a {
+  background: none;
+  border: 0;
+  padding: 0;
+  min-height: 0;
+  color: var(--calm-accent);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+
+.ask-more-result {
+  margin: 8px 0 0;
+}

@@ -20,6 +20,14 @@
   flex: 1 1 260px;
 }
 
+.open-resident {
+  justify-self: start;
+  font-weight: 600;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
 .week-slider input[type="range"] {
   width: 100%;
   min-height: 44px;
@@ -34,11 +42,172 @@
 
 @media (min-width: 900px) {
   .demo-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
     align-items: start;
   }
 }
 
 .demo-grid h2 {
   margin-top: 0;
+}
+
+/* The real resident app in a phone shape */
+.phone-card {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+
+.phone-card h2 {
+  justify-self: start;
+}
+
+.phone-frame {
+  width: 390px;
+  max-width: 100%;
+  height: 760px;
+  border: 10px solid var(--calm-ink);
+  border-radius: 36px;
+  background: var(--page-bg);
+  overflow: hidden;
+}
+
+.phone-screen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: var(--page-bg);
+}
+
+.plain-list {
+  width: 100%;
+}
+
+.plain-list summary {
+  cursor: pointer;
+  font-weight: 600;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.plain-list .preview {
+  margin-top: 8px;
+}
+
+/* Why this changed */
+.why-changed h2 {
+  margin-top: 0;
+  font-size: 1.15em;
+}
+
+.why-changed .why-none {
+  margin: 0;
+}
+
+.why-list {
+  margin: 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+}
+
+.why-extras {
+  margin-top: 8px;
+}
+
+.why-line {
+  display: block;
+}
+
+.why-evidence {
+  display: block;
+  font-size: 0.85em;
+  margin-top: 2px;
+}
+
+/* Help over time grid */
+.help-grid-legend {
+  margin: 0 0 10px;
+  font-size: 0.9em;
+}
+
+.help-grid-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.help-grid table {
+  border-collapse: collapse;
+  min-width: 100%;
+  color: var(--calm-ink);
+  background: var(--page-bg);
+}
+
+.help-grid caption {
+  text-align: left;
+  font-size: 0.9em;
+  padding: 0 0 8px;
+  caption-side: top;
+}
+
+.help-grid th,
+.help-grid td {
+  border: 1px solid var(--calm-line);
+  padding: 6px 10px;
+  text-align: left;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.help-grid thead th {
+  background: var(--calm-soft);
+}
+
+.help-grid .step-col {
+  position: sticky;
+  left: 0;
+  background: var(--calm-surface);
+  font-weight: 600;
+  white-space: normal;
+  min-width: 180px;
+  max-width: 280px;
+}
+
+.help-grid .step-num {
+  display: inline-block;
+  min-width: 1.6em;
+}
+
+.help-grid td.most {
+  background: #dbe7f3;
+}
+
+.help-grid td.some {
+  background: #e8efe3;
+}
+
+.help-grid td.none {
+  background: #f3f1ea;
+}
+
+.help-grid td.missing {
+  background: var(--page-bg);
+  color: #46605c;
+}
+
+.help-grid th.current,
+.help-grid td.current {
+  border-left: 3px solid var(--calm-accent);
+  border-right: 3px solid var(--calm-accent);
+}
+
+.help-grid thead th.current {
+  border-top: 3px solid var(--calm-accent);
+  text-decoration: underline;
+}
+
+.help-grid tbody tr:last-child td.current {
+  border-bottom: 3px solid var(--calm-accent);
 }

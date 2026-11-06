@@ -123,7 +123,7 @@ LESS_HELP_YES = "yes"  # show me less
 LESS_HELP_KEEP = "keep"  # keep it as it is
 
 # Rule 3 answers to "Want to see just the small steps you use?", also logged
-# as an end_question row with the step's step_id (to be confirmed with Role A).
+# as an end_question row with the step's step_id.
 SMALL_STEPS_TRIM = "trim"  # show only the small steps I open
 SMALL_STEPS_KEEP_ALL = "keep_all"  # keep all of them
 
@@ -304,7 +304,8 @@ def decide_level(person: str, task: dict, step_id: str, week: int, history: list
 
 
 def hint_waits(step: dict, task: dict, defs: dict) -> list[int]:
-    """Seconds to wait before offering help, at 1/4, 1/2 and 3/4 of the long pause.
+    """Seconds to wait before offering help, at the fractions of the long pause in definitions.json
+    (rule_6_hint_wait_fractions_of_long_pause, now 0.15, 0.3 and 0.6).
 
     Waiting steps (food heating, a timer) never offer help, so they get no times.
     """

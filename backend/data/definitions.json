@@ -1,13 +1,13 @@
 {
-  "_status": "proposed",
-  "_note": "Numbers from 'Carryover: Definitions and Fading Rules'. The team confirms them in the call. If a number changes, change it here only. Per-task times (start_time_seconds, long_pause_seconds) live in each task file; a step's own long_pause_seconds overrides the task's.",
+  "_status": "in use",
+  "_note": "Numbers from 'Carryover: Definitions and Fading Rules', decided Nov 4-5. If a number changes, change it here only. Per-task times (start_time_seconds, long_pause_seconds) live in each task file; a step's own long_pause_seconds overrides the task's.",
   "help_levels": {
-    "_note": "Most help = the full step + its small steps, one at a time (mode 'split'). Some help = the full step only, no small steps (mode 'hint'; the mode name stays 'hint' so code doesn't break, but no short names are shown, Nov 4). No help = folded under 'See all steps' (mode 'hide').",
+    "_note": "Most help = the full step + its small steps, one at a time (mode 'split'). Some help = the full step only, no small steps (mode 'hint'; the mode name stays 'hint' so code doesn't break, but no short names are shown, Nov 4). No help = folded under 'All steps' (mode 'hide').",
     "most_help": "split",
     "some_help": "hint",
     "no_help": "hide",
     "week_1_level": "some_help",
-    "skill_card": "Most of all: a skill card (backend/data/skills/) shown before a step that needs a base skill. See skill_cards."
+    "skill_card": "Before the step: a skill card (backend/data/skills/) shown before a step that needs a base skill. See skill_cards."
   },
   "defaults": {
     "start_time_seconds": 60,
@@ -21,9 +21,9 @@
     "rule_4_more_help_after_struggled_in_a_row": 2,
     "rule_5_offer_up_front_after_opened_in_a_row": 3,
     "rule_6_hint_wait_fractions_of_long_pause": [
-      0.25,
-      0.5,
-      0.75
+      0.15,
+      0.3,
+      0.6
     ],
     "rule_7_rusty_times_usual_break": 2,
     "rule_7_rusty_min_days": 14,
@@ -53,28 +53,28 @@
   ],
   "terms": {
     "step": "One action in a task.",
-    "small_steps": "The hidden steps inside a step. Shown one at a time (so the app learns which ones each person needs). At Most help they appear by themselves; at Some help, when the person taps 'Help with this step' or says yes to 'Want help with this step?'.",
+    "small_steps": "The hidden steps inside a step. Shown one at a time (so the app learns which ones each person needs). At Most help they show one at a time when the person taps 'Show next small step'; at Some help, when the person taps 'Help with this step' or says yes to 'Want help with this step?'.",
     "tips": "'If this happens' fixes under a step (wrong time, locked buttons, a different button name). Shown only when help is opened. Opening tips counts as used help. Not small steps, so Rule 3 ignores them.",
-    "folded_step": "A whole step the person already does on their own, so it is not shown up front. Always one tap away under 'See all steps'.",
+    "folded_step": "A whole step the person already does on their own, so it is not shown up front. Always one tap away under 'All steps'.",
     "help": "Anything shown beyond the step sentence: small steps, a start push, a refresher.",
     "start_push": "One tiny first action, shown only if someone has trouble starting.",
     "check_question": "One question at the end of a task, only for folded steps that are easy to forget.",
     "end_question": "Event: an answer to a question at the end of a task, for one step (step_id). Rule 2 asks \"Want to try with less help next time?\" (answer: yes = show less help, keep = keep it the same). Rule 3 asks whether to show only the small steps they used (answer: trim = only the ones they opened, keep_all = keep them all).",
     "still_want_answer": "Event: answer to \"Do you still want to practice this task?\", asked once after the task was skipped rule_8_skips_before_asking_once weeks in a row (Rule 8). It is about the whole task, so step_id is empty. Answer: yes or no. A still_want_answer row for the task also means the question was already asked, so it is not asked again.",
     "done_on_their_own": "Finished the step without opening any help, and no help appeared by itself (prompted = no).",
-    "used_help": "Opened help for the step, said yes to 'Want help with this step?', or asked to repeat it. Record how far they opened.",
+    "used_help": "Opened help for the step or said yes to 'Want help with this step?'. Record how far they opened.",
     "trouble_starting": "Opened the task but did not begin the first step: opened 2+ times without starting, took longer than the task's start time, or opened and closed it.",
     "long_pause": "No progress on a step for longer than the long-pause time (the step's own, else the task's). Never on steps with wait: true. The app also never offers help by itself on wait: true steps.",
     "struggled": "Trouble starting, a long pause at a step, or answered 'No' / 'Something was hard' to a question.",
     "skipped": "Never opened the task that day. Not struggling.",
-    "finished": "Tapped or said 'Task done'.",
+    "finished": "Tapped Done on the last step.",
     "usual_break": "How long this person normally goes between doing this task.",
     "rusty": "This break is more than 2x their usual break for this task, and at least 14 days (14 is the minimum, not a maximum). New person with no history: 14 days. detect.py decides this (rusty_after_gap).",
     "take_a_break": "The person pauses the task. The clock stops and the app saves their place. Never counts as struggling or skipping.",
     "refresher": "When someone is rusty, the app asks once: 'Want a quick look at all the steps first?' Yes = a list of all steps, then Start. No = start as normal. This session only; never a setback; help levels don't reset. Logged as refresher_answer (yes/no).",
     "caution": "A step's 'safety' sentence, shown as a CAUTION line on that step at every help level, even when folded. Always visible, no tap (First Place, Nov 4).",
     "device_picture": "A step picture marked \"device\": true in the task file shows a machine (like a microwave) that may look different from the person's own. The screen shows \"Your microwave may look different.\" under it.",
-    "prompted": "On step_done only. 'yes' if help appeared by itself DURING the step: they said Yes to 'Want help with this step?' (Rule 6), or delayed help showed on its own. What the level already shows when the step starts (at split, the first small step) is the level, not a prompt. Done on their own = no help opened and prompted = no (Nov 4).",
+    "prompted": "On step_done only. 'yes' if help appeared by itself DURING the step: they said Yes to 'Want help with this step?' (Rule 6). What the level already shows when the step starts (at split, the first small step) is the level, not a prompt. Done on their own = no help opened and prompted = no (Nov 4).",
     "help_offer_answer": "Event: the answer to 'Want help with this step?' (step_id, answer yes/no). Yes = help showed, so that step's prompted = yes.",
     "small_step_opened": "Event: each 'Show next small step' tap (step_id, answer = substep id like s4b). Rule 3 uses it to learn which small steps each person needs. Not used help for Rule 2 (it is the level's own content), otherwise nothing could fade down from split.",
     "base_skill": "A skill a step assumes the person already has (like reading numbers). Listed in the step's base_skills. Taught by a skill card if needed.",
@@ -87,14 +87,14 @@
   },
   "take_a_break": {
     "_status": "decided",
-    "_note": "'Take a break' button (and voice 'Pause') on every step. Events: paused, resumed. Paused time never counts as a long pause, struggling or skipping. The app reopens on the same step.",
+    "_note": "'Take a break' button on every step. Events: paused, resumed. Paused time never counts as a long pause, struggling or skipping. The app reopens on the same step.",
     "paused_time_counts_as_long_pause": false,
     "breaks_on_same_step_to_flag_for_staff": 3,
     "new_session_after_hours": 12
   },
   "skill_cards": {
     "_status": "decided Nov 4 (First Place feedback)",
-    "_note": "A skill card teaches a base skill that a step assumes (like reading the cooking time). It shows before that step, then the step goes on as normal. Cards fade like steps.",
+    "_note": "A skill card teaches a base skill that a step assumes (like reading the cooking time). It shows before that step, then the step goes on as normal. Built today: a card shows after a 'Not sure' skill check. Not built yet: the stuck-at-Most-help trigger (show_if_stuck_at_most_help_sessions_in_a_row), card fading (show_less_after_done_alone, come_back_after_struggled_in_a_row) and 'Want me to stop showing this?'.",
     "show_if_skill_check_answer": [
       "Not sure",
       "No"
@@ -107,7 +107,7 @@
   },
   "first_time_setup": {
     "_status": "decided Nov 4",
-    "_note": "At most 4 questions, with pictures. A Skip button uses the defaults. A support person can sit with them, but the resident taps the answers. Every answer can be changed later in Settings.",
+    "_note": "At most 4 questions, with pictures. A Skip button uses the defaults. A support person can sit with them, but the resident taps the answers. Every answer can be changed later in Settings. The screens ask the first question as 'What do you love? Pick one' with Sky, Animals or Space (the three worlds); the longer interest list below and typed interests are not built yet.",
     "questions": [
       {
         "id": "interests",
@@ -160,9 +160,9 @@
       }
     ],
     "asked_later_in_the_moment": [
-      "first_time_question in each task file (used this device before? No -> start at most help)",
+      "first_time_question in each task file (used this device before? Asked and logged; starting at Most help after No is in the rules but not yet connected in the app)",
       "skill check for that task's base skills: 'Can you do these?' Yes / Not sure",
-      "sound type and animations: asked the first time a sound or animation would play"
+      "sound type and animations: asked after the first Game task (calm and soft until then)"
     ],
     "_order_note": "Interests are asked first so the Game style preview can use their world."
   },
@@ -172,10 +172,11 @@
     "rules": [
       "Rewards come from doing steps and tasks, never from using less help. Asking for help never costs anything.",
       "Interest content is only ever added as a reward, never taken away or locked as punishment.",
-      "No sudden surprises: the next area of the world is outlined ahead of time ('Unlocks after 2 more meals'), unless the person turns on 'Surprise me'.",
+      "No sudden surprises: the next area of the world is outlined ahead of time ('Unlocks after 2 more tasks'), unless the person turns on 'Surprise me'.",
       "Nothing plays or moves unless the person's settings allow it."
     ],
-    "world_theme": "from the person's interests",
+    "world_theme": "the setup answer: Sky, Space or Animals (a world from typed interests is not built)",
+    "_stars_note": "A star every 10 rewards shows on the profile; that number lives in the frontend (frontend/src/lib/rewards.js STAR_EVERY), not here.",
     "new_area_every_tasks_done": 2,
     "milestones": [
       "first task done",
@@ -212,8 +213,8 @@
     },
     "_dropped": "No milestone for doing a step 'on your own' (dropped Nov 4): it could make someone avoid asking for help to earn it.",
     "free_add_ons": {
-      "art": "Kenney.nl game assets (CC0, free; still credit in ATTRIBUTION.md)",
-      "animations": "LottieFiles (free animations; check each one's license; calm ones only, follow the animations setting)",
+      "art": "not used; all game art is our own (tools/make_game_art.py)",
+      "animations": "not used; our own Lottie files from tools/make_game_art.py, following the animations setting",
       "sounds": "made in code (Web Audio), no files"
     }
   },
@@ -227,11 +228,11 @@
         "normal"
       ]
     },
-    "where": "Settings, not first-time setup (setup stays at 4 questions). Offered the first time read-aloud is turned on."
+    "where": "Settings, not first-time setup (setup stays at 4 questions). The voice and speed pickers are always in Settings. 'Read answers aloud' reads AI replies; 'Read again' reads the step when tapped."
   },
   "feedback": {
     "_status": "decided Nov 5",
-    "_note": "'Tell us what you think' in Settings. Optional, taps only (no typed text), always there in Settings. Each answer is tied to a setting the person can change right there: 'setting' is the Settings key the screens use (like the first_time_setup ids). The help question is recorded only and NEVER changes the help level. Shared with staff only if sharing is on. Logged as feedback_answer (answer = question_id:value) with an empty task_id.",
+    "_note": "'Tell us what you think' in Settings. Optional, taps only (no typed text), always there in Settings. Each answer is tied to a setting the person can change right there: 'setting' is the Settings key the screens use (like the first_time_setup ids). The help question is recorded only and NEVER changes the help level. Answers are logged; the resident can turn sharing on or off in Settings (off by default) and the Staff page does not check it yet. Logged as feedback_answer (answer = question_id:value) with an empty task_id.",
     "title": "Tell us what you think",
     "intro": "Tap one for each. You can change your answer any time.",
     "thanks": "Thanks. Your answer is saved.",
@@ -384,6 +385,7 @@
       }
     ],
     "check_in": {
+      "_status": "not built",
       "after_tasks_done": 3,
       "asked_once": true,
       "questions": [

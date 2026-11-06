@@ -257,14 +257,15 @@ def decide_help(person: str, task: dict, step_id: str, week: int, history: list[
     history is this person's earlier sessions for the task, oldest first, each
     a list of event rows.
 
-    TEMPORARY: a simple scripted progression so the demo data looks right.
-    Week 1 starts at help_levels.week_1_level (most help after a "no" to the
-    device check). It drops one level (toward "hide") only after the person
-    answered "yes" to Rule 2's offer of less help (the end_question rows
-    written in simulate_session); a "keep" holds it. After struggling
+    By design, the simulator uses its own simple progression rather than
+    calling fade.py, so the demo data does not depend on the fading code it is
+    used to test. Week 1 starts at help_levels.week_1_level (most help after a
+    "no" to the device check). It drops one level (toward "hide") only after
+    the person answered "yes" to Rule 2's offer of less help (the end_question
+    rows written in simulate_session); a "keep" holds it. After struggling
     rule_4_more_help_after_struggled_in_a_row times in a row it rises one level
-    (toward "split"). This will be replaced by a call into fade.py, a one-line
-    change to the return below.
+    (toward "split"). fade.decide_level could replace the return below in one
+    line if that is ever wanted.
     """
     levels = _levels()
     rules = _defs()["fading_rules"]

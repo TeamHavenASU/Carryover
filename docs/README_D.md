@@ -9,9 +9,10 @@
 | `backend/ai/ask.py` | The "I'm stuck" flow for `POST /ask`. |
 | `backend/ai/high_risk.py` | The label rule for two photo questions: "can this go in the microwave" and "how long do I heat this". Quote the label, ask 3 times, never "safe" from looks. |
 | `backend/ai/split.py` | AI step splitting for `POST /split`, with an extra detail version (hand and direction). Writes only to `data/splits_pending.json`. |
-| `backend/ai/skill_card.py` | AI drafts a skill card, or names the missing base skill. Writes only to `data/skill_cards_pending.json` until a person approves. |
+| `backend/ai/skill_card.py` | AI drafts a skill card, or names the missing base skill. Writes only to `data/skill_cards_pending.json` (created on first use) until a person approves. |
 | `backend/ai/common.py` | Small helpers: load a task, read a prompt, clean up JSON. |
-| `backend/api/ai_routes.py` | `/ask`, `/split`, `/draft_skill`, `/skills/pending`, `/skills/<id>/approve`, `/skills/<id>/reject`. |
+| `backend/api/ai_routes.py` | `/ask`, `/split`, `/draft_skill`. |
+| `backend/api/skill_routes.py` | `/skills/pending`, `/skills/<id>/approve`, `/skills/<id>/reject` (skill card review). |
 | `backend/prompts/` | `ask_system.md`, `ask_user_template.md`, `photo_check_system.md`, `split_system.md`, `split_extra_detail.md`, `skill_card_system.md` |
 | `backend/tests/` | `test_ai.py` and `test_ai_guardrails.py` (no model or key needed), `run_ai_cases.py`, `run_photo_test.py`, `ai_cases.md` |
 | `frontend/src/components/AskForHelp/` | The "I'm stuck" button, text box, microphone, photo and reply. |
@@ -60,12 +61,12 @@ From the repo root: `python docs/make_prompts_pdf.py` rebuilds `docs/prompts.pdf
 
 1. The test set is already in `backend/tests/ai_images/photo_test/`: 27 photos, 15 of our own and 12 free web photos with credits in ATTRIBUTION.md. To add more, take photos of your own dishes (no people) and add a row for each to manifest.csv.
 2. New photos go in `backend/tests/ai_images/photo_test/`. Git ignores this folder, so add new files with `git add -f`.
-3. `manifest.csv` in that folder lists each photo with what is really true (`safe`, `unsafe` or `unknown`). A photo whose printed label clearly says microwave safe is `safe`. The example file is `backend/tests/photo_test_manifest_example.csv`.
+3. `manifest.csv` in that folder lists each photo with what is really true (`safe`, `unsafe` or `unknown`). A photo whose printed label clearly says microwave safe is `safe`. Follow the rows already in `manifest.csv`.
 4. Run `python tests/run_photo_test.py`. It writes `tests/photo_test_results.md` with how often the AI answered, how many answers were wrong, and the number that matters: wrong SAFE answers. The target is zero.
 
 ## Using the component
 
-C places it at the bottom of the resident screen:
+C shows it on the Help screen (`frontend/src/screens/HelpScreen.jsx`), opened by "Help with this step":
 
 ```jsx
 import AskForHelp from "../components/AskForHelp/AskForHelp";
@@ -76,17 +77,17 @@ import AskForHelp from "../components/AskForHelp/AskForHelp";
   stepId={currentStepId}   // the step on screen, or null
   week={week}
   sessionId={sessionId}    // person-task-week, like jeremiah-heat_meal-w03
-  autoRead={settings.autoRead}
+  autoRead={settings.readAloud}
 />
 ```
 
-It sends `stuck_pressed` when the button is pressed and `ask_sent` (step guess only) after a reply, both through `POST /event`, as 12 column rows that match `EVENT_COLUMNS` in `backend/logic/data_io.py`. Set `VITE_API_URL` if the backend is not at `http://localhost:8000`. The panel tells the person that a photo goes to an AI service and asks for no people, cards, receipts, checkout pages or bank apps. It is styled with CSS variables (`--calm-surface`, `--calm-ink`, `--calm-accent`) so it matches C's look, and it respects the page's text size, a `no-motion` class on the page, and the device's reduce motion setting.
+It sends `stuck_pressed` when the button is pressed and `ask_sent` (step guess only) after a reply, both through `POST /event`, as 12 column rows that match `EVENT_COLUMNS` in `backend/logic/data_io.py`. Set `VITE_API_URL` if the backend is not at `http://localhost:8000`. The panel tells the person that a photo goes to an AI service and asks for no people, cards, receipts, checkout pages or bank apps. It is styled with CSS variables (`--calm-surface`, `--calm-ink`, `--calm-accent`) so it matches C's look, and it respects the page's text size and the device's reduce motion setting.
 
 ## Connections to other roles
 
 - **A:** `/split` takes its two examples from A's task files. If fewer than two split steps exist, it uses built in examples. Skill cards follow the format of `backend/data/skills/*.json`.
 - **B and A:** `/ask` reads this person's help codes with `logic.data_io.load_events` and `logic.detect.detect`. If those fail, the model simply gets no codes.
-- **C:** C's `POST /event` writes `stuck_pressed` and `ask_sent`. C passes the hand setting to `/split` (see below).
+- **C:** C's `POST /event` writes `stuck_pressed` and `ask_sent`. The hand for an extra detail split comes from the choice staff make on the Staff page (Role E), not from the resident's setting (see below).
 - **E:** `/split` saves entries in `data/splits_pending.json` as `{split_id, task_id, step_id, substeps, approved: false}`. D creates the `split_id`. E's review routes read this file and write approved substeps into the task file.
 
 ### Extra detail (hand setting) and E's review page
@@ -97,4 +98,4 @@ Open question for the team: E's approve route writes the substeps into the share
 
 ### Skill cards
 
-`POST /draft_skill` with `{"task_id", "step_id", "skill_title"}` drafts a card. Leave out `skill_title` and the AI names the base skill a person may be missing (use this when someone stays stuck at Most help). Cards wait in `data/skill_cards_pending.json`. A person reads one, then calls `POST /skills/<skill_id>/approve` (writes `data/skills/<skill_id>.json`) or `/reject`. `GET /skills/pending` lists what is waiting. E's review page does not show these yet.
+`POST /draft_skill` with `{"task_id", "step_id", "skill_title"}` drafts a card. Leave out `skill_title` and the AI names the base skill a person may be missing (use this when someone stays stuck at Most help). Cards wait in `data/skill_cards_pending.json` (created on first use). A person reads one on the Review page, then it calls `POST /skills/<skill_id>/approve` (writes `data/skills/<skill_id>.json`) or `/reject`. `GET /skills/pending` lists what is waiting.

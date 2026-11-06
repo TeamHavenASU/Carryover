@@ -188,8 +188,10 @@ def choose_help(person_id: str, detection: dict, scores: dict, definitions: dict
     Why 0.6: we want help that probably works (better than a coin flip), but
     we always try lighter help first, because less help is the goal.
 
-    Worked example: jeremiah's real week 10 detection, stuck_at_step s4,
-    with scores from weeks 1 to 9 of the demo data (events.csv):
+    Worked example (from an earlier run of the simulator; the numbers in
+    scores.json have moved a little since, the conclusion has not):
+    jeremiah's week 10 detection, stuck_at_step s4, with scores from weeks
+    1 to 9 of that run's events.csv:
         hint:s4        everyone 126 worked of 228 tried  -> rate 0.553
                        jeremiah   3 worked of   7 tried  -> rate 0.429
                        w = 7 / (7 + 5) = 0.583
