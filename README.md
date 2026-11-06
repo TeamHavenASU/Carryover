@@ -1,6 +1,6 @@
 # Carryover
 
-**The right help. Every person. Every step.**
+**The right amount of help, for each person, on each step.**
 
 Carryover helps autistic adults practice everyday tasks, like heating a meal or buying something, on their own. It shows one step at a time, learns from each person's own use where they get stuck, gives the smallest help that works, and fades it as they improve. If they struggle again, the help comes back. It always asks before reducing help, and safety cautions are always shown.
 
