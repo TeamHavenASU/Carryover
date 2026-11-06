@@ -81,16 +81,16 @@ Other changes. The last column shows which session each one came from:
 | --- | --- | --- |
 | Same steps for everyone; adaptive help would be useful | Each person sees a different amount of help on each step. Help fades after they do a step alone and comes back if they struggle | Nov 3 |
 | Use task analysis and a lit review | Every task is a task analysis in our own words (no AFLS text). Our design choices are backed by research | Nov 3 |
-| Progress without much staff help | The resident uses the app on their own. Staff see a short summary only if the resident chooses to share it | Oct 27 |
+| Progress without much staff help | The resident uses the app on their own. Sharing a summary with staff is the resident's choice and off by default (the demo's Staff page shows all simulated residents) | Oct 27 |
 | Show cautions without tapping | Caution lines always show, at every help level | Nov 4 |
 | A different microwave is hard | The first time, the app asks "Is this a microwave you've used before?" If not, it starts with the most help | Nov 4 |
 | Missing basic skills | Each step lists the skills it needs. If someone isn't sure, a short skill card shows first | Nov 4 |
-| Much more detail for some people | An AI option breaks a small step down further (which hand, which way). Staff approve it before anyone sees it | Nov 4 |
+| Much more detail for some people | On the Staff page, "Ask AI for more detail" breaks a step down further (which hand, which way). A person approves the new steps before anyone sees them | Nov 4 |
 | Pictures and video | Each step has a picture. Videos are planned | Nov 4 |
-| Make it feel like a game | Optional Game mode based on the person's interests (designed, not built yet) | Nov 4 |
-| Ask preferences first, then go from there | A short first-time setup (interests, Game or Normal, sound volume, which hand). The app follows those choices | Nov 4 |
+| Make it feel like a game | Optional Game mode: the person chooses a world (sky, animals or space), picks a reward after each task, and new areas open as they go. Rewards never depend on using less help | Nov 4 |
+| Ask preferences first, then go from there | A short first-time setup (which world they like, Game or Normal, sound volume, which hand) that can be skipped. The app follows those choices, and a "Tell us what you think" section in Settings asks about movement, sound, colors and amount of help | Nov 4 |
 | Skills should carry over to living on their own | The app works without staff, and help fades as people learn, so they depend on it less over time | Nov 4 |
-| The steps and wait time are fine | Kept as they were | Nov 4 |
+| The steps and wait time are fine | Kept the steps. After testing the app ourselves, the first help offer now comes a little sooner (about 7 seconds on most steps) | Nov 4 |
 
 ## Limits
 
