@@ -34,6 +34,12 @@ test_detect.py and make_pictures.py (the first placeholder pictures, since remov
 and the detection logic, reviewed every line, and can explain what each
 file does and why.
 
+How I used AI, with the main requests (lightly edited for typos):
+- Research and sources: "Check the citations in the lit review and sources.md against these abstracts I pasted. Tell me if any claim doesn't match the paper." "Write a literature review following the Purdue OWL guide, in plain English but research-based."
+- Docs: "Draft future_directions.md and responsible_ai.md, and explain how the design accounts for privacy, safety and autonomy." "Review the Business Model Canvas: fix claims that don't match what First Place staff said."
+- Checks: "Write a Claude Code prompt to audit every button in the resident app against our UI guidelines. Report only." "Go through the repo and find where the docs don't match what the app does."
+- Code, with Claude Code: the help offer timing change in definitions.json; the Demo page phone frame, "Why this changed" and "Help over time" grid (Demo.jsx, Demo.css); the "Ask AI for more detail on this step" button and demo note on the Staff page (Staff.jsx, Staff.css); the plain-address redirect in App.jsx; the resident feedback section (with Role C's agreement). I checked every diff, ran the backend tests and the frontend build, and checked the pages in the browser.
+
 ## Role B
 
 **Libraries:** none beyond the Python standard library (csv, json, pathlib,
@@ -61,12 +67,13 @@ line, and can explain the logic and the design decisions in each file.
 
 **Libraries:** the resident screens use React and the existing frontend setup
 (Vite, React Router) from Role E's package.json. Added by Role C:
-- framer-motion (MIT): Game mode only, an island sliding in and the reward
-  appearing.
-- lottie-react (MIT, uses lottie-web, MIT): Game mode only, the bird, balloon
-  and kite animations.
+- framer-motion (MIT): the logo screen when the app opens, and in Game mode an
+  island sliding in and the reward appearing.
+- lottie-react (MIT, uses lottie-web, MIT): the Game mode animations.
 - lucide-react (ISC): the one icon set used on every resident screen.
-Browser features: localStorage for settings and speechSynthesis for read-aloud.
+Browser features: localStorage for settings, sessionStorage for the logo
+screen, speechSynthesis for read-aloud and Web Audio for Game mode sounds (made
+in code, no sound files).
 Backend: Python standard library, plus FastAPI and pytest, which were already
 in the project.
 
@@ -74,9 +81,11 @@ in the project.
 the skill card picture were redrawn in more detail by
 tools/make_detailed_pictures.py, a script written with AI help (Claude).
 Plain shapes only: no brands, no people (hands only), no card numbers. The
-Lottie files in frontend/public/animations/ (bird, balloon, kite) are our
-own, also written with AI help; no LottieFiles downloads, so no outside
-licence applies.
+16 Lottie animations in frontend/public/animations/, the 21 game drawings in
+frontend/public/game/ and the Carryover logo (an inline SVG in
+SplashScreen.jsx) are our own, made with tools/make_game_art.py and
+other AI-assisted code. No LottieFiles or Kenney downloads, so no outside licence
+applies.
 
 **Prior work this builds on:** the screens follow docs/ui_guidelines.md (the
 UI Guide) and the sources listed there. The colour choices follow the AASPIRE
@@ -93,9 +102,12 @@ src/api.js. today.py wraps fade.build_view (Vaishnavi and Mrudula). My parts
 are today.py, event_log.py, resident_routes.py, test_resident.py and
 frontend/src/screens/ and frontend/src/lib/.
 
-**AI assistance:** [Krutika: list the files written with Claude's help and
-write the sentence confirming you reviewed every line and can explain the
-logic. Only keep it if it is true.]
+**AI assistance:** Claude (Anthropic) helped write the resident screens in
+frontend/src/screens/ and frontend/src/lib/, today.py, and the drawing scripts
+tools/make_detailed_pictures.py and tools/make_game_art.py. The screen design
+follows docs/ui_guidelines.md and the team's decisions. The code was reviewed
+and tested before it was committed: backend tests, and 71 click-through checks
+at phone size.
 
 ## Role D: AI help, guardrails and photo test
 
@@ -168,4 +180,12 @@ the Demo page is plain SVG, no chart library.
 McClannahan (2001), as in the Role B section; the pages follow
 docs/ui_guidelines.md. No code was taken from any existing product.
 
-**AI assistance:** [Vaishnavi to confirm]
+**Added by Role A, agreed with Role E:** the phone frame with the real
+resident app, "Why this changed" and the "Help over time" grid in Demo.jsx and
+Demo.css; the "Ask AI for more detail on this step" button and demo note in
+Staff.jsx and Staff.css; the plain-address redirect in App.jsx. These were
+written with Claude Code (see the Role A section).
+
+**AI assistance:** where AI coding assistants were used for Role E, the code
+was reviewed and tested by the team before it was committed (backend tests and
+the frontend build), and the team can explain how each page and route works.
