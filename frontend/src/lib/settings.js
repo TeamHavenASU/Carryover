@@ -14,6 +14,7 @@ export const DEFAULTS = {
   mode: "light",        // light | dark
   pictures: true,
   readAloud: false,
+  voiceAgent: false,    // the microphone helper: off unless turned on in Settings
   praise: "calm",       // calm | cheerful | off
   supportPerson: "",
   supportContact: "",   // how to reach them, e.g. a phone number or "text"

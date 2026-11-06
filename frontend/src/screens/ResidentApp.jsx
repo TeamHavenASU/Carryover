@@ -25,6 +25,7 @@ import GameBackdrop from "./Backdrops";
 import ChooseWorld from "./ChooseWorld";
 import ProfileScreen from "./ProfileScreen";
 import SplashScreen from "./SplashScreen";
+import VoiceAgent from "../components/VoiceAgent/VoiceAgent";
 
 // One screen at a time. All step text and help levels come from /today (Format 3).
 export default function ResidentApp() {
@@ -283,6 +284,67 @@ export default function ResidentApp() {
       <span aria-hidden="true">{(s.personId || "?").charAt(0).toUpperCase()}</span>
     </button>
   ) : null;
+  // Voice helper: the same actions the buttons do. It takes the person to where the action
+  // needs to be, then does it, and says what it did in plain words.
+  function runCommand(action, arg) {
+    const noTask = { ok: false, say: "No task is open yet. Say the name of a task, like open heat a meal." };
+    const inStep = inTask && step;
+    const send = (name, say) => {
+      const go = () => window.dispatchEvent(new CustomEvent("carryover:voice", { detail: { action: name } }));
+      if (view === "step") go(); else { setView("step"); setTimeout(go, 300); }
+      return { ok: true, say };
+    };
+    // On the first page the only thing to do is Continue.
+    if (splash) {
+      if (action === "play" || action === "start") { closeSplash(); return { ok: true, say: "Continuing." }; }
+      return { ok: false, say: "Say continue to begin." };
+    }
+    if (view === "done" && ["prepareDone", "doneConfirmed", "start", "play", "tasks", "openTask"].includes(action) && action !== "openTask") {
+      setView("tasks");
+      return { ok: true, say: "Here are your tasks." };
+    }
+    switch (action) {
+      case "prepareDone":
+        if (view === "step") return { ok: true };
+        if (inStep) { setView("step"); return { ok: true }; }
+        return noTask;
+      case "doneConfirmed": return inStep ? send("done", "Great. Moving on.") : noTask;
+      case "replay": return inStep ? send("replay", "Reading it again.") : noTask;
+      case "pause": return inStep ? send("pause", "Paused.") : noTask;
+      case "play":
+        if (view === "break") { resume(); return { ok: true, say: "Going back to your step." }; }
+        return inStep ? send("play", "Reading.") : noTask;
+      case "smallSteps":
+      case "nextSmall": return inStep ? send("smallSteps", "Showing the small steps.") : noTask;
+      case "help":
+        if (view === "help") return { ok: true, say: "You are on the help page." };
+        return inStep ? send("help", "Opening help.") : noTask;
+      case "break":
+        if (!inStep) return noTask;
+        takeBreak();
+        return { ok: true, say: "Taking a break. Your place is saved." };
+      case "home": goHome(); return { ok: true, say: "Going to the first page." };
+      case "tasks": setView("tasks"); return { ok: true, say: "Here are your tasks." };
+      case "settings": setReturnTo(view); setView("settings"); return { ok: true, say: "Opening settings." };
+      case "back":
+        if (back) { back(); return { ok: true, say: "Going back." }; }
+        return { ok: true, say: "You are at the start of this part." };
+      case "allsteps":
+        if (inStep) { setView("all"); return { ok: true, say: "Here are all the steps." }; }
+        return noTask;
+      case "start":
+        if (view === "start" && today) { startTask(0); return { ok: true, say: "Starting." }; }
+        if (view === "tasks" && ready && s.setupDone) return { ok: false, say: "Say the name of a task, like open heat a meal." };
+        return { ok: false, say: "Choose an option, or say next." };
+      case "openTask":
+        if (!ready || !s.setupDone) return { ok: false, say: "Choose your options first. You can say sky, animals or space, then next." };
+        if (inTask) setInTask(false);
+        openTask(arg);
+        return { ok: true, say: `Opening ${titles[arg] || "the task"}.` };
+      default: return { ok: false, say: "I did not catch that." };
+    }
+  }
+  const voiceUi = <VoiceAgent settings={s} view={view} tasks={taskIds.map((id) => ({ id, title: titles[id] || id }))} onCommand={runCommand} />;
   const showBottomNav = ready && s.setupDone && ["tasks", "world", "settings"].includes(view);
   const dark = (s.theme === "dark" ? "dark" : s.mode) === "dark";
   const world = resolveWorld(s);
@@ -297,6 +359,9 @@ export default function ResidentApp() {
     return (
       <div className="resident splash-page" {...lookAttributes({ ...s, theme: s.theme })}>
         <SplashScreen onDone={closeSplash} autoAdvance={false} />
+        <div className="splash-voice">
+          <VoiceAgent settings={s} view="splash" tasks={[]} onCommand={runCommand} />
+        </div>
       </div>
     );
   }
@@ -304,7 +369,7 @@ export default function ResidentApp() {
   return (
     <div ref={rootRef} className={`resident ${showBottomNav ? "has-bottom-nav" : ""} ${s.style === "game" ? "game" : ""}`} {...lookAttributes(s)}>
       {s.style === "game" && <GameBackdrop world={world} dark={dark} animations={s.animations} />}
-      <TopBar title={title} onBack={back} onHome={goHome} right={gear || profileCircle} />
+      <TopBar title={title} onBack={back} onHome={goHome} right={<>{voiceUi}{gear || profileCircle}</>} />
 
       {error && <div className="card status" role="alert"><p>{error}</p></div>}
 

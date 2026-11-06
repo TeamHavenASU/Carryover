@@ -1,7 +1,7 @@
 // One icon set for the whole resident app (Lucide). Every icon sits next to its words and is
 // hidden from screen readers, so the words are what gets read.
 import {
-  ArrowLeft, Building2, Check, ChevronRight, Earth, ChefHat, Cloud, Gamepad2, House, Leaf, List, ListChecks, Music, Palette,
+  ArrowLeft, Building2, Check, ChevronRight, Earth, ChefHat, Cloud, Gamepad2, House, Leaf, Mic, List, ListChecks, Music, Palette,
   Pause, PawPrint, Play, Rocket, RotateCcw, Settings, TrainFront, Trophy, Volume, Volume1, Volume2, VolumeX,
 } from "lucide-react";
 
@@ -10,6 +10,7 @@ const props = { size: "1.25em", strokeWidth: 2, "aria-hidden": true, focusable: 
 export const Icon = {
   back: () => <ArrowLeft {...props} />,
   home: () => <House {...props} />,
+  mic: () => <Mic {...props} />,
   speaker: () => <Volume2 {...props} />,
   tasks: () => <ListChecks {...props} />,
   world: () => <Earth {...props} />,

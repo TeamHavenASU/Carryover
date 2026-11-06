@@ -78,6 +78,8 @@ export default function StepScreen({
   // "Want help with this step?"). What the level shows at the start is not a prompt, and
   // neither is help they asked for themselves.
   const promptedRef = useRef(false);
+  const resetAtRef = useRef(0);           // activity (speech, taps) restarts the help timers from here
+  const [activityTick, setActivityTick] = useState(0);
   const activeMsRef = useRef(0);          // time on this step, break time excluded
   const runningSinceRef = useRef(null);
   const loggedStart = useRef(false);
@@ -97,7 +99,7 @@ export default function StepScreen({
     runningSinceRef.current = Date.now();
     const timers = [];
     if (!step.wait) {
-      const elapsed = activeMsRef.current;
+      const elapsed = activeMsRef.current - resetAtRef.current;
       step.hint_waits.forEach((sec, i) => {
         const wait = sec * 1000 - elapsed;
         if (wait <= 0) {
@@ -114,7 +116,7 @@ export default function StepScreen({
       activeMsRef.current += Date.now() - runningSinceRef.current;
       runningSinceRef.current = null;
     };
-  }, [paused, step]);
+  }, [paused, step, activityTick]);
 
   const offerShown = offerStage > offerAnswered && reveal < 2 && !step.wait;
 
@@ -267,6 +269,44 @@ export default function StepScreen({
     onDone();
   }
 
+
+  // The voice helper sends actions here. They run the same functions as the buttons, so the
+  // events logged are the same. Nothing runs while this step is not on screen.
+  function markActive(hideOffer) {
+    resetAtRef.current = activeMsRef.current + (runningSinceRef.current ? Date.now() - runningSinceRef.current : 0);
+    if (hideOffer) setOfferAnswered((n) => Math.max(n, offerStage));
+    setActivityTick((n) => n + 1);
+  }
+  const markRef = useRef(null);
+  markRef.current = markActive;
+  useEffect(() => {
+    const tap = () => { if (!paused && markRef.current) markRef.current(false); };
+    window.addEventListener("pointerdown", tap);
+    window.addEventListener("keydown", tap);
+    return () => { window.removeEventListener("pointerdown", tap); window.removeEventListener("keydown", tap); };
+  }, [paused]);
+  const voiceRef = useRef(null);
+  voiceRef.current = (action) => {
+    switch (action) {
+      case "replay": repeat(); break;
+      case "pause": if (readingRef.current === "playing") pauseReading(); break;
+      case "play": if (readingRef.current !== "playing") togglePlay(); break;
+      case "smallSteps":
+        if (reveal < 2 && substeps.length > 0) showSmallSteps();
+        else if (reveal >= 2 && shownSmall < substeps.length) showNextSmall();
+        break;
+      case "done": done(); break;
+      case "help": helpTap(); break;
+      case "activity": markActive(false); break;
+      case "dismissOffer": markActive(true); break;
+      default: break;
+    }
+  };
+  useEffect(() => {
+    const onVoice = (e) => { if (!paused && voiceRef.current) voiceRef.current(e.detail && e.detail.action); };
+    window.addEventListener("carryover:voice", onVoice);
+    return () => window.removeEventListener("carryover:voice", onVoice);
+  }, [paused]);
 
   const fade = settings.animations === "off" ? "" : "fade-in";
 
